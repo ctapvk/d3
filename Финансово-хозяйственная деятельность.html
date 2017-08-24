@@ -7,7 +7,7 @@
 
 </style>
 <svg width="960" height="500"></svg>
-<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="/d3.min.js"></script>
 <script>
 
 var svg = d3.select("svg"),
@@ -15,13 +15,13 @@ var svg = d3.select("svg"),
     width = +svg.attr("width") - margin.left - margin.right,
     height = +svg.attr("height") - margin.top - margin.bottom,
     g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
+console.log(g);
 var x0 = d3.scaleBand()
     .rangeRound([0, width])
     .paddingInner(0.1);
 
 var x1 = d3.scaleBand()
-    .padding(0.05);
+    .padding(0.0);
 
 var y = d3.scaleLinear()
     .rangeRound([height, 0]);
@@ -53,20 +53,53 @@ d3.json("dataJson/d1.json", function(data) {
   x1.domain(keys).rangeRound([0, x0.bandwidth()]);
   y.domain([0, d3.max(data, function(d) { return d3.max(keys, function(key) { return d[key]; }); })]).nice();
 
+  
+  
   g.append("g")
     .selectAll("g")
-    .data(data)
-    .enter().append("g")
-      .attr("transform", function(d) { return "translate(" + x0(d.State) + ",0)"; })
+    .data(data).enter().append("g")
+    .attr("transform", function(d) { return "translate(" + x0(d.State) + ",0)"; });
+	  
+/*	  
     .selectAll("rect")
-    .data(function(d) { return keys.map(function(key) { return {key: key, value: d[key]}; }); })
-    .enter().append("rect")
-      .attr("x", function(d) { return x1(d.key); })
-      .attr("y", function(d) { return y(d.value); })
+    .data(function(d) { return keys.map(function(key) { return {key: key, value: d[key]}; }); });
+*/	
+	
+	g.selectAll("g")
+    .each(function (row){
+		   var rect = this.append(document.createElement("rect"));
+		   var node = document.createElement("text");
+		   this.append(node);	
+		   var txt = document.createTextNode("ddd");
+           document.(txt);
+		});
+		
+	g.selectAll("g")
+	 .selectAll("g")
+	 .selectAll("rect")
+	 .data(function(d) 
+	       { 
+	         var mappedFunction  = function(key) {
+			                              var prop  = d[key];
+					                      return {key: key, value: prop}; 
+								   };
+		     return keys.map(mappedFunction); 
+		   });
+	g.selectAll("g").selectAll("g").selectAll("rect")
+      .attr("x", function(d) { 
+	        console.log(x1);
+		    return x1(d.key); }
+		   )
+      .attr("y", function(d) { 
+	         console.log(d.value);
+		    return y(d.value); }
+		  )
       .attr("width", x1.bandwidth())
       .attr("height", function(d) { return height - y(d.value); })
       .attr("fill", function(d) { return z(d.key); });
 
+  
+  
   g.append("g")
       .attr("class", "axis")
       .attr("transform", "translate(0," + height + ")")
@@ -83,7 +116,7 @@ d3.json("dataJson/d1.json", function(data) {
       .attr("font-weight", "bold")
       .attr("text-anchor", "start")
       .text("Population");
-
+	
   var legend = g.append("g")
       .attr("font-family", "sans-serif")
       .attr("font-size", 10)
@@ -98,6 +131,7 @@ d3.json("dataJson/d1.json", function(data) {
       .attr("width", 19)
       .attr("height", 19)
       .attr("fill", z);
+  
 
   legend.append("text")
       .attr("x", width - 24)
@@ -105,5 +139,9 @@ d3.json("dataJson/d1.json", function(data) {
       .attr("dy", "0.32em")
       .text(function(d) { return d; });
 });
+
+
+
+
 
 </script>
