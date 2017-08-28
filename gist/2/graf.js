@@ -104,8 +104,8 @@ function showXAxis(){
   var lineGraph = axisX.append("path")
                            .attr("transform", "translate(0," + height + ")")
                            .attr("d", lineFunction(lineData))
-                            .attr("stroke", "blue")
-                            .attr("stroke-width", 2)
+                            .attr("stroke", "#CDD5DE")
+                            .attr("stroke-width", 5)
   .attr("fill", "none");
  
  
@@ -126,22 +126,26 @@ function showYAxis(){
   var lineGraph = axisY.append("path")
                            .attr("transform", "translate(0," + height + ")")
                            .attr("d", lineFunction(lineData))
-                            .attr("stroke", "blue")
-                            .attr("stroke-width", 2)
+                            .attr("stroke", "#CDD5DE")
+                            .attr("stroke-width", 4)
                             .attr("fill", "none");
   
   
   var ts = y.ticks();
   var jsonCircles = new Array();
+  var jsonC = new Array();
   for ( var t in ts) {
-	jsonCircles.push({ "x_axis": 0, "y_axis":  y(ts[t]), "radius": 5, "color" : "blue" }); 
+	  if (t!=0){
+		  jsonCircles.push({ "x_axis": 0, "y_axis":  y(ts[t]), "radius": 6, "color" : "CDD5DE" });
+	  }
   }
  
 
 var circles = axisY.selectAll("circle")
                           .data(jsonCircles)
                           .enter()
-                          .append("circle");
+                          .append("circle")     
+                          ; 
 
 var circleAttributes = circles
                        .attr("cx", function (d) { return d.x_axis; })
@@ -149,15 +153,19 @@ var circleAttributes = circles
                        .attr("r", function (d) { return d.radius; })
                        .style("fill", function(d) { return d.color; }); 
  
+
+/*
   g.append("g")
       .attr("class", "axisY")
+      .attr("stroke", "#CDD5DE")
       .call(d3.axisLeft(y).ticks(null, "s"))
+      .attr("stroke", "#CDD5DE")
     .append("text")
       .attr("x", 2)
       .attr("y", y(y.ticks().pop()))
       .attr("dy", "0.32em")
-      .attr("fill", "#000")
-      .attr("font-weight", "bold")
+      .attr("fill", "#CDD5DE")
+      .attr("font-size", "18")
       .attr("text-anchor", "start")
       ; 
 	  
@@ -230,7 +238,7 @@ function showRects(barSize){
 function showInfo(barSize){
 	g.selectAll(".info")
 		  .attr("x", function(d) {
-		        console.log("x=" + x1(d.code % 2));
+		        //console.log("x=" + x1(d.code % 2));
 				return x1(d.code % 2)  + barSize/ 2; }
 			   )
 		  .attr("y", function(d) {
@@ -286,7 +294,7 @@ function showGridForX(barSize){
   d3.selectAll(".tickX").data(data);*/
 	var tickText = axisX.selectAll(".tickX");
 	tickText
-	  .attr("x",function(row) {return x0(row.State)  ; })
+	  .attr("x",function(row) {return x0(row.State) ; })
 	  .attr("y",function(row) {return 21; })
 	  .attr("width",100)
 	  .attr("height",50)
@@ -299,6 +307,33 @@ function showGridForX(barSize){
 	
 	
 	
+}
+
+function showLegend() {
+	indent = 10 ; 
+	  var legend = g.append("g")
+      .attr("font-family", "sans-serif")
+      .attr("font-size", 14)
+      .attr("text-anchor", "start")
+    .selectAll("g")
+    .data(keys.slice() )
+    .enter().append("g")
+      //.attr("transform", function(d, i) { return "translate(" + (i * 120  - width+ 250 ) + ","+ (height + 10)+" )"; });
+	  .attr("transform", function(d, i) { return "translate(" + (i * 520) + ", 0 )"; });
+
+	  
+	legend.append("rect")
+	      .attr("x", 10)
+	      .attr("y", height + indent)
+	      .attr("width", 19)
+	      .attr("height", 19)
+	      .attr("fill", z);
+
+	  legend.append("text")
+	      .attr("x", 35)
+	      .attr("y", height + 9.5 +indent)
+	      .attr("dy", "0.32em")
+	      .text(function(d) { return d; });
 }
 
 
@@ -324,44 +359,20 @@ d3.json("/dataJson/d1.json", function(data) {
   
   keys = initKeys(obj);
   initCoords(data,keys);
+  
   createViewers();
   insertBarFields();
   showXAxis();
   showYAxis();
   mapRects();
   
-  
-  console.log("width" + width);
   var barSize = width / (data.length * 2)
-  console.log("widthBar" + barSize);
   showRects(barSize);
   showInfo(barSize);
   showGridForX(barSize);
-  
+  showLegend();
 	
-  var legend = g.append("g")
-      .attr("font-family", "sans-serif")
-      .attr("font-size", 10)
-      .attr("text-anchor", "end")
-    .selectAll("g")
-    .data(keys.slice().reverse())
-    .enter().append("g")
-      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
-	  
 
-  legend.append("rect")
-      .attr("x", width - 19)
-      .attr("width", 19)
-      .attr("height", 19)
-      .attr("fill", z);
-  
-  
-
-  legend.append("text")
-      .attr("x", width - 24)
-      .attr("y", 9.5)
-      .attr("dy", "0.32em")
-      .text(function(d) { return d; });
 	  
    
 	  
