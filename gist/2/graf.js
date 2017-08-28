@@ -67,10 +67,8 @@ function createViewers(){
     .data(data).enter().append("g")
 	.attr("class","viewer")
 	.attr("width","40px")
-    .attr("transform", function(d) { 
-		
+    .attr("transform", function(d) {
 		return "translate(" + x0(d.State) + ",0)"; 
-		
 	});
 }
 
@@ -133,13 +131,10 @@ function showYAxis(){
   
   var ts = y.ticks();
   var jsonCircles = new Array();
-  var jsonC = new Array();
   for ( var t in ts) {
-	  if (t!=0){
-		  jsonCircles.push({ "x_axis": 0, "y_axis":  y(ts[t]), "radius": 6, "color" : "CDD5DE" });
-	  }
+	  if (t!=0)
+		  jsonCircles.push({ "x_axis": 0, "y_axis":  y(ts[t]), "radius": 6, "color" : "CDD5DE"  , "text": ts[t] });
   }
- 
 
 var circles = axisY.selectAll("circle")
                           .data(jsonCircles)
@@ -151,37 +146,20 @@ var circleAttributes = circles
                        .attr("cx", function (d) { return d.x_axis; })
                        .attr("cy", function (d) { return d.y_axis; })
                        .attr("r", function (d) { return d.radius; })
-                       .style("fill", function(d) { return d.color; }); 
- 
+                       .style("fill", function(d) { return d.color; })
+                       ; 
 
-/*
-  g.append("g")
-      .attr("class", "axisY")
-      .attr("stroke", "#CDD5DE")
-      .call(d3.axisLeft(y).ticks(null, "s"))
-      .attr("stroke", "#CDD5DE")
-    .append("text")
-      .attr("x", 2)
-      .attr("y", y(y.ticks().pop()))
-      .attr("dy", "0.32em")
-      .attr("fill", "#CDD5DE")
-      .attr("font-size", "18")
-      .attr("text-anchor", "start")
-      ; 
-	  
-	  /*
-  g.append("g")
-      .attr("class", "axisY")
-      .call(d3.axisLeft(y).ticks(null, "s"))
-    .append("text")
-      .attr("x", 2)
-      .attr("y", y(y.ticks().pop()))
-      .attr("dy", "0.32em")
-      .attr("fill", "#000")
-      .attr("font-weight", "bold")
-      .attr("text-anchor", "start")
-      ;
-	  */
+var text = axisY.selectAll("text")
+                        .data(jsonCircles)
+                        .enter()
+                        .append("text");
+var textLabels = text
+                 .attr("x", function(d) { return d.x_axis-70; })
+                 .attr("y", function(d) { return d.y_axis + 5; })
+                 .text( function (d) { return d.text ; })
+                 .attr("font-family", "sans-serif")
+                 .attr("font-size", "14px")
+                 .attr("fill", "#CDD5DE"); 
  
 }
 
@@ -223,12 +201,12 @@ function showRects(barSize){
 	g.selectAll(".bar")
 		  .attr("x", function(d) {
 		        //console.log("x=" + x1(d.code % 2));
-				return x1(d.code % 2); }
-			   )
-		  .attr("y", function(d) { 
+				return x1(d.code % 2); 
+				})
+		  .attr("y", function(d) {
 				//console.log("y=" + y(d.value));
-				return y(d.value); }
-			  )
+				return y(d.value); 
+		  		})
 		  .attr("width", barSize)
 		  .attr("height", function(d) { return height - y(d.value); })
 		  .attr("fill", function(d) { return z(d.key); });
@@ -310,7 +288,7 @@ function showGridForX(barSize){
 }
 
 function showLegend() {
-	indent = 10 ; 
+	indent = 20 ; 
 	  var legend = g.append("g")
       .attr("font-family", "sans-serif")
       .attr("font-size", 14)
@@ -319,7 +297,7 @@ function showLegend() {
     .data(keys.slice() )
     .enter().append("g")
       //.attr("transform", function(d, i) { return "translate(" + (i * 120  - width+ 250 ) + ","+ (height + 10)+" )"; });
-	  .attr("transform", function(d, i) { return "translate(" + (i * 520) + ", 0 )"; });
+	  .attr("transform", function(d, i) { return "translate(" + (i * 350) + ", 0 )"; });
 
 	  
 	legend.append("rect")
@@ -338,7 +316,7 @@ function showLegend() {
 
 
 var svg = d3.select("svg"),
-    margin = {top: 20, right: 20, bottom: 30, left: 40},
+    margin = {top: 20, right: 20, bottom: 70, left: 80},
     width = + svg.attr("width") - margin.left - margin.right,
     height = + svg.attr("height") - margin.top - margin.bottom,
     g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -365,13 +343,13 @@ d3.json("/dataJson/d1.json", function(data) {
   showXAxis();
   showYAxis();
   mapRects();
-  
+  showLegend();
+	  
   var barSize = width / (data.length * 2)
   showRects(barSize);
   showInfo(barSize);
   showGridForX(barSize);
-  showLegend();
-	
+
 
 	  
    
