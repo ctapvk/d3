@@ -5,7 +5,7 @@ height = +svg.attr("height") ;
 
 
 function leftDonut(data) {
-	var color = d3.scaleOrdinal(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+	var color = d3.scaleOrdinal(prop.colorsLeft);
 	radius = 100 ;
 	var pie = d3.pie().sort(null).value(function(d) {
 		return d['Утверждено плановых назаначений'];
@@ -31,7 +31,7 @@ function leftDonut(data) {
 }
 
 function rigthDonut(data) {
-	var color = d3.scaleOrdinal(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+	var color = d3.scaleOrdinal(prop.colorsRight);
 	radius = 200 ;
 	var pie = d3.pie()
 	    .sort(null)
