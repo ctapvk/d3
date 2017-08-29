@@ -14,11 +14,14 @@ var pie = d3.pie()
 
 var path = d3.arc()
     .outerRadius(radius - 10)
-    .innerRadius(0);
+    .innerRadius(60);
 
 var label = d3.arc()
 .outerRadius(radius - 40)
 .innerRadius(radius - 40);
+
+
+
 
 d3.json("/dataJson/d1.json",  function( data) {
 var arc = g.selectAll(".arc")
@@ -33,7 +36,8 @@ arc.append("path")
 arc.append("text")
   .attr("transform", function(d) {   return "translate(" + label.centroid(d) + ")"; })
   .attr("dy", "0.35em")
-  .text(function(d) { console.log(d); return ( (d.endAngle - d.startAngle)/6.28 ).toFixed(3) * 100  + ' %'; });
+  .text(function(d) { console.log(d); return ( (d.endAngle - d.startAngle)/6.28 * 100).toFixed(1)   + ' %'; });
+
 });
 
 
