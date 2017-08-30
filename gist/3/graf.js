@@ -333,9 +333,9 @@ function showLegend() {
 	  .attr("transform",
       function(d, i) {
         if (i % 2 == 0) {
-          return "translate(" + (i * 150) + ", 0)";
+          return "translate(" + (i * 80) + ", 0)";
         } else {
-          return "translate(" + ( (i-1) * 150) + ", 30)";
+          return "translate(" + ( (i-1) * 80) + ", 30)";
         };
       });
 
@@ -343,8 +343,8 @@ function showLegend() {
 	legend.append("rect")
 	      .attr("x", 10)
 	      .attr("y", height + indent)
-	      .attr("width", 19)
-	      .attr("height", 19)
+	      .attr("width", 20)
+	      .attr("height", 20)
 	      .attr("fill", z);
 
 	  legend.append("text")
