@@ -65,9 +65,17 @@ function initCoords(data,keys){
   maxY = axisDelta + maxY;
   minY = Math.round( minY /  axisDelta) * axisDelta;
   y.domain([minY, maxY]);
-  
+
   if (minY < 0) { //Смещение нижней оси по высоте
-    axisDelta = (height / 100) * t.length;
+    var neg = 0;
+    for (var i in t){
+      if (t[i] < 0) neg++;
+    }
+    if (neg > 1) {
+      axisDelta = (height / 100) * neg * (t.length - neg);
+    } else {
+      axisDelta = (height / 100) * neg * 10;
+    };
   } else { axisDelta = 0 };
 
 }
@@ -322,8 +330,14 @@ function showLegend() {
     .selectAll("g")
     .data(keys.slice() )
     .enter().append("g")
-      //.attr("transform", function(d, i) { return "translate(" + (i * 120  - width+ 250 ) + ","+ (height + 10)+" )"; });
-	  .attr("transform", function(d, i) { return "translate(" + (i * 350) + ", 0 )"; });
+	  .attr("transform",
+      function(d, i) {
+        if (i % 2 == 0) {
+          return "translate(" + (i * 150) + ", 0)";
+        } else {
+          return "translate(" + ( (i-1) * 150) + ", 30)";
+        };
+      });
 
 
 	legend.append("rect")
@@ -338,6 +352,7 @@ function showLegend() {
 	      .attr("y", height + 9.5 +indent)
 	      .attr("dy", "0.32em")
 	      .text(function(d) { return d; });
+
 }
 
 
@@ -372,7 +387,7 @@ d3.json("/dataJson/d3.json", function(data) {
   mapRects();
   showLegend();
 
-  var barSize = width / (data.length * 2)
+  var barSize = width / (data.length * 2);
   showRects(barSize);
   showInfo(barSize);
   showGridForX(barSize);
