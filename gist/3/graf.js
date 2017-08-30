@@ -122,6 +122,22 @@ function insertBarFields(){
 		   txt = document.createElementNS("http://www.w3.org/2000/svg","text");
 		   this.append(txt);
 		   txt.setAttribute("class","info");
+       rect.setAttribute("class","bar");
+		   txt = document.createElementNS("http://www.w3.org/2000/svg","text");
+		   this.append(txt);
+		   txt.setAttribute("class","info");
+       rect.setAttribute("class","bar");
+		   txt = document.createElementNS("http://www.w3.org/2000/svg","text");
+		   this.append(txt);
+		   txt.setAttribute("class","info");
+       rect.setAttribute("class","bar");
+		   txt = document.createElementNS("http://www.w3.org/2000/svg","text");
+		   this.append(txt);
+		   txt.setAttribute("class","info");
+       rect.setAttribute("class","bar");
+		   txt = document.createElementNS("http://www.w3.org/2000/svg","text");
+		   this.append(txt);
+		   txt.setAttribute("class","info");
 		});
 }
 
@@ -234,15 +250,15 @@ function mapRects(){
 function showRects(barSize){
 	g.selectAll(".bar")
 		  .attr("x", function(d) {
-		        //console.log("x=" + x1(d.code % 2));
-				return x1(d.code % 2);
+		        console.log("x=" + x1(d.code % 6));
+				return x1(d.code % 6);
 				})
 		  .attr("y", function(d) {
-				//console.log("y=" + y(d.value));
+				console.log("y=" + y(d.value));
 				return y(d.value);
 		  		})
 		  .attr("width", barSize)
-		  .attr("height", function(d) { return height - y(d.value); })
+		  .attr("height", function(d) { return height - axisDelta - y(d.value); })
 		  .attr("fill", function(d) { return z(d.key); });
 }
 
@@ -368,7 +384,15 @@ var x0 = d3.scaleBand()
 
 var x1 = d3.scaleLinear().rangeRound([0, width]);
 var y = d3.scaleLinear().rangeRound([height, 0]);
-var z = d3.scaleOrdinal().range([ "#2E78AA", "#5095C3"]);
+var z = d3.scaleOrdinal().range([ "#fad9a9", "#f5ba63", "#94c0de", "#529acb", "#f3b3b2", "#f08482"]);
+/*
+доходы план #fad9a9
+доходы факт #f5ba63
+расходы план #94c0de
+расходы факт #529acb
+деф проф план #f3b3b2
+деф проф факт #f08482
+*/
 
 
 
