@@ -11,12 +11,32 @@ function findMaxY(entries){
 	    key = keys[j];
 		value = entry["value"];
 
-		if(max==null|| value>max){
+		if(max == null|| value > max){
 		  max = value;
 		}
 	}
   }
   return max;
+}
+
+function findMinY(entries){
+  var min = null;
+  var entry = null;
+  var key = null;
+  var value = 0;
+  for(var i in entries){
+    entry = entries[i];
+    for(var j in keys){
+	    key = keys[j];
+  		value = entry["value"];
+
+  		if(min == null || value < min){
+  		  min = value;
+  		}
+	   }
+  }
+  if (min > 0) min = 0;
+  return min;
 }
 
 
@@ -34,15 +54,21 @@ function initCoords(data,keys){
   this.keys   = keys;
   var entries = getEntries();
   var maxY = findMaxY(entries);
+  var minY = findMinY(entries);
   var maxX = entries.length;
 
   x0.domain(data.map(function(d) { return d.State; }));
   x1.domain([0,maxX]);
-  y.domain([0, maxY]).nice();
+  y.domain([minY, maxY]).nice();
   var t = y.ticks();
-  var delta = t[1] - t[0];
-  maxY = delta * 3 + maxY;
-  y.domain([0, maxY]);
+  axisDelta = t[1] - t[0];
+  maxY = axisDelta + maxY;
+  minY = Math.round( minY /  axisDelta) * axisDelta;
+  y.domain([minY, maxY]);
+  
+  if (minY < 0) { //Смещение нижней оси по высоте
+    axisDelta = (height / 100) * t.length;
+  } else { axisDelta = 0 };
 
 }
 
@@ -100,7 +126,7 @@ function showXAxis(){
                           .y(function(d) { return d.y; });
   var axisX     = g.append("g").attr("class","axisX");
   var lineGraph = axisX.append("path")
-                           .attr("transform", "translate(0," + height + ")")
+                           .attr("transform", "translate(0," + (height - axisDelta) + ")")
                            .attr("d", lineFunction(lineData))
                             .attr("stroke", "#CDD5DE")
                             .attr("stroke-width", 5)
@@ -132,7 +158,7 @@ function showYAxis(){
   var ts = y.ticks();
   var jsonCircles = new Array();
   for ( var t in ts) {
-	  if (t!=0)
+	  if (ts[t] != 0)
 		  jsonCircles.push({ "x_axis": 0, "y_axis":  y(ts[t]), "radius": 6, "color" : "CDD5DE"  , "text": ts[t] });
   }
 
@@ -334,14 +360,15 @@ var z = d3.scaleOrdinal().range([ "#2E78AA", "#5095C3"]);
 d3.json("/dataJson/d3.json", function(data) {
   var obj = data[0];
   var keys = [];
+  var axisDelta;
 
   keys = initKeys(obj);
   initCoords(data,keys);
 
   createViewers();
   insertBarFields();
-  showXAxis();
   showYAxis();
+  showXAxis();
   mapRects();
   showLegend();
 
