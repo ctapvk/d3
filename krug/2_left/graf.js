@@ -30,15 +30,22 @@ function showPie(data){
 function legend(data) {
 	g = svg.append("g").attr("transform", "translate("+ (width-300) +","+ (height/4) +" )" ) ;
 	g.selectAll("rect").data(data).enter()
-		.append("rect").attr("y",function(d,i){ return i*30})
+		.append("rect").attr("y",function(d,i){ return i*50})
 		.attr("fill", function(d) {  return color(d.State) ;  })
 		.attr("width",20).attr("height",20)
 		;
+	
 	g.selectAll("text").data(data).enter()
-		.append("text").attr("y",function(d,i){ return i*30+15}).attr("x",25)
+		.append("text").attr("y",function(d,i){ return i*50+15}).attr("x",25)
 		.attr("fill", function(d) { ; return color(d.State) ;  })
 		.text(function(d) {return d.State ; })
 		;
+		
+	g.selectAll("text").data(data).enter()
+		.append("text").attr("y",function(d,i){ return i*50+35}).attr("x",25)
+		.attr("fill", function(d) { ; return color(d.State) ;  })
+		.text(function(d) {return d['Утверждено плановых назаначений'] ; })
+	;
 	}
 
 legend(data);

@@ -1,0 +1,4 @@
+Вводная 
+http://serganbus.github.io/d3tutorials/index.html
+может еще здесь что найдешь
+http://serganbus.github.io/blog/2015/01/28/d3-materials/
