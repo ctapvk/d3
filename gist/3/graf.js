@@ -110,7 +110,7 @@ function createViewers(){
 function insertBarFields(){
 	g.selectAll(".viewer")
       .each(function (row){
-	       var rect = document.createElementNS("http://www.w3.org/2000/svg","rect");
+	     var rect = document.createElementNS("http://www.w3.org/2000/svg","rect");
 		   this.append(rect);
 		   rect.setAttribute("class","bar");
 		   var txt = document.createElementNS("http://www.w3.org/2000/svg","text");
@@ -122,22 +122,31 @@ function insertBarFields(){
 		   txt = document.createElementNS("http://www.w3.org/2000/svg","text");
 		   this.append(txt);
 		   txt.setAttribute("class","info");
-       rect.setAttribute("class","bar");
+       rect = document.createElementNS("http://www.w3.org/2000/svg","rect");
+		   this.append(rect);
+		   rect.setAttribute("class","bar");
 		   txt = document.createElementNS("http://www.w3.org/2000/svg","text");
 		   this.append(txt);
 		   txt.setAttribute("class","info");
-       rect.setAttribute("class","bar");
+       rect = document.createElementNS("http://www.w3.org/2000/svg","rect");
+		   this.append(rect);
+		   rect.setAttribute("class","bar");
 		   txt = document.createElementNS("http://www.w3.org/2000/svg","text");
 		   this.append(txt);
 		   txt.setAttribute("class","info");
-       rect.setAttribute("class","bar");
+       rect = document.createElementNS("http://www.w3.org/2000/svg","rect");
+		   this.append(rect);
+		   rect.setAttribute("class","bar");
 		   txt = document.createElementNS("http://www.w3.org/2000/svg","text");
 		   this.append(txt);
 		   txt.setAttribute("class","info");
-       rect.setAttribute("class","bar");
+       rect = document.createElementNS("http://www.w3.org/2000/svg","rect");
+		   this.append(rect);
+		   rect.setAttribute("class","bar");
 		   txt = document.createElementNS("http://www.w3.org/2000/svg","text");
 		   this.append(txt);
 		   txt.setAttribute("class","info");
+
 		});
 }
 
@@ -248,10 +257,16 @@ function mapRects(){
 
 
 function showRects(barSize){
+  var tmp;
 	g.selectAll(".bar")
 		  .attr("x", function(d) {
 		        console.log("x=" + x1(d.code % 6));
-				return x1(d.code % 6);
+				    if (d.code % 2 == 0) {
+              tmp = x1(d.code % 6);
+              return tmp;
+            } else {
+              return tmp;
+            };
 				})
 		  .attr("y", function(d) {
 				console.log("y=" + y(d.value));
@@ -411,7 +426,7 @@ d3.json("/dataJson/d3.json", function(data) {
   mapRects();
   showLegend();
 
-  var barSize = width / (data.length * 2);
+  var barSize = width / (data.length * 3);
   showRects(barSize);
   showInfo(barSize);
   showGridForX(barSize);
