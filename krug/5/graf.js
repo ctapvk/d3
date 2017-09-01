@@ -23,6 +23,7 @@ radius = 100 ;
 function showPieLeft(data){
 	
 	var pie = d3.pie().sort(null).value(function(d) {
+		console.log(d['sum']);
 		return d['sum'];
 	});
 	var path = d3.arc()
