@@ -95,14 +95,15 @@ function initKeys(obj){
 
 
 function createViewers(paddingLeft, paddingDiag){
+  //width = + svg.attr("width") - margin.left - margin.right,
 
   g.append("g").attr("class","pole")
+    .attr("transform", "translate(15,0)")
     .selectAll("g")
     .data(data).enter().append("g")
-	.attr("class","viewer")
-	//.attr("width","40px")
+	  .attr("class","viewer")
     .attr("transform", function(d, i) {
-		return "translate(" + (paddingDiag*i) + ",0)";
+		return "translate(" + (paddingLeft + (paddingDiag * i)) + ",0)";
 	});
 }
 
@@ -153,7 +154,7 @@ function insertBarFields(){
 
 
 function showXAxis(){
-  var lineData = [ { "x": 0,   "y": 0},  { "x": width,  "y": 0}];
+  var lineData = [ { "x": 0,   "y": 0},  { "x": width + margin.right,  "y": 0}];
   var lineFunction = d3.line()
                           .x(function(d) { return d.x; })
                           .y(function(d) { return d.y; });
@@ -340,7 +341,7 @@ function showGridForX(barSize){
 	var tickText = axisX.selectAll(".tickX");
 	tickText
 	  .attr("x",function(row) {return x0(row.State) ; })
-	  .attr("y",function(row) {return 21; })
+	  .attr("y",function(row) {return height - axisDelta; })
 	  .attr("width",100)
 	  .attr("height",50)
 	  .attr("dy",1)
@@ -426,7 +427,8 @@ d3.json("/dataJson/d3.json", function(data) {
   var barSize = Math.floor(width / (data.length * 3));
   var paddingLeft;
   if (barSize * data.length * 3 < width) paddingLeft = width - (barSize * data.length * 3);
-  barSize = Math.floor((width - (paddingDiag - paddingLeft) * data.length) / (data.length * 3));
+  barSize = Math.floor((width + paddingLeft - paddingDiag * (data.length - 1)) / (data.length * 3));
+  //paddingLeft *= data.length;
 
   createViewers(paddingLeft, paddingDiag);
   insertBarFields();
