@@ -6,7 +6,7 @@
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="app.js"></script>
     <style>
-        .axis path {
+        .axis path, .axis line {
             fill: none;
             stroke: #cdd5de;
         }
@@ -16,8 +16,14 @@
          font-size: 14pt;
          fill: #959fad;
     }
-            
-        
+        .axis .grid-line {
+            stroke: #000;
+            stroke-width: 1;
+            stroke-dasharray: 6 2;
+        }
+      .x-axis, .y-axis{
+        stroke-width: 5;
+      }
     </style>
 <body>
 

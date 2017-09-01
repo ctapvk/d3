@@ -16,19 +16,19 @@ function chart(file_name, parameters) {
     .attr("height", height);
 
   // длина оси X= ширина контейнера svg - отступ слева и справа
-  const xAxisLength = width -  margin;
+  const xAxisLength = width - 2 * margin;
 
   // длина оси Y = высота контейнера svg - отступ сверху и снизу
-  const yAxisLength = height - 2 * margin;
+  const yAxisLength = height - 2* margin;
 
 // функция интерполяции значений на ось Х
   const scaleX = d3.time.scale()
-    .domain([new Date(2017, 0, 1), new Date(2017, 11, 1)])
+    .domain([new Date(2017, 0, -15), new Date(2017, 11, 15)])
     .range([0, xAxisLength]);
 
   // функция интерполяции значений на ось Y
   const scaleY = d3.scale.linear()
-    .domain([1000000, 100000])
+    .domain([1000000, 0])
     .range([0, yAxisLength]);
 
   // создаем ось X
@@ -42,7 +42,10 @@ function chart(file_name, parameters) {
   const yAxis = d3.svg.axis()
     .scale(scaleY)
     .orient("left")
+    .tickSize(5)
+    .tickPadding(10)
     .ticks(10);
+
 
   // отрисовка оси Х
   svg.append("g")
@@ -56,14 +59,38 @@ function chart(file_name, parameters) {
     .attr("transform", "translate(" + margin + "," + margin + ")") // сдвиг оси вниз и вправо на margin
     .call(yAxis);
 
+//удаляем 0 на оси Y
+d3.select(".y-axis")
+.select(".tick:first-child")
+.remove(); 
+
+// добавляем круги на ticks на оси y
+    d3.select(".y-axis")
+    .selectAll("g.tick")
+    .insert("circle")
+    .attr("r", 7)
+    .style("fill", "#cdd5de");
+
+  //надо цикл для tikcs через одного добавить прямоугольники
+    d3.select(".y-axis")
+    .selectAll("g.tick")
+    .append("rect")
+    .attr("width", xAxisLength)
+    .attr("height", 25)
+    .attr("x", 0)
+    .attr("y", 0)
+    .style("fill", "#cdd5de")
+    .style("opacity", "0.2"); 
+
+
   d3.json(file_name, function (error, data) {
     if (error) throw error;
 
-    createChart(data.blueData, "#529acb", "blue");
     createChart(data.yellowData, "#f5ba63", "yellow");
+    createChart(data.blueData, "#529acb", "blue");
   });
 
-  svg.append("rect")
+  /* svg.append("rect")
     .attr("width", xAxisLength)
     .attr("height", 35)
     .attr("x", 100)
@@ -101,7 +128,7 @@ function chart(file_name, parameters) {
     .attr("x", 100)
     .attr("y", 345)
     .style("fill", "#cdd5de")
-    .style("opacity", "0.2");
+    .style("opacity", "0.2"); */
 
   svg.append("rect")
     .attr("width", 23)
@@ -140,7 +167,7 @@ function chart(file_name, parameters) {
       });
 
     // функция, создающая область
-    var area = d3.svg.area()
+    const area = d3.svg.area()
       .x(function (d) {
        return scaleX(d.date) + margin;
     })
@@ -173,23 +200,20 @@ function chart(file_name, parameters) {
       .attr("cy", function (d) {
         return scaleY(d.rate) + margin;
       });
-  }; 
+
+      // вертикальные линии   
+d3.selectAll("g.x-axis g.tick")
+    .append("line")
+    .classed("grid-line", true) 
+    .attr("x1", 0)
+    .attr("y1", 0)
+    .attr("x2", 0)
+    .attr("y2", "circle.dot yellow");
+
+svg.selectAll(".dot" + label)
+.select("circle.dot yellow:last-child")
+.remove(); 
+
+};
 }
 
-/*
-var legend_keys = ["Austin", "New York", "San Francisco"]
-
-var lineLegend = svg.selectAll(".lineLegend").data(legend_keys)
-    .enter().append("g")
-    .attr("class","lineLegend")
-    .attr("transform", function (d,i) {
-            "translate(" + width + "," + (i*20)+")";
-        });
-
-lineLegend.append("text").text(function (d) {return d;})
-    .attr("transform", "translate(15,9)"); //align texts with boxes
-
-lineLegend.append("rect")
-    .attr("fill", function (d, i) {return color_scale(d); })
-    .attr("width", 10).attr("height", 10);
-    */
