@@ -68,7 +68,7 @@ function createViewers(){
 	.attr("class","viewer")
 	.attr("width","40px")
     .attr("transform", function(d) {
-		return "translate(" + x0(d.State) + ",0)"; 
+		return "translate(" + x0(d.State) + ",0)";
 	});
 }
 
@@ -201,7 +201,7 @@ function showRects(barSize){
 	g.selectAll(".bar")
 		  .attr("x", function(d) {
 		        //console.log("x=" + x1(d.code % 2));
-				return x1(d.code % 2); 
+				return x1(d.code % 2);
 				})
 		  .attr("y", function(d) {
 				//console.log("y=" + y(d.value));
@@ -327,7 +327,7 @@ var x0 = d3.scaleBand()
 
 var x1 = d3.scaleLinear().rangeRound([0, width]);
 var y = d3.scaleLinear().rangeRound([height, 0]);
-var z = d3.scaleOrdinal().range([ "#2E78AA", "#5095C3"]);
+var z = d3.scaleOrdinal().range([ "#f6bd68", "#009cff"]);
 
 
 
