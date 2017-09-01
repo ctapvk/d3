@@ -56,6 +56,9 @@ function showPieLeft(data){
 
 
 function showPiePercents(data , index){
+	donut = g.append("g")
+				.attr("class", "donut");
+	
 	var radiusPlus = 40 ;
 	var red = d3.scaleLinear()
 					.domain([0 , (data[index].sum / 6) ]  )
@@ -100,8 +103,7 @@ data2 = countInnerDataForPie(data2);
 g = svg.append('g')
 		.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")") 
 		.attr("class" , "donut"); 
-donut = g.append("g")
-			.attr("class", "donut");
+
 innerDonut = g.append("g")
 				.attr("class", "innerDonut");
 
@@ -113,29 +115,42 @@ accr() ;
 function accr(){
 	document.write('<div class="accord"> ');
 	for (i =0 ; i < data2.length ;i ++) {
-		document.write('<button class="accordion" count='+i+'>' +data2[i].name + '</button> ');
+		var red = d3.scaleLinear()
+						.domain([0 , (data2[i].sum / 6) ]  )
+						.range(["white" , prop.colorsLeft[i]  ]);	
+		rect5 = '<svg style="  top: 10; position: relative; " width="30" height="30"> '+
+		'<rect width="20" height="20" transform="translate(5,5)" style="fill:'+ prop.colorsLeft[i] +'; " /> </svg>';
+
+		document.write('<button class="accordion" count='+i+'>' +rect5 +data2[i].name + '</button> ');
 		document.write('<div class="panel">');
 		for (dat in data2[i].value) {
-			document.write('  <p> ' +  Object.keys(data2[i].value[dat])  + ' </p>');
+			rect5 = '<svg style="  top: 10; position: relative; " width="30" height="30"> '+
+			'<rect width="20" height="20" transform="translate(5,5)" style="fill:'+ red(d3.values( data2[i].value[dat])) +'; " /> </svg>';
+			document.write('  <p  > ' + rect5 +  Object.keys(data2[i].value[dat])  + ' </p>');
 		}
 		document.write('</div>');
 	}
 	document.write('</div>');
 	
 	var acc = document.getElementsByClassName("accordion");
-	var i;
 
 	for (i = 0; i < acc.length; i++) {
 		
 	  acc[i].onclick = function() {
 	    this.classList.toggle("active");
 	    showPiePercents(data2 , this.getAttribute("count"));
+	    
+	    if ( (this.className).indexOf("active") == -1) {
+	    	d3.selectAll("g .donut").remove();
+	    }
+
+	    
 	    var panel = this.nextElementSibling;
 	    if (panel.style.maxHeight){
 	      panel.style.maxHeight = null;
 	    } else {
 	      panel.style.maxHeight = panel.scrollHeight + "px";
-	    } 
+	    }
 	  }
 	}
 }
