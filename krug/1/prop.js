@@ -1,14 +1,14 @@
 prop = {
 	"font-size":"15" ,
-	"colorsRight": ["#4F98CB", "#EFBD75", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"] , 
-	"colorsLeft": ["#F1B254", "#C2BEC3", "#8BC33C", "#66977B", "#828BC4", "#828BC4", "#8DC2D7"] , 
 	"legendValue":"#CFCFD1",
-	"legendText":"#818388"
+	"legendText":"#818388" , 
+	"colorDonut": "#E4E1DD"  , 
+	"colorOverGraph":"#F2B458"
 		
 }
 
 
-var data = [  10 , 9];
+var data = [  13123123 , 1231231];
 
 
 var data2 = [
