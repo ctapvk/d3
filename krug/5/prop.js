@@ -3,7 +3,11 @@ prop = {
 	"colorsRight": ["#4F98CB", "#EFBD75", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"] , 
 	"colorsLeft": ["#4693CA", "#C2BEC3", "#8BC33C", "#66977B", "#828BC4", "#828BC4", "#8DC2D7"] , 
 	"legendValue":"#CFCFD1",
-	"legendText":"#818388"
+	"legendText":"#818388" , 
+	"innerPieRadius": 140 ,
+	"innerPieInnerRaius": 40 , 
+	"outerPieRadius" : 200 , 
+	"outerPieInnerRadius": 150 
 		
 }
 
