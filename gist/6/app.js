@@ -35,15 +35,17 @@ function chart(file_name, parameters) {
   const xAxis = d3.svg.axis()
     .scale(scaleX)
     .orient("bottom")
+    .tickSize(0)
     .ticks(12)
+    .tickPadding(20)
     .tickFormat(d3.time.format("%b"));
 
   // создаем ось Y
   const yAxis = d3.svg.axis()
     .scale(scaleY)
     .orient("left")
-    .tickSize(5)
-    .tickPadding(10)
+    .tickSize(0)
+    .tickPadding(20)
     .ticks(10);
 
 
@@ -82,7 +84,22 @@ d3.select(".y-axis")
     .style("fill", "#cdd5de")
     .style("opacity", "0.2"); 
 
+    /*function(d, i) {
+    if (i % 2 == 0) { 
+     d3.select(".y-axis")
+    .selectAll("g.tick")
+    .append("rect")
+    .attr("width", xAxisLength)
+    .attr("height", 25)
+    .attr("x", 0)
+    .attr("y", 0)
+    .style("fill", "#cdd5de")
+    .style("opacity", "0.2");;
+    } else {
+        return false;
+    } */
 
+   
   d3.json(file_name, function (error, data) {
     if (error) throw error;
 
@@ -204,16 +221,31 @@ d3.select(".y-axis")
       // вертикальные линии   
 d3.selectAll("g.x-axis g.tick")
     .append("line")
-    .classed("grid-line", true) 
+    .classed("line", true) 
     .attr("x1", 0)
     .attr("y1", 0)
     .attr("x2", 0)
-    .attr("y2", "circle.dot yellow");
+    .attr("y2", function(d){ return d; });
 
-svg.selectAll(".dot" + label)
-.select("circle.dot yellow:last-child")
-.remove(); 
+//надпись вверху
+  d3.select("body").selectAll("p")
+    .data(data)
+    .enter()
+    .append("p")
+    .attr("class", "p")
+    .text(function(d) {
+    return d.rate/1000 ;})
+    .style("color", colorStroke)
+    .style("font-weight", "bold")
+    .style("font-size", "12pt")
+    .style("margin-left", "30px");
+
 
 };
 }
 
+/* .text(function(d, i) {
+    for(var i = 0; i < data.length; i++){
+    return data[i] } ;})  */
+
+//data[i].rate
