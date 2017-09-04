@@ -19,19 +19,18 @@ function countInnerDataForPie(d){
 	}
 	return d
 }
-radius = 100 ;
-function showPieLeft(data){
-	
+
+function outerPie(data){
 	var pie = d3.pie().sort(null).value(function(d) {
-		console.log(d['sum']);
+		//console.log(d['sum']);
 		return d['sum'];
 	});
 	var path = d3.arc()
-					.outerRadius(radius)
-					.innerRadius(40);
+					.outerRadius(prop.outerPieRadius)
+					.innerRadius(prop.outerPieInnerRadius);
 	var label = d3.arc()
-					.outerRadius( radius )
-					.innerRadius(radius / 3.5);
+					.outerRadius( prop.outerPieRadius )
+					.innerRadius(prop.outerPieInnerRadius);
 	
 	var arc = innerDonut.selectAll(".arc")
 								.data(pie(data)).enter().append("g")
@@ -42,7 +41,8 @@ function showPieLeft(data){
 			.attr("fill", function(d , i ) { 
 				data2[i].startAngle = d.startAngle ;  
 				data2[i].endAngle = d.endAngle ;  
-				return color(d.data['name']); });
+				return color(d.data['name']); 
+			});
 
 	arc.append("text")
 		  .attr("transform", function(d) {  return "translate(" + label.centroid(d) + ")"; })
@@ -51,16 +51,53 @@ function showPieLeft(data){
 		  .attr("font-family" , "sans-serif")
 		  .attr("font-size" , "14")
 		  .attr("fill" , "white")
-		  .attr("font-weight" , "bold")
+//		  .attr("font-weight" , "bold")
 		  .text(function(d) {  return ( (d.endAngle - d.startAngle)/6.28 * 100).toFixed(1)   + '%'; });
 }
 
+function sticks(data){	/* ------- SLICE TO TEXT POLYLINES -------*/
 
-function showPiePercents(data , index){
-	var radiusPlus = 40 ;
+	var pie = d3.pie()
+	.sortValues(function compare(a, b) {
+		  return b - a;
+	}) ;
+	
+	g.append("g")
+		.attr("class", "lines");
+	
+	var polyline = svg.select(".lines").selectAll("polyline")
+		.data(pie(data));
+	
+	polyline.enter()
+		.append("polyline");
+
+	polyline.transition().duration(1000)
+		.attrTween("points", function(d){
+		console.log(d);
+			this._current = this._current || d;
+			var interpolate = d3.interpolate(this._current, d);
+			this._current = interpolate(0);
+			return function(t) {
+				var d2 = interpolate(t);
+				var pos = outerArc.centroid(d2);
+				pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
+				console.log('asd');
+				return [arc.centroid(d2), outerArc.centroid(d2), pos];
+			};			
+		});
+	
+	polyline.exit()
+		.remove();
+
+}
+
+function innerPie(data , index){
 	var red = d3.scaleLinear()
 					.domain([0 , (data[index].sum / 6) ]  )
 					.range(["white" , prop.colorsLeft[index]  ]);	
+	donut = g.append("g")
+	.attr("class", "donut");
+
 	var pie = d3.pie()
 				.sortValues(function compare(a, b) {
 					  return b - a;
@@ -70,11 +107,11 @@ function showPiePercents(data , index){
 				.endAngle(data[index].endAngle) ;
 	
 	var path = d3.arc()
-					.outerRadius(radius + radiusPlus)
-					.innerRadius(radius + 5 ) ;
+					.outerRadius(prop.innerPieRadius)
+					.innerRadius(prop.innerPieInnerRaius  ) ;
 	var label = d3.arc()
-					.outerRadius( radius )
-					.innerRadius(radius +radiusPlus + 90);
+					.outerRadius( prop.innerPieRadius )
+					.innerRadius(prop.innerPieRadius );
 	var arc = donut.selectAll(".arc")
 						.data(pie(data[index].value)).enter().append("g")
 							.attr("class", "arc");
@@ -93,6 +130,7 @@ function showPiePercents(data , index){
 		  .attr("fill" , "black")
 		  .attr("font-weight" , "bold")
 		  .text(function(d) {  return ( (d.endAngle - d.startAngle)/6.28 * 100).toFixed(1)   + '%'; });
+		  
 }
 
 
@@ -101,46 +139,16 @@ data2 = countInnerDataForPie(data2);
 g = svg.append('g')
 		.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")") 
 		.attr("class" , "donut"); 
-donut = g.append("g")
-			.attr("class", "donut");
 innerDonut = g.append("g")
-				.attr("class", "innerDonut");
+				.attr("class", "outerDonut");
 
 
-showPieLeft(data2 );
-accr() ; 
-//showPiePercents(data2  ,0);
+outerPie(data2 );
+innerPie(data2, 0);
+innerPie(data2, 1);
+innerPie(data2, 2);
 
-function accr(){
-	document.write('<div class="accord"> ');
-	for (i =0 ; i < data2.length ;i ++) {
-		document.write('<button class="accordion" count='+i+'>' +data2[i].name + '</button> ');
-		document.write('<div class="panel">');
-		for (dat in data2[i].value) {
-			document.write('  <p> ' +  Object.keys(data2[i].value[dat])  + ' </p>');
-		}
-		document.write('</div>');
-	}
-	document.write('</div>');
-	
-	var acc = document.getElementsByClassName("accordion");
-	var i;
-
-	for (i = 0; i < acc.length; i++) {
-		
-	  acc[i].onclick = function() {
-	    this.classList.toggle("active");
-	    showPiePercents(data2 , this.getAttribute("count"));
-	    var panel = this.nextElementSibling;
-	    if (panel.style.maxHeight){
-	      panel.style.maxHeight = null;
-	    } else {
-	      panel.style.maxHeight = panel.scrollHeight + "px";
-	    } 
-	  }
-	}
-}
-
+sticks(data2);
 
 
 

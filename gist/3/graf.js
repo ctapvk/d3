@@ -282,18 +282,21 @@ function showRects(barSize){
 
 
 function showInfo(barSize){
-	g.selectAll(".info")
-		  .attr("x", function(d) {
-		        //console.log("x=" + x1(d.code % 2));
-				return x1(d.code % 2)  + barSize/ 2; }
+	console.log(g.selectAll(".bar")) ;
+	barArr = g.selectAll(".bar");
+	g.selectAll(".info") //.data(g.selectAll(".bar")).enter()
+		  .attr("x", function(d , i) {
+//		        console.log("x=" + x1(d.code % 2));
+			  console.log(barArr["_groups"][0][i].getAttribute("x"));
+				return (barArr["_groups"][0][i].getAttribute("x") -5 ); }
 			   )
 		  .attr("y", function(d) {
-				//console.log("y=" + y(d.value));
+//				console.log("y=" + y(d.value));
 				return y(d.value) - 5; }
 			  )
 		  .attr("width", barSize)
 		  .attr("text-anchor", "middle")
-		  .text(function (d){return d.value})
+		  .text(function (d){ return d.value})
 
 		  ;
 }
@@ -439,7 +442,7 @@ d3.json("/dataJson/d3.json", function(data) {
 
 
   showRects(barSize);
-  //showInfo(barSize);
+  showInfo(barSize);
   showGridForX(barSize);
 
 
