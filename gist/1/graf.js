@@ -199,13 +199,22 @@ function mapRects(){
 
 function showRects(barSize){
 	g.selectAll(".bar")
-		  .attr("x", function(d) {
-		        //console.log("x=" + x1(d.code % 2));
-				return x1(d.code % 2);
-				})
+            .attr("x", function(d) {
+                //console.log("x=" + x1(d.code % 6));
+                if (d.code % 2 != 0) {
+                    //tmp = Math.floor(x1(d.code % 6));
+                    //if (barSize % tmp != 0 && tmp > 0) tmp++;
+
+                    xx = barSize;
+                    console.log(xx);
+                    return xx;
+                } else {
+                    return (barSize ) / 2;
+                };
+            })
 		  .attr("y", function(d) {
 				//console.log("y=" + y(d.value));
-				return y(d.value); 
+				return y(d.value);
 		  		})
 		  .attr("width", barSize)
 		  .attr("height", function(d) { return height - y(d.value); })
