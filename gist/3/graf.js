@@ -94,15 +94,16 @@ function initKeys(obj){
 
 
 
-function createViewers(){
+function createViewers(paddingLeft, paddingDiag){
+  //width = + svg.attr("width") - margin.left - margin.right,
 
   g.append("g").attr("class","pole")
+    .attr("transform", "translate(15,0)")
     .selectAll("g")
     .data(data).enter().append("g")
-	.attr("class","viewer")
-	.attr("width","40px")
-    .attr("transform", function(d) {
-		return "translate(" + x0(d.State) + ",0)";
+	  .attr("class","viewer")
+    .attr("transform", function(d, i) {
+		return "translate(" + (paddingLeft + (paddingDiag * i)) + ",0)";
 	});
 }
 
@@ -153,7 +154,7 @@ function insertBarFields(){
 
 
 function showXAxis(){
-  var lineData = [ { "x": 0,   "y": 0},  { "x": width,  "y": 0}];
+  var lineData = [ { "x": 0,   "y": 0},  { "x": width + margin.right,  "y": 0}];
   var lineFunction = d3.line()
                           .x(function(d) { return d.x; })
                           .y(function(d) { return d.y; });
@@ -258,18 +259,20 @@ function mapRects(){
 
 function showRects(barSize){
   var tmp;
+  var marginL = 0; //px
 	g.selectAll(".bar")
 		  .attr("x", function(d) {
-		        console.log("x=" + x1(d.code % 6));
+		        //console.log("x=" + x1(d.code % 6));
 				    if (d.code % 2 == 0) {
-              tmp = x1(d.code % 6);
-              return tmp;
+              //tmp = Math.floor(x1(d.code % 6));
+              //if (barSize % tmp != 0 && tmp > 0) tmp++;
+              return (barSize * d.code) / 2;
             } else {
-              return tmp;
+              return (barSize * --d.code) / 2;
             };
 				})
 		  .attr("y", function(d) {
-				console.log("y=" + y(d.value));
+				//console.log("y=" + y(d.value));
 				return y(d.value);
 		  		})
 		  .attr("width", barSize)
@@ -338,7 +341,7 @@ function showGridForX(barSize){
 	var tickText = axisX.selectAll(".tickX");
 	tickText
 	  .attr("x",function(row) {return x0(row.State) ; })
-	  .attr("y",function(row) {return 21; })
+	  .attr("y",function(row) {return height - axisDelta; })
 	  .attr("width",100)
 	  .attr("height",50)
 	  .attr("dy",1)
@@ -395,11 +398,12 @@ var svg = d3.select("svg"),
 
 var x0 = d3.scaleBand()
     .rangeRound([0, width])
-    .paddingInner(0.1);
+    //.paddingInner(0.5);
 
 var x1 = d3.scaleLinear().rangeRound([0, width]);
 var y = d3.scaleLinear().rangeRound([height, 0]);
 var z = d3.scaleOrdinal().range([ "#fad9a9", "#f5ba63", "#94c0de", "#529acb", "#f3b3b2", "#f08482"]);
+
 /*
 доходы план #fad9a9
 доходы факт #f5ba63
@@ -419,16 +423,23 @@ d3.json("/dataJson/d3.json", function(data) {
   keys = initKeys(obj);
   initCoords(data,keys);
 
-  createViewers();
+  var paddingDiag = 20;
+  var barSize = Math.floor(width / (data.length * 3));
+  var paddingLeft;
+  if (barSize * data.length * 3 < width) paddingLeft = width - (barSize * data.length * 3);
+  barSize = Math.floor((width + paddingLeft - paddingDiag * (data.length - 1)) / (data.length * 3));
+  //paddingLeft *= data.length;
+
+  createViewers(paddingLeft, paddingDiag);
   insertBarFields();
   showYAxis();
   showXAxis();
   mapRects();
   showLegend();
 
-  var barSize = width / (data.length * 3);
+
   showRects(barSize);
-  showInfo(barSize);
+  //showInfo(barSize);
   showGridForX(barSize);
 
 
