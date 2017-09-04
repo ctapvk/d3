@@ -288,7 +288,7 @@ function showInfo(barSize){
 		  .attr("x", function(d , i) {
 //		        console.log("x=" + x1(d.code % 2));
 			  console.log(barArr["_groups"][0][i].getAttribute("x"));
-				return (barArr["_groups"][0][i].getAttribute("x") -5 ); }
+				return +(barArr["_groups"][0][i].getAttribute("x")) +barSize/2 ; }
 			   )
 		  .attr("y", function(d) {
 //				console.log("y=" + y(d.value));
