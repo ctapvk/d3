@@ -159,7 +159,7 @@ var textLabels = text
                  .text( function (d) { return d.text ; })
                  .attr("font-family", "sans-serif")
                  .attr("font-size", "14px")
-                 .attr("fill", "#CDD5DE"); 
+                 .attr("fill", "#CDD5DE");
  
 }
 
@@ -199,44 +199,58 @@ function mapRects(){
 
 function showRects(barSize){
 	g.selectAll(".bar")
-            .attr("x", function(d) {
-                //console.log("x=" + x1(d.code % 6));
-                if (d.code % 2 != 0) {
-                    //tmp = Math.floor(x1(d.code % 6));
-                    //if (barSize % tmp != 0 && tmp > 0) tmp++;
+        .attr("x", function(d) {
+            //console.log("x=" + x1(d.code % 6));
+            if (d.code % 2 != 0) {
+                //tmp = Math.floor(x1(d.code % 6));
+                //if (barSize % tmp != 0 && tmp > 0) tmp++;
 
-                    xx = barSize;
-                    console.log(xx);
-                    return xx;
-                } else {
-                    return (barSize ) / 2;
-                };
+                xx = barSize;
+                console.log(xx);
+                return xx;
+            } else {
+                return (barSize ) / 2;
+            };
+        })
+        .attr("y", function(d) {
+            //console.log("y=" + y(d.value));
+            return y(d.value);
             })
-		  .attr("y", function(d) {
-				//console.log("y=" + y(d.value));
-				return y(d.value);
-		  		})
-		  .attr("width", barSize)
-		  .attr("height", function(d) { return height - y(d.value); })
-		  .attr("fill", function(d) { return z(d.key); });
+        .attr("width", barSize)
+        .attr("height", function(d) { return height - y(d.value); })
+        .attr("fill", function(d) { return z(d.key); });
 }
 
 
 function showInfo(barSize){
 	g.selectAll(".info")
-		  .attr("x", function(d) {
-		        //console.log("x=" + x1(d.code % 2));
-				return x1(d.code % 2)  + barSize/ 2; }
-			   )
-		  .attr("y", function(d) {
-				//console.log("y=" + y(d.value));
-				return y(d.value) - 5; }
-			  )
-		  .attr("width", barSize)
-		  .attr("text-anchor", "middle")
-		  .text(function (d){return d.value})
-		  
-		  ;
+        .attr("x", function(d) {
+                //console.log("x=" + x1(d.code % 2));
+              if (d.code % 2 != 0)
+                return x1(d.code % 2)  + barSize/ 2;
+              else {
+                  return (barSize ) ;
+              }
+        }
+               )
+        .attr("y", function(d) {
+            //console.log("y=" + y(d.value));
+            if (d.code % 2 == 0)
+                return y(d.value) - 5;
+            else
+                return y(d.value) + 25;
+
+        }
+              )
+        .attr("fill", function (d){
+            if (d.code % 2 != 0)
+                return "#fff"
+            else
+                return "#000"
+        })
+        .attr("width", barSize)
+        .attr("text-anchor", "middle")
+        .text(function (d){return d.value});
 }
 
 function wrap(text, width) {
@@ -281,8 +295,8 @@ function showGridForX(barSize){
   d3.selectAll(".tickX").data(data);*/
 	var tickText = axisX.selectAll(".tickX");
 	tickText
-	  .attr("x",function(row) {return x0(row.State) ; })
-	  .attr("y",function(row) {return 21; })
+	  .attr("x",function(row) {return x0(row.State) + barSize ; })
+	  .attr("y",function(row) {return height + 10; })
 	  .attr("width",100)
 	  .attr("height",50)
 	  .attr("dy",1)
@@ -297,7 +311,7 @@ function showGridForX(barSize){
 }
 
 function showLegend() {
-	indent = 20 ; 
+	indent = 40 ;
 	  var legend = g.append("g")
       .attr("font-family", "sans-serif")
       .attr("font-size", 14)
@@ -306,7 +320,7 @@ function showLegend() {
     .data(keys.slice() )
     .enter().append("g")
       //.attr("transform", function(d, i) { return "translate(" + (i * 120  - width+ 250 ) + ","+ (height + 10)+" )"; });
-	  .attr("transform", function(d, i) { return "translate(" + (i * 350) + ", 0 )"; });
+	  .attr("transform", function(d, i) { return "translate(" + (i * 80) + ", 0 )"; });
 
 	  
 	legend.append("rect")
