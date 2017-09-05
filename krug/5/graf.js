@@ -55,41 +55,7 @@ function outerPie(data){
 		  .text(function(d) {  return ( (d.endAngle - d.startAngle)/6.28 * 100).toFixed(1)   + '%'; });
 }
 
-function sticks(data){	/* ------- SLICE TO TEXT POLYLINES -------*/
 
-	var pie = d3.pie()
-	.sortValues(function compare(a, b) {
-		  return b - a;
-	}) ;
-	
-	g.append("g")
-		.attr("class", "lines");
-	
-	var polyline = svg.select(".lines").selectAll("polyline")
-		.data(pie(data));
-	
-	polyline.enter()
-		.append("polyline");
-
-	polyline.transition().duration(1000)
-		.attrTween("points", function(d){
-		console.log(d);
-			this._current = this._current || d;
-			var interpolate = d3.interpolate(this._current, d);
-			this._current = interpolate(0);
-			return function(t) {
-				var d2 = interpolate(t);
-				var pos = outerArc.centroid(d2);
-				pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
-				console.log('asd');
-				return [arc.centroid(d2), outerArc.centroid(d2), pos];
-			};			
-		});
-	
-	polyline.exit()
-		.remove();
-
-}
 
 function innerPie(data , index){
 	var red = d3.scaleLinear()
@@ -104,14 +70,20 @@ function innerPie(data , index){
 				})
 				.value(function(d) { return d3.values(d);  })
 				.startAngle(data[index].startAngle)
-				.endAngle(data[index].endAngle) ;
-	
+				.endAngle(data[index].endAngle) 
+	;
 	var path = d3.arc()
 					.outerRadius(prop.innerPieRadius)
 					.innerRadius(prop.innerPieInnerRaius  ) ;
 	var label = d3.arc()
 					.outerRadius( prop.innerPieRadius )
-					.innerRadius(prop.innerPieRadius -50 );
+					.innerRadius(prop.innerPieRadius -50 )
+	;
+
+/*	data.sort(function(x, y){
+			return d3.ascending(x.sum, y.sum);
+		})
+*/	
 	var arc = donut.selectAll(".arc")
 						.data(pie(data[index].value)).enter().append("g")
 							.attr("class", "arc");
@@ -119,29 +91,63 @@ function innerPie(data , index){
 	arc.append("path")
 			.attr("d", path)
 			.attr("fill", function(d) {  return red(d3.values(d.data)); })
-			;
-/*
+	;
+
+	coord = [250 , -180] ; 
+	coordArr = new Array();
 	arc.append("text")
-		  .attr("transform", function(d) {  return "translate(" + label.centroid(d) + ")"; })
-		  .attr("text-anchor"  , "middle" )
+		  .attr("transform", function(d) {
+			coord[1]+=30;  
+			coordArr.push( [ coord[0] , coord[1]  ] );  
+			return "translate(" + [ coord[0] , coord[1] ]  + ")"; })
+		  .attr("text-anchor"  , "left" )
 		  .attr("dy", "0.35em")
 		  .attr("font-family" , "sans-serif")
 		  .attr("font-size" , "14")
 		  .attr("fill" , "black")
 		  .attr("font-weight" , "bold")
-		  .text(function(d) {  return ( (d.endAngle - d.startAngle)/6.28 * 100).toFixed(1)   + '%'; })
-		  */
-		  
-	  arc.append("circle")
-		  			.attr("transform" ,function(d) {  return "translate(" + label.centroid(d) + ")"; }  ) 
-		  			.attr("r",6)
-		  			.attr("fill", "white") 	  ;
-	
-	  arc.append("circle")
-		.attr("transform" ,function(d) {  return "translate(" + label.centroid(d) + ")"; }  ) 
-		.attr("r",3)
-		.attr("fill", function(d) {  return red(d3.values(d.data)); });
-		  
+		  .attr("class" , "textLegend")
+		  .text(function(d) { return d3.keys(d.data); })
+	;	  
+	arc.append("circle")
+				.attr("transform" ,function(d) {
+					return "translate(" + label.centroid(d) + ")";
+				} ) 
+				.attr("r",6)
+				.attr("class", "whiteDot" + index )
+				.attr("fill", "white") 	  
+	;
+	arc.append("circle")
+				.attr("transform" ,function(d) {  return "translate(" + label.centroid(d) + ")"; }  ) 
+				.attr("r",3)
+				.attr("fill", function(d) {   return red(d3.values(d.data)); })
+	;
+	d3.selectAll(".whiteDot"+ index)
+				.attr("cc" , function (d , i ) { drawLineConnection( label.centroid(d)[0],  label.centroid(d)[1] , coordArr[i][0] ,coordArr[i][1] ,g);   } )
+	;
+}
+
+
+function drawLineConnection(x,y, xEnd , yEnd ,  canvas) {
+	dif = 20 ; 
+	if (y < yEnd )
+		dat =[ [ x , y ],  [x, yEnd - dif ]   , [ x + dif, yEnd]  ,  [xEnd , yEnd]  ];
+	else
+		dat =[ [ x , y ],  [x , yEnd + dif]   , [ x + dif , yEnd]  ,  [xEnd , yEnd]  ];
+
+	var line = d3.line()
+	.x(function(d) { return d[0] ; })
+	.y(function(d) { return d[1] ; })
+	.curve(d3.curveCardinal.tension(0.5));
+					
+								
+canvas.append("path")
+	.style("fill","none")
+	.style("stroke","gray")
+	.style("stroke-width","2px")
+	.attr("class", "curveLine")
+	.attr("d",function(d,i){ return line(dat); })
+	;
 }
 
 
@@ -156,57 +162,8 @@ innerDonut = g.append("g")
 
 outerPie(data2 );
 innerPie(data2, 0);
-innerPie(data2, 1);
-innerPie(data2, 2);
-
-sticks(data2);
-
-//accr();
-
-
-
-function accr(){
-	document.write('<div class="accord"> ');
-	for (i =0 ; i < data2.length ;i ++) {
-		var red = d3.scaleLinear()
-						.domain([0 , (data2[i].sum / 6) ]  )
-						.range(["white" , prop.colorsLeft[i]  ]);	
-		rect5 = '<svg style="  top: 10; position: relative; " width="30" height="30"> '+
-		'<rect width="20" height="20" transform="translate(5,5)" style="fill:'+ prop.colorsLeft[i] +'; " /> </svg>';
-
-		document.write('<button class="accordion" count='+i+'>' +rect5 +data2[i].name + '</button> ');
-		document.write('<div class="panel">');
-		for (dat in data2[i].value) {
-			rect5 = '<svg style="  top: 10; position: relative; " width="30" height="30"> '+
-			'<rect width="20" height="20" transform="translate(5,5)" style="fill:'+ red(d3.values( data2[i].value[dat])) +'; " /> </svg>';
-			document.write('  <p  > ' + rect5 +  Object.keys(data2[i].value[dat])  + ' </p>');
-		}
-		document.write('</div>');
-	}
-	document.write('</div>');
-	
-	var acc = document.getElementsByClassName("accordion");
-
-	for (i = 0; i < acc.length; i++) {
-		
-	  acc[i].onclick = function() {
-	    this.classList.toggle("active");
-	    showPiePercents(data2 , this.getAttribute("count"));
-	    
-	    if ( (this.className).indexOf("active") == -1) {
-	    	d3.selectAll("g .donut").remove();
-	    }
-
-	    
-	    var panel = this.nextElementSibling;
-	    if (panel.style.maxHeight){
-	      panel.style.maxHeight = null;
-	    } else {
-	      panel.style.maxHeight = panel.scrollHeight + "px";
-	    }
-	  }
-	}
-}
+// innerPie(data2, 1);
+// innerPie(data2, 2);
 
 
 

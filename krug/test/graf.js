@@ -1,21 +1,31 @@
 svg = d3.select("svg");
 width = +svg.attr("width");
 height = +svg.attr("height");
-dat = [1,2,3];
 
-pie = d3.pie().value( function (d) { return d ; });
-path = d3.arc()
-			.innerRadius(20)
-			.outerRadius(100);
-arc = svg.selectAll(".arc")
-					.data(pie(dat))
-					.enter().append("g")
-					.attr("transform", "translate("+ [width/2  ,  height/2]+")")
-								.attr("class","acr");
+dataArray = [ [50, 50], [50 , 180] ,   [ 70 , 200] , [200, 200] ];
 
-color = d3.scaleLinear("red" , "blue")	;		
+canvas = svg.append("g")
+			.attr("transform", "translate(40,40) ")
+			.attr("width",100)
+			.attr("height",100)
+			.attr("class","canvas");
 
-arc.append("path")
-		.attr("d", path)
-		.attr("fill", function (d) { return color(d);} )
+
+function drawLineConnection(x,y, xEnd , yEnd ,  canvas) {
+	dif =20 ; 
+	dat =[ [ x , y ],  [x, yEnd - dif ]   , [ x + dif, yEnd]  ,  [xEnd , yEnd]  ];
+	var line = d3.line()
+	.x(function(d) { return d[0] ; })
+	.y(function(d) { return d[1] ; })
+	.curve(d3.curveCardinal.tension(0.5));
 										
+canvas.append("path")
+	.style("fill","none")
+	.style("stroke","gray")
+	.style("stroke-width","2px")
+	.attr("class", "curveLine")
+	.attr("d",function(d,i){ return line(dat); })
+	;
+}
+
+drawLineConnection( 5,5, 200,80 ,canvas);

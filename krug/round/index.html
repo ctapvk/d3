@@ -1,61 +1,178 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<style>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Interpolation methods, by Emma Saunders at Viz Data Ltd. (UK)</title>
 
-.arc text {
-  font: 10px sans-serif;
-  text-anchor: middle;
+
+    <script type="text/javascript" src="http://d3js.org/d3.v4.js"></script>
+
+
+    <style>
+
+
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      g.group0 circle {
+        fill: red;
+      }
+
+      g.group1 circle {
+        fill: blue;
+      }
+
+      g.group2 circle {
+        fill: orange;
+      }
+
+      g.group3 circle {
+        fill: purple;
+      }
+
+      g.group4 circle {
+        fill: aqua;
+      }
+
+      g.group5 circle {
+        fill: brown;
+      }
+
+      g.group6 circle {
+        fill: green;
+      }
+
+      g.group7 circle {
+        fill: darksalmon;
+      }
+
+      g.group8 circle {
+        fill: fuchsia;
+      }
+
+      g.group9 circle {
+        fill: gold;
+      }
+
+      g.group10 circle {
+        fill: greenyellow;
+      }
+
+
+
+
+
+    </style>
+
+
+
+  </head>
+
+  <body>
+    <script >
+var dataArray = [{x:5, y:5},{x:10, y:15},{x:20, y:7},{x:30, y:18},{x:40, y:10}];
+
+var svg = d3.select("body").append("svg").attr("height","100%").attr("width","100%");
+
+var interpolateTypes = [d3.curveLinear,d3.curveStepBefore,d3.curveStepAfter,d3.curveBasis,d3.curveBasisOpen, d3.curveBasisClosed, d3.curveBundle,d3.curveCardinal,d3.curveCardinal,d3.curveCardinalOpen,d3.curveCardinalClosed,d3.curveNatural];
+var interpolateNames = ['d3.curveLinear','d3.curveStepBefore','d3.curveStepAfter','d3.curveBasis','d3.curveBasisOpen', 'd3.curveBasisClosed', 'd3.curveBundle','d3.curveCardinal','d3.curveCardinal','d3.curveCardinalOpen','d3.curveCardinalClosed','d3.curveNatural'];
+
+var line0 = d3.line()
+  .x(function(d) { return newX + (d.x * 5); })
+  .y(function(d) { return newY + baselineY - (d.y * 5); })
+  .curve(interpolateTypes[0]);
+var line1 = d3.line()
+  .x(function(d) { return newX + (d.x * 5); })
+  .y(function(d) { return newY + baselineY - (d.y * 5); })
+  .curve(interpolateTypes[1]);
+var line2 = d3.line()
+  .x(function(d) { return newX + (d.x * 5); })
+  .y(function(d) { return newY + baselineY - (d.y * 5); })
+  .curve(interpolateTypes[2]);
+var line3 = d3.line()
+  .x(function(d) { return newX + (d.x * 5); })
+  .y(function(d) { return newY + baselineY - (d.y * 5); })
+  .curve(interpolateTypes[3]);
+var line4 = d3.line()
+  .x(function(d) { return newX + (d.x * 5); })
+  .y(function(d) { return newY + baselineY - (d.y * 5); })
+  .curve(interpolateTypes[4]);
+var line5 = d3.line()
+  .x(function(d) { return newX + (d.x * 5); })
+  .y(function(d) { return newY + baselineY - (d.y * 5); })
+  .curve(interpolateTypes[5]);
+var line6 = d3.line()
+  .x(function(d) { return newX + (d.x * 5); })
+  .y(function(d) { return newY + baselineY - (d.y * 5); })
+  .curve(interpolateTypes[6]);
+var line7 = d3.line()
+  .x(function(d) { return newX + (d.x * 5); })
+  .y(function(d) { return newY + baselineY - (d.y * 5); })
+  .curve(interpolateTypes[7]);
+var line8 = d3.line()
+  .x(function(d) { return newX + (d.x * 5); })
+  .y(function(d) { return newY + baselineY - (d.y * 5); })
+  .curve(interpolateTypes[8]);
+var line9 = d3.line()
+  .x(function(d) { return newX + (d.x * 5); })
+  .y(function(d) { return newY + baselineY - (d.y * 5); })
+  .curve(interpolateTypes[9]);
+var line10 = d3.line()
+  .x(function(d) { return newX + (d.x * 5); })
+  .y(function(d) { return newY + baselineY - (d.y * 5); })
+  .curve(interpolateTypes[10]);
+var line11 = d3.line()
+  .x(function(d) { return newX + (d.x * 5); })
+  .y(function(d) { return newY + baselineY - (d.y * 5); })
+  .curve(interpolateTypes[11]);
+
+
+var newX = -270;
+var newY = 20;
+var baselineY = 100;
+var chartWidth = 280;
+var chartHeight = 130;
+
+
+
+
+for (p=0; p<interpolateTypes.length; p++) {
+
+    if (newX+chartWidth > 960) {
+      newX = 10;
+      newY += chartHeight;
+    } else {
+      newX += chartWidth;
+    }
+
+    var group = svg.append("g").attr("class","group"+p);
+
+    group.selectAll("circle.dots"+p)
+       .data(dataArray)
+       .enter()
+    .append("circle")
+      .attr("class","dots"+p)
+      .attr("cx", function(d,i) { return (d.x * 5) + newX; } )
+      .attr("cy", function(d,i) { return newY + baselineY - (d.y * 5); } )
+      .attr("r", 5);
+
+    group.append("text")
+      .attr("text-anchor","middle")
+      .attr("x",function(d,i){ return newX + 100; })
+      .attr("y", newY + 100)
+      .text(interpolateNames[p]);
+
+    group.append("path")
+      .style("fill","none")
+      .style("stroke","black")
+      .style("stroke-width","4px")
+      .attr("d",function(d,i){ return window['line'+p](dataArray); });
 }
 
-.arc path {
-  stroke: #fff;
-}
+    </script>
+  </body>
 
-</style>
-<svg width="960" height="500"></svg>
-<script src="https://d3js.org/d3.v4.min.js"></script>
-<script>
-
-var svg = d3.select("svg"),
-    width = +svg.attr("width"),
-    height = +svg.attr("height"),
-    radius = Math.min(width, height) / 2,
-    g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
-var color = d3.scaleOrdinal(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
-
-var pie = d3.pie()
-    .sort(null)
-    .value(function(d) { return d.population; });
-
-var path = d3.arc()
-    .outerRadius(radius - 10)
-    .innerRadius(0);
-
-var label = d3.arc()
-    .outerRadius(radius - 40)
-    .innerRadius(radius - 40);
-i=0;
-d3.csv("data.csv", function(d) {
-  d.population = +d.population;
-  console.log(i++);
-  return d;
-}, function(error, data) {
-  if (error) throw error;
-
-  var arc = g.selectAll(".arc")
-    .data(pie(data))
-    .enter().append("g")
-      .attr("class", "arc");
-
-  arc.append("path")
-      .attr("d", path)
-      .attr("fill", function(d) { return color(d.data.age); });
-
-  arc.append("text")
-      .attr("transform", function(d) { return "translate(" + label.centroid(d) + ")"; })
-      .attr("dy", "0.35em")
-      .text(function(d) { return d.data.age; });
-});
-
-</script>
+</html>

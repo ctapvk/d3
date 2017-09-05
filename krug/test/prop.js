@@ -1,5 +1,4 @@
-prop = {
-	"font-size":"15" ,
-	":":"asd"
-		
+prop ={
+	"font-size": "15",
+	":": "asd"
 }
