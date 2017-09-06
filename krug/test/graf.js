@@ -11,8 +11,6 @@ color = d3.scaleLinear()
 g = svg.append("g")
 			.attr("class", "canvas")
 			.attr("transform" , "translate(0,20)")
-			.attr("width" , 100)
-			.attr("height", 100)
 ;
 legend = g.selectAll().data(dat).enter().append("g")
 		.attr("transform", function (d,i){ console.log(this); return "translate(0, "+ (  i*30) +")"}) ;

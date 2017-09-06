@@ -4,21 +4,21 @@ prop = {
 	"colorsLeft": ["#4693CA", "#C2BEC3", "#8BC33C", "#66977B", "#828BC4", "#828BC4", "#8DC2D7"] , 
 	"legendValue":"#CFCFD1",
 	"legendText":"#818388" , 
-	"innerPieRadius": 140 ,
+	"innerPieRadius": 120 ,
 	"innerPieInnerRaius": 40 , 
-	"outerPieRadius" : 200 , 
-	"outerPieInnerRadius": 150 
+	"outerPieRadius" : 180 , 
+	"outerPieInnerRadius": 130 
 		
 }
 
 
 var data = [
-{"name":"налоговые доходы "  , "value": 2222} ,
+{"name":"налоговые доходы  "  , "value": 2222} ,
 {"name":"остальные налогоплательщиков"  , "value": 1111} ,
 ]
 
 var data2 = [
-{"name":"налоговые доходы "  , "value": [
+{"name":"налоговые доходы dasd"  , "value": [
                                          {"налог на 1": 111} , 
                                          {"налог на 2": 222} , 
                                          {"налог на 3": 777} , 

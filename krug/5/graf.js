@@ -61,53 +61,97 @@ function innerPie(data , index , showLegend){
 	var red = d3.scaleLinear()
 					.domain([0 , (data[index].sum / 6) ]  )
 					.range(["white" , prop.colorsLeft[index]  ]);	
-	donut = g.append("g")
-	.attr("class", "donut");
 
-	var pie = d3.pie()
-				.sortValues(function compare(a, b) {
-					  return b - a;
-				})
+	donut = g.append("g").attr("class", "donut");
+
+	var pie = d3.pie() 
+				.sortValues(function compare(a, b) {   return b - a; 	})
 				.value(function(d) { return d3.values(d);  })
 				.startAngle(data[index].startAngle)
 				.endAngle(data[index].endAngle) 
 	;
-	// data.sort(function(x, y){
-	// 		return d3.ascending(x.sum, y.sum);
-	// 	})
+
 	var path = d3.arc()
 					.outerRadius(prop.innerPieRadius)
 					.innerRadius(prop.innerPieInnerRaius  ) ;
 	var label = d3.arc()
 					.outerRadius( prop.innerPieRadius )
-					.innerRadius(prop.innerPieRadius -50 )
+					.innerRadius(prop.innerPieRadius -25 )
 	;
-
-
 	var arc = donut.selectAll(".arc")
 						.data(pie(data[index].value)).enter().append("g")
 							.attr("class", "arc");
 
 	arc.append("path")
 			.attr("d", path)
-			.attr("fill", function(d) {  return red(d3.values(d.data)); })
+			.attr("fill", function(d) { return red(d3.values(d.data)); })
 	;
 	if (showLegend ==1) {
 
 	coord = [250 , -180] ; 
 	coordArr = new Array();
-
+	legendCaption = donut.append("g").attr("transform" , "translate(" + [ coord[0]-35 , coord[1]-15 ]  + ")" ) ;
 	legend = arc.append("g")
-					.attr("transform" , function(d) {
+					.attr("class" , "dotLegend")	
+					.attr("transform" , function(d , i ) {
 										coord[1]+=40;  
 										coordArr.push( [ coord[0] , coord[1]  ] );  
-										return "translate(" + [ coord[0] , coord[1] ]  + ")"; 
+										return "translate(" + [ coord[0] , coord[1]+9 ]  + ")"; 
 									})
+	;
+	legenda(index);
+	arc.append("circle")
+			.attr("transform" ,function(d , i) {
+				drawLineConnection( label.centroid(d)[0],  label.centroid(d)[1] , coordArr[i][0] ,coordArr[i][1] , g);  
+				return "translate(" + label.centroid(d) + ")";
+			} ) 
+			.attr("r",6)
+			.attr("class", "whiteDot")
+			.attr("fill", "white")
+	;
+	arc.append("circle")
+				.attr("transform" ,function(d) {  return "translate(" + label.centroid(d) + ")"; }  )
+				.attr("r",3)
+				.attr("fill", function(d) {   return red(d3.values(d.data)); })
+	;
+	}
 
+}
+
+function legenda(index){
+	var red = d3.scaleLinear()
+				.domain([0 , (data2[index].sum / 6) ]  )
+				.range(["white" , prop.colorsLeft[index]  ])
+	;
+	legendCaption.append("text")
+			.attr("transform", function(d) {  return "translate( 30,15)"; } )
+			.attr("text-anchor"  , "left" )
+			.attr("dy", "0.35em")
+			.attr("font-family" , "sans-serif")
+			.attr("font-size" , "14")
+			.attr("fill" , "black")
+			.attr("class" , "textLegend")
+			.text(function(d) { return currencySwap(data2[index].sum ); })	
+	legendCaption.append("rect")
+		  .attr("transform", function(d) {  return "translate( 0,-3)"; } )
+		  .attr("fill" , prop.colorsLeft[index] ) 
+		  .attr("width" ,20)
+		  .attr("height" ,20)
+	;
+
+	legendCaption.append("text")
+			.attr("transform", function(d) { return "translate( 30,0)"; } )
+			.attr("text-anchor"  , "left" )
+			.attr("dy", "0.35em")
+			.attr("font-family" , "sans-serif")
+			.attr("font-size" , "14")
+			.attr("fill" , "#75777D")
+			.attr("class" , "textLegend")
+			.text(data2[index].name)
 	;
 
 	legend.append("text")
-			.attr("transform", function(d) {  return "translate( 30,0)"; } )
+			.attr("transform", function(d) {  return "translate( 30,-8)"; } )
 			.attr("text-anchor"  , "left" )
 			.attr("dy", "0.35em")
 			.attr("font-family" , "sans-serif")
@@ -116,8 +160,9 @@ function innerPie(data , index , showLegend){
 			.attr("class" , "textLegend")
 			.text(function(d) { return d3.keys(d.data); })
 	;
+	 console.log(legend);
 	legend.append("text")
-			.attr("transform", function(d) {  return "translate( 30,15)"; } )
+			.attr("transform", function(d) {  return "translate( 30,10)"; } )
 			.attr("text-anchor"  , "left" )
 			.attr("dy", "0.35em")
 			.attr("font-family" , "sans-serif")
@@ -128,31 +173,10 @@ function innerPie(data , index , showLegend){
 	;
 	legend.append("rect")
 		  .attr("transform", function(d) {  return "translate( 0,-10)"; } )
-		  .attr("fill" , function (d) { console.log(d); return  red(d3.values(d.data)); })
+		  .attr("fill" , function (d) { return  red(d3.values(d.data)); })
 		  .attr("width" ,20)
 		  .attr("height" ,20)
 	;
-
-
-
-
-	arc.append("circle")
-			.attr("transform" ,function(d) {
-				return "translate(" + label.centroid(d) + ")";
-			} ) 
-			.attr("r",6)
-			.attr("class", "whiteDot" + index )
-			.attr("fill", "white")
-	;
-	d3.selectAll(".whiteDot"+ index)
-				.attr("cc" , function (d , i ) { drawLineConnection( label.centroid(d)[0],  label.centroid(d)[1] , coordArr[i][0] ,coordArr[i][1] ,g);   } )
-	;
-	arc.append("circle")
-				.attr("transform" ,function(d) {  return "translate(" + label.centroid(d) + ")"; }  )
-				.attr("r",3)
-				.attr("fill", function(d) {   return red(d3.values(d.data)); })
-	;
-	}
 
 }
 
@@ -193,6 +217,9 @@ function currencySwap(d){
 
 
 data2 = countInnerDataForPie(data2);
+	// data2.sort(function(x, y){
+	// 		return d3.ascending(x.sum, y.sum);
+	// 	})
 g = svg.append('g')
 		.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")") 
 		.attr("class" , "donut"); 
