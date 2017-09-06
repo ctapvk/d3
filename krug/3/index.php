@@ -12,30 +12,57 @@
 <div id="pie"></div>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
-var data = [{"letter":"q", "presses":1, "legend":"Россельхоз",  "summa":"3 674 тыс.руб", "color":"#2C93E8", "text" : ["Комитет строительства ВО 10%",
+var data = [{"letter":"10%", "presses":2, "legend":"Россельхоз",  "summa":"3 674 тыс.руб", "color":"#529ACB", "text" : ["Комитет строительства ВО 10%",
                                                                    "Комитет по обеспечению безопасности жизнедеятельности населения ВО 5%",
 																   "Комитет жилищно - комунального хозяйства и топливно энергитического комплекса ВО 15%","блок 4"]},
-            {"letter":"w", "presses":5, "legend":"Минстрой",    "summa":"3 674 тыс.руб", "color":"#838690", "text" : ["Комитет строительства ВО 10%",
+            {"letter":"18%", "presses":2, "legend":"Минстрой",    "summa":"3 674 тыс.руб", "color":"#8DC2D7", "text" : ["Комитет строительства ВО 10%",
                                                                    "Комитет по обеспечению безопасности жизнедеятельности населения ВО 5%",
 																   "Комитет жилищно - комунального хозяйства и топливно энергитического комплекса ВО 15%","блок 4","блок 5","блок 6","блок 7"]},
-		    {"letter":"e", "presses":2, "legend":"Минпромторг", "summa":"3 674 тыс.руб", "color":"#F56C4E", "text" : ["Комитет строительства ВО 10%",
+			{"letter":"20%", "presses":2, "legend":"Минпромторг", "summa":"3 674 тыс.руб", "color":"#2D7BB0", "text" : ["Комитет строительства ВО 10%",
                                                                    "Комитет по обеспечению безопасности жизнедеятельности населения ВО 5%",
-																   "Комитет жилищно - комунального хозяйства и топливно энергитического комплекса ВО 15%"]}];
+																   "Комитет жилищно - комунального хозяйства и топливно энергитического комплекса ВО 15%"]},
+		    {"letter":"8%", "presses":2, "legend":"Россвязь",     "summa":"3 674 тыс.руб", "color":"#828BC4", "text" : ["Комитет строительства ВО 10%",
+                                                                   "Комитет по обеспечению безопасности жизнедеятельности населения ВО 5%",
+																   "Комитет жилищно - комунального хозяйства и топливно энергитического комплекса ВО 15%"]},
+		    {"letter":"1", "presses":2, "legend":"Минэнерго",       "summa":"3 674 тыс.руб", "color":"#1E5F9C", "text" : ["Комитет строительства ВО 10%",
+                                                                   "Комитет по обеспечению безопасности жизнедеятельности населения ВО 5%",
+																   "Комитет жилищно - комунального хозяйства и топливно энергитического комплекса ВО 15%"]},
+		    {"letter":"15%", "presses":2, "legend":"Минкультуры России", "summa":"3 674 тыс.руб", "color":"#8BC33C", "text" : ["Комитет строительства ВО 10%",
+                                                                   "Комитет по обеспечению безопасности жизнедеятельности населения ВО 5%",
+																   "Комитет жилищно - комунального хозяйства и топливно энергитического комплекса ВО 15%"]},
+		    {"letter":"22%", "presses":2, "legend":"Росприроднадзор", "summa":"3 674 тыс.руб", "color":"#66977B", "text" : ["Комитет строительства ВО 10%",
+                                                                   "Комитет по обеспечению безопасности жизнедеятельности населения ВО 5%",
+																   "Комитет жилищно - комунального хозяйства и топливно энергитического комплекса ВО 15%"]},
+		    {"letter":"19%", "presses":2, "legend":"Росавтодор", "summa":"3 674 тыс.руб", "color":"#17905B", "text" : ["Комитет строительства ВО 10%",
+                                                                   "Комитет по обеспечению безопасности жизнедеятельности населения ВО 5%",
+																   "Комитет жилищно - комунального хозяйства и топливно энергитического комплекса ВО 15%"]},
+		    {"letter":"9%", "presses":2, "legend":"Минэнерго", "summa":"3 674 тыс.руб", "color":"#706FC2", "text" : ["Комитет строительства ВО 10%",
+                                                                   "Комитет по обеспечению безопасности жизнедеятельности населения ВО 5%",
+																   "Комитет жилищно - комунального хозяйства и топливно энергитического комплекса ВО 15%"]},
+		    {"letter":"3", "presses":2, "legend":"Россвязь", "summa":"3 674 тыс.руб", "color":"#43CFA2", "text" : ["Комитет строительства ВО 10%",
+                                                                   "Комитет по обеспечению безопасности жизнедеятельности населения ВО 5%",
+																   "Комитет жилищно - комунального хозяйства и топливно энергитического комплекса ВО 15%"]},
+		    {"letter":"2", "presses":2, "legend":"Иные", "summa":"3 674 тыс.руб", "color":"#C2BEC3", "text" : ["Комитет строительства ВО 10%",
+                                                                   "Комитет по обеспечению безопасности жизнедеятельности населения ВО 5%",
+																   "Комитет жилищно - комунального хозяйства и топливно энергитического комплекса ВО 15%"]}  
+																   ];
 console.log(data);
 
 function drawComplex(startAngle = null, endAngle = null, colo = null, slide = 0) {
 	var width = 1200,
 		height = 1600,
 		// Think back to 5th grade. Radius is 1/2 of the diameter. What is the limiting factor on the diameter? Width or height, whichever is smaller 
-		radius = Math.min(width, height) / 10;
+		radius = Math.min(width, height) / 8;
 
 	var clr = [];
+	var keys = [];
 	var summ = 0;
 	for(var i in data)	{
 		clr.push(data[i].color);
+		keys.push(data[i].legend + ":" + data[i].summa);
 		summ += data[i].presses;
 	}
-	var color = d3.scaleOrdinal().range(clr);
+	var z = d3.scaleOrdinal().range(clr);
 	
 	var currentIndex = 0;
 	if(colo === null) {
@@ -43,8 +70,7 @@ function drawComplex(startAngle = null, endAngle = null, colo = null, slide = 0)
 		summ = 0;
 		for(var i = 0; i < data.length; i++)	{
 			summ += data[i].presses;
-			if(i < data.length - 1 && summ < half && summ + data[i+1].presses > half) currentIndex = i; 
-			else currentIndex = 1;
+			if(i < data.length - 1 && summ < half && summ + data[i+1].presses > half) currentIndex = i + 1; 
 		}
 		colo = data[currentIndex].color;
     }
@@ -69,7 +95,7 @@ function drawComplex(startAngle = null, endAngle = null, colo = null, slide = 0)
 	
 	var labelArc = d3.arc()
 		.outerRadius(radius - 40)
-		.innerRadius(radius - 40)
+		.innerRadius(radius - 55)
 		.startAngle(function(d) { return d.startAngle + rotate; })
         .endAngle(function(d) { return d.endAngle + rotate; });
 
@@ -85,31 +111,34 @@ function drawComplex(startAngle = null, endAngle = null, colo = null, slide = 0)
 		.data(pie)
 		.enter().append("g")
 		.attr("class", "arc")
+		.attr("font", "10px sans-serif")
+		.attr("text-anchor", "middle")
 		.on("click",function(d) { 
-			if(Math.sqrt(Math.pow((d3.event.offsetX - center[0]),2) + Math.pow((d3.event.offsetY - center[1]),2)) < outer) {
+			if(Math.sqrt(Math.pow((d3.event.clientX - center[0] - 8),2) + Math.pow((d3.event.clientY - center[1] - 8),2)) < outer) {
 				document.getElementById("pie").innerHTML = "";
 				drawComplex(d.startAngle, d.endAngle, d.data.color);
 			}
-			else if(isInside(backward_rect, d3.event.offsetX, d3.event.offsetY)) {
+			else if(isInside(backward_rect, d3.event.clientX - 8, d3.event.clientY - 8)) {
 				if(slide > 0) {
 					document.getElementById("pie").innerHTML = "";
 					drawComplex(startAngle, endAngle, colo, slide - 1);
 				}
 			}
-			else if(isInside(forward_rect, d3.event.offsetX, d3.event.offsetY)) {
+			else if(isInside(forward_rect, d3.event.clientX - 8, d3.event.clientY - 8)) {
 				if(slide < data[currentIndex].text.length - 3) {
 					document.getElementById("pie").innerHTML = "";
 					drawComplex(startAngle, endAngle, colo, slide + 1);
 				}
 			}
-//			console.log(d3.event.pageX);
 		});
 
+	var	overlapping = Math.floor(outer * 0.6);
+		
 	g.append("polygon")
 		.style("fill", colo)
 		.style("stroke", "white")
 		.style("stroke-width", "2")
-		.attr("points", "0,150 "+ radius * 2 + ",50 " + radius * 4 + ",150")
+		.attr("points", "0," + (overlapping + 100) + " "+ radius * 2 + "," + overlapping + " " + radius * 4 + "," + (overlapping + 100))
 		.attr("transform", "translate(-" + radius * 2 + ", 50)");	
 
 	var r_width = Math.floor(radius * 4 / 3);
@@ -124,7 +153,7 @@ function drawComplex(startAngle = null, endAngle = null, colo = null, slide = 0)
 					.style("stroke-width", "2")
 					.attr("x", r_width * i)
 					.attr("width", r_width)
-					.attr("y", 150)
+					.attr("y", overlapping + 100)
 					.attr("height", 150)
 					.attr("transform", "translate(-" + radius * 2 + ", 50)");	
 		
@@ -160,14 +189,14 @@ function drawComplex(startAngle = null, endAngle = null, colo = null, slide = 0)
 	//------------------------------------------------------------------	
 
 	const context_1 = d3.path();
-	context_1.moveTo(10, 310);
-	context_1.lineTo(0, 315);
-	context_1.lineTo(10, 320);
+	context_1.moveTo(10, overlapping + 260);
+	context_1.lineTo(0,  overlapping + 265);
+	context_1.lineTo(10, overlapping + 270);
 
 	const context_2 = d3.path();
-	context_2.moveTo(0, 310);
-	context_2.lineTo(10, 315);
-	context_2.lineTo(0, 320);
+	context_2.moveTo(0,  overlapping + 260);
+	context_2.lineTo(10, overlapping + 265);
+	context_2.lineTo(0,  overlapping + 270);
 
 	var backward = g.append('path')
 					.attr('class', 'link')
@@ -187,14 +216,14 @@ function drawComplex(startAngle = null, endAngle = null, colo = null, slide = 0)
 	
 	var backward_rect = {
             x: center[0] - radius * 2,
-            y: center[1] + 360,
+            y: center[1] + overlapping + 310,
             width: 10,
             height: 10
     };
 	
 	var forward_rect = {
             x: center[0] + radius * 2 - 10,
-            y: center[1] + 360,
+            y: center[1] + overlapping + 310,
             width: 10,
             height: 10
     };
@@ -210,19 +239,51 @@ function drawComplex(startAngle = null, endAngle = null, colo = null, slide = 0)
 		.style("stroke-width", "2")
 		.attr("x", 0)
 		.attr("width", slide_width)
-		.attr("y", 305)
+		.attr("y", overlapping + 255)
 		.attr("height", 20)
 		.attr("transform", "translate(" + ( -radius * 2 + 10 + step * slide) + ", 50)");	
 	
 	g.append("path")
 		.attr("d", arc)
-		.style("fill", function(d) { return color(d.data.letter);});
+		.style("fill", function(d) { return z(d.data.letter);});
 
 	g.append("text")
 		.attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
 		.text(function(d) { return d.data.letter;})	
 		.style("fill", "#fff");	
 
+//= = = =		
+
+	z.domain(keys);
+	
+	var legend = g.append("g")
+		.attr("font-family", "sans-serif")
+		.attr("font-size", 14)
+		.attr("text-anchor", "start")
+		.selectAll("g")
+		.data(keys.slice())
+		.enter().append("g")
+		.attr("transform", function(d, i) { return "translate(0," + i * 60 + ")"; });
+
+	legend.append("rect")
+		.attr("x", 360)
+		.attr("y", -outer)
+		.attr("width", 20)
+		.attr("height", 20)
+		.attr("fill", z );
+
+	legend.append("text")
+		.attr("x", 400)
+		.attr("y", -outer)
+		.attr("dy", "0.32em")
+		.text(function(d) { return d.split(":")[0]; })
+		.append("svg:tspan")
+		.attr('x', 400)
+		.attr('dy', 20)
+		.text(function(d) { return d.split(":")[1]; });
+		
+//= = = =		
+		
 }	
 
 function wrap(text, width) {
