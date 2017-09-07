@@ -84,11 +84,11 @@ function innerPie(data , index , showLegend){
 
 	arc.append("path")
 			.attr("d", path)
-			.attr("fill", function(d) { return red(d3.values(d.data)); }) 
+			.attr("fill", function(d) { return red(d3.values(d.data)); })
 			.on("mouseover", function(d) {
 					d3.select("#tooltip")
 						.style("left", width/2+path.centroid(d)[0] + "px")
-						.style("top", height/2+path.centroid(d)[1] + "px")						
+						.style("top", height/2+path.centroid(d)[1] + "px")				
 						.select("#value")
 						.text(currencySwap( d3.values(d.data)) );
 					//Show the tooltip
