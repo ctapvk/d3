@@ -2,27 +2,29 @@ svg = d3.select("svg");
 width = +svg.attr("width");
 height = +svg.attr("height");
 
-dat = [ 1,2,3,4 ,5];
-color = d3.scaleLinear()
-				.domain([d3.min(dat),d3.max(dat)])
-				.range( ["blue" , "red"] )
-;
+var data = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89];
 
-g = svg.append("g")
-			.attr("class", "canvas")
-			.attr("transform" , "translate(0,20)")
-;
-legend = g.selectAll().data(dat).enter().append("g")
-		.attr("transform", function (d,i){ console.log(this); return "translate(0, "+ (  i*30) +")"}) ;
+var outerRadius = height / 2 - 20,   innerRadius = outerRadius / 3 ;
 
-legend.append("rect")
-				.attr("transform", function (d,i){   return "translate(0, -15)"})
-				.attr("width", 20)
-				.attr("height",20)
-				.attr("fill", function (d,i) { return color(d); })
-;
+var pie = d3.pie().padAngle(.02);
 
-legend.append("text")
-				.attr("transform" , function (d,i) { return "translate(30 , 0 )" ;  } )
-				.text(function (d) { return d })
-;
+var arc = d3.arc()
+    .padRadius(outerRadius)
+    .innerRadius(innerRadius);
+g = svg.append("g").attr("transform", "translate("+ [width/2 , height/2]+")") ;
+
+g.selectAll("path")
+    .data(pie(data))
+		.enter().append("path")
+			.each(function(d) { d.outerRadius = outerRadius - 20; })
+			.attr("d", arc)
+			.on("mouseover", function(d) {
+					d3.select("#tooltip")
+						.style("left", width/2+arc.centroid(d)[0] + "px")
+						.style("top", height/2+arc.centroid(d)[1] + "px")						
+						.select("#value")
+						.text(d.data);
+					//Show the tooltip
+					d3.select("#tooltip").classed("hidden", false);
+			   })
+			.on("mouseout",function() { d3.select("#tooltip").classed("hidden", true);  });

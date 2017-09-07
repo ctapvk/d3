@@ -4,7 +4,7 @@ height = +svg.attr("height") ;
 
 	
 var color = d3.scaleOrdinal(prop.colorsLeft);
-	
+var colorRight = d3.scaleOrdinal(prop.colorsRight);		
 function showPie(data){
 	radius = 140 ;
 	var pie = d3.pie().sort(null).value(function(d) {
@@ -79,13 +79,13 @@ function legendLeft(data) {
 
 	legend.append("rect")
 			.attr("y",-15 )
-			.attr("fill", function(d) {  return color(d.name) ;  })
+			.attr("fill", function(d) {  return colorRight(d.name) ;  })
 			.attr("width",20).attr("height",20)
 	;
 	legend.append("text") 
 			.attr("x",25)
 			.attr("class","legendcaption")
-			.attr("fill", function(d) { return prop.legendValue ;  })
+			.attr("fill", function(d) { return prop.legendTextLeft ;  })
 			.text(function(d) {return d.name ; })
 	;
 
@@ -110,7 +110,7 @@ function showPieLeft(data){
 
 	arc.append("path")
 			.attr("d", path)
-			.attr("fill", function(d) { return color(d.data['name']); });
+			.attr("fill", function(d) { return colorRight(d.data['name']); });
 
 	arc.append("text")
 		  .attr("transform", function(d) { console.log(label.centroid(d));  return "translate(" + label.centroid(d) + ")"; })

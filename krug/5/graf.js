@@ -84,7 +84,17 @@ function innerPie(data , index , showLegend){
 
 	arc.append("path")
 			.attr("d", path)
-			.attr("fill", function(d) { return red(d3.values(d.data)); })
+			.attr("fill", function(d) { return red(d3.values(d.data)); }) 
+			.on("mouseover", function(d) {
+					d3.select("#tooltip")
+						.style("left", width/2+path.centroid(d)[0] + "px")
+						.style("top", height/2+path.centroid(d)[1] + "px")						
+						.select("#value")
+						.text(currencySwap( d3.values(d.data)) );
+					//Show the tooltip
+					d3.select("#tooltip").classed("hidden", false);
+			   })
+			.on("mouseout",function() { d3.select("#tooltip").classed("hidden", true);  })
 	;
 	if (showLegend ==1) {
 
@@ -182,21 +192,18 @@ function legenda(index){
 
 
 function drawLineConnection(x,y, xEnd , yEnd ,  canvas) {
-	dif = 15 ; 
+	dif = 7 ; 
 
 	if (y < yEnd )
 		dat =[ [ x , y ],  [x, yEnd - dif ]   , [ x + dif, yEnd]  ,  [xEnd , yEnd]  ];
 	else {
-		if (y - yEnd < 100) 
-			dat =[ [ x , y ],  [x , yEnd + dif]   , [ x + dif , yEnd]  ,  [xEnd , yEnd]  ];
-		else 
-			dat =[ [ x , y ],  [x , yEnd + dif+10]   , [ x + dif+10 , yEnd]  ,  [xEnd , yEnd]  ];
+		dat =[ [ x , y ],  [x , yEnd + dif]   , [ x + dif , yEnd]  ,  [xEnd , yEnd]  ];
 	}
 
 	var line = d3.line()
 	.x(function(d) { return d[0] ; })
 	.y(function(d) { return d[1] ; })
-	.curve(d3.curveCardinal.tension(0.5));
+	.curve(d3.curveCardinal.tension(0.8));
 					
 								
 canvas.append("path")
