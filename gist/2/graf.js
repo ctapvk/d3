@@ -100,15 +100,11 @@ function showXAxis(){
 						  .y(function(d) { return d.y; });
   var axisX     = g.append("g").attr("class","axisX");
   var lineGraph = axisX.append("path")
-						   .attr("transform", "translate(0," + height + ")")
-						   .attr("d", lineFunction(lineData))
+							.attr("transform", "translate(0," + height + ")")
+							.attr("d", lineFunction(lineData))
 							.attr("stroke", "#CDD5DE")
 							.attr("stroke-width", 5)
-  .attr("fill", "none");
- 
- 
-  
-	  
+							.attr("fill", "none");
 }
 
 
@@ -143,9 +139,9 @@ var circles = axisY.selectAll("circle")
 						  ; 
 
 var circleAttributes = circles
-					   .attr("cx", function (d) { return d.x_axis; })
-					   .attr("cy", function (d) { return d.y_axis; })
-					   .attr("r", function (d) { return d.radius; })
+					   .attr("cx", function(d) { return d.x_axis; })
+					   .attr("cy", function(d) { return d.y_axis; })
+					   .attr("r", function(d) { return d.radius; })
 					   .style("fill", function(d) { return d.color; })
 					   ; 
 
@@ -154,13 +150,13 @@ var text = axisY.selectAll("text")
 						.enter()
 						.append("text");
 var textLabels = text
-				 .attr("x", function(d) { return d.x_axis- margin.left; })
+				 .attr("x", function(d) { return d.x_axis -15; })
 				 .attr("y", function(d) { return d.y_axis + 5; })
-				 .attr("text-anchor" , "right")
+				 .attr("text-anchor" , "end")
 				 .attr("font-family", "sans-serif")
 				 .attr("font-size", "14px")
 				 .attr("fill", "#8A95A5")
-				 .text( function (d) { return currencySwap(d.text) ; })
+				 .text( function(d) { return currencySwap(d.text) ; })
 ;				 
  
 }
@@ -229,7 +225,7 @@ function showInfo(barSize){
 			  )
 		  .attr("width", barSize)
 		  .attr("text-anchor", "middle")
-		  .text(function (d){return currencySwap(d.value) })
+		  .text(function(d){return currencySwap(d.value) })
 		  
 		  ;
 }
@@ -281,9 +277,9 @@ function showGridForX(barSize){
 	  .attr("width",100)
 	  .attr("height",50)
 	  .attr("dy",1)
-	  .text(function (row){ 
+	  .text(function(row){ 
 		  return row.State;
-	  }).each(function (d){
+	  }).each(function(d){
 		 d3.select(this).call(wrap,barSize/2 + 80);
 	  }) 
 }

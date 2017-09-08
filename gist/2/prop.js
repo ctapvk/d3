@@ -1,7 +1,7 @@
 prop = {
 	"font-size":"15" , 
     "widthScale": 800, 
-    "spaceBetween": 15
+    "spaceBetween": 30
 }
 
 

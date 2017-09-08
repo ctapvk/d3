@@ -86,11 +86,16 @@ function innerPie(data , index , showLegend){
 			.attr("d", path)
 			.attr("fill", function(d) { return red(d3.values(d.data)); })
 			.on("mouseover", function(d) {
+				// console.log(d3.event.clientX);
 					d3.select("#tooltip")
 						.style("left", width/2+path.centroid(d)[0] + "px")
 						.style("top", height/2+path.centroid(d)[1] + "px")				
 						.select("#value")
-						.text(currencySwap( d3.values(d.data)) );
+						.text(currencySwap( d3.values(d.data)) )
+					;
+					d3.select("#tooltip")
+						.select("#tipCaption")
+						.text( d3.keys(d.data));
 					//Show the tooltip
 					d3.select("#tooltip").classed("hidden", false);
 			   })
