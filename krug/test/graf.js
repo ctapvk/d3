@@ -1,41 +1,47 @@
 svg = d3.select("svg");
-W = +svg.attr("width");
-H = +svg.attr("height");
+widthSvg = +svg.attr("width");
+heightSvg = +svg.attr("height");
 width = +svg.attr("width") - 100;
 height = +svg.attr("height") -100;
 
 var data = [1, 1, 2, 3, 5, 8, -13, 21, 34, -55, 89];
 
+monthNamesShort =  ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн',
+				   'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'] ; 
+
+
+dat = [ {"name":"flfl"} , {}];
 
 gist = svg.append("g")
 				.attr("class", "gist")
-				.attr("transform", "translate("+[ W- width,  height  ]+")")
+				.attr("transform", "translate("+[ widthSvg- width,  height  ]+")")
 				.attr("width" , width)
 				.attr("height" , height)
 ;
 asisX = svg.append("g")
 				.attr("class", "asisX")
-				.attr("transform", "translate("+[ W- width,  H  ]+")")
+				.attr("transform", "translate("+[ widthSvg- width,  heightSvg  ]+")")
 				.attr("width" ,  width)
-				.attr("height" , H - height)
-				// .append("text").text("asdasd")
+				.attr("height" , heightSvg - height)
 ;
-
 asisY = svg.append("g")
 				.attr("class", "asisY")
-				.attr("transform", "translate("+[0,  H  ]+")")
-				.attr("width" ,  W- width)
+				.attr("transform", "translate("+[0,  0  ]+")")
+				.attr("width" ,  widthSvg- width)
 				.attr("height" , height)
 ;
 
 y = d3.scaleLinear()
-				.domain([d3.min(data)  , d3.max(data) ] )
-				.range([  H ,H- height   ])
+		.domain([d3.min(data)*1.2  , d3.max(data) *1.2] )
+		.range([  heightSvg ,heightSvg- height   ])
+;
+x = d3.scaleLinear()
+		.domain([0  , 12] )
+		.range([ 50 ,  width   ])
 ;
 
 drawAsisX(asisX);
 drawAsisY(asisY);
-drawAsisYLegend(asisY);
 
 function drawAsisX(canvas) {
 	line  = d3.line()
@@ -48,6 +54,33 @@ function drawAsisX(canvas) {
 					.attr("stroke-width", 4)
 					.attr("stroke", "#CDD5DE")
 	;
+
+	legend = canvas.append("g")
+						.attr("transform" , "translate("+ [ getElemWidth(canvas) , -getElemHeight(asisX) ] +")")
+						.attr("class", "text")
+	;
+
+	monthNamesShort.reverse().forEach(function(dat , i) {
+				text = legend.append("g")
+							.attr("transform" , function(d) { return "translate(" + [ -x(i) ,  0 ] + ")" })
+				text
+					.append("text")
+						.attr("text-anchor", "middle")
+						.attr("transform" , function(d) { return "translate(" + [ 0 ,  10 ] + ")" })
+						.attr("dominant-baseline", "central")
+						.text( function(d){ return dat  })
+				;
+
+				line = d3.line().x(function(d){return d[0]}).y(function(d){return d[1]});
+				text.append("path")
+							.attr("d",line( [  [0,0] , [0,-height]  ] ))
+							.attr("stroke-width",2)
+							.attr("stroke" , "#acc")
+				;
+
+			})
+	;
+
 }
 
 function drawAsisY(canvas) {
@@ -56,27 +89,36 @@ function drawAsisY(canvas) {
 					.y(function(d) {return d[1]})
 	;
 	canvas.append("path")
-					.attr("transform",function(d) { return "translate("+[ getElemWidth(canvas) , -getElemHeight(asisX)]+")" })
-					.attr("d" , line([ [0,0] , [ 0, -getElemHeight(canvas) ] ]))
+					.attr("transform",function(d) { return "translate("+[ 0 , 0]+")" })
+					.attr("d" , line([ [getElemWidth(canvas),0] , [ getElemWidth(canvas), getElemHeight(canvas) ] ]))
 					.attr("stroke-width", 4)
 					.attr("stroke", "#CDD5DE")
 	;
-}
 
-function drawAsisYLegend(canvas) {
-	legend = canvas.append("g") 
-						.attr("transform" , "translate("+[ +getElemWidth(canvas) , -(getElemHeight(canvas)  + ) ]+")")
-						.attr("class", "text")
-	; 
-console.log([ +getElemWidth(canvas) , getElemHeight(canvas) ]); 
+	legend = canvas.append("g")
+						.attr("transform" , "translate("+ [ getElemWidth(canvas) , -getElemHeight(asisX) ] +")")
+						.attr("class", "legend")
+	;
+
 	y.ticks().forEach(function(dat , i) {
-				legend
+				text = legend.append("g") 
+									.attr("transform" , function(d) { return "translate(" + [0,  y(dat) ] + ")" })	
+				; 
+				text
 					.append("text")
-					.attr("transform" , function(d) { return "translate(" + [0, y(dat) ] + ")" })
-					.text( function(d){console.log(dat); return dat  })
+						.attr("text-anchor", "end")
+						.attr("dominant-baseline", "central")
+						.attr("transform" , function(d) { return "translate(" + [-10,  0 ] + ")" })
+						.text( function(d){ return dat  })
+				;
+				text
+					.append("circle")
+						.attr("r" , 5)
+						.attr("fill",  "#CDD5DE" )
 				;
 			})
 	;
+
 }
 
 function getElemWidth (el){
