@@ -1,0 +1,11 @@
+.gist {
+	fill:none;
+}
+
+.asisXmounthText {
+	text-anchor :middle ; 
+	fill :#CDD5DE ; 
+	font-weight :bold;
+	font-size:14 ; 
+	dominant-baseline : central ; 
+}

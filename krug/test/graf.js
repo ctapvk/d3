@@ -4,7 +4,7 @@ heightSvg = +svg.attr("height");
 width = +svg.attr("width") - 100;
 height = +svg.attr("height") -100;
 
-var data = [1, 1, 2, 3, 5, 8, -13, 21, 34, -55, 89];
+var data = [15550, 5551551,5588,5151,55222];
 
 monthNamesShort =  ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн',
 				   'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'] ; 
@@ -109,7 +109,7 @@ function drawAsisY(canvas) {
 						.attr("text-anchor", "end")
 						.attr("dominant-baseline", "central")
 						.attr("transform" , function(d) { return "translate(" + [-10,  0 ] + ")" })
-						.text( function(d){ return dat  })
+						.text( function(d){ return currencySwap(dat)  })
 				;
 				text
 					.append("circle")
@@ -121,9 +121,18 @@ function drawAsisY(canvas) {
 
 }
 
+function drawGist(canvas){
+	
+}
+
 function getElemWidth (el){
 	return d3.select(el)._groups["0"]["0"]._groups["0"]["0"].getAttribute("width");
 }
 function getElemHeight (el){
 	return d3.select(el)._groups["0"]["0"]._groups["0"]["0"].getAttribute("height");
 }
+
+function currencySwap(d){
+    return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")  + "" ;
+}
+
