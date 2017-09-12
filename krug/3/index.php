@@ -62,7 +62,7 @@ function drawComplex(startAngle = null, endAngle = null, colo = null, slide = 0)
 		keys.push(data[i].legend + ":" + data[i].summa);
 		summ += data[i].presses;
 	}
-	var z = d3.scaleOrdinal().range(clr);
+	var color = d3.scaleOrdinal().range(clr);
 	
 	var currentIndex = 0;
 	if(colo === null) {
@@ -245,7 +245,7 @@ function drawComplex(startAngle = null, endAngle = null, colo = null, slide = 0)
 	
 	g.append("path")
 		.attr("d", arc)
-		.style("fill", function(d) { return z(d.data.letter);});
+		.style("fill", function(d) { return color(d.data.letter);});
 
 	g.append("text")
 		.attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
@@ -254,7 +254,7 @@ function drawComplex(startAngle = null, endAngle = null, colo = null, slide = 0)
 
 //= = = =		
 
-	z.domain(keys);
+	color.domain(keys);
 	
 	var legend = g.append("g")
 		.attr("font-family", "sans-serif")
@@ -263,14 +263,14 @@ function drawComplex(startAngle = null, endAngle = null, colo = null, slide = 0)
 		.selectAll("g")
 		.data(keys.slice())
 		.enter().append("g")
-		.attr("transform", function(d, i) { return "translate(0," + i * 60 + ")"; });
+		.attr("transform", function(d, i) { if(i < 7) { col = 0; oi = 0;} else { col = 200; oi = 7 } return "translate(" + col + "," + (i - oi) * 60 + ")"; });
 
 	legend.append("rect")
 		.attr("x", 360)
 		.attr("y", -outer)
 		.attr("width", 20)
 		.attr("height", 20)
-		.attr("fill", z );
+		.attr("fill", color );
 
 	legend.append("text")
 		.attr("x", 400)
