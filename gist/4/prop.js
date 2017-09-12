@@ -1,18 +1,23 @@
 prop = {
-    "faktColor" : "#529acb",
-    "planColor" : "#f5ba63" , 
-    "paddingLeft" : "100" , 
-    "paddingBottom" : "100"  , 
+    "colorFactOut" : "#828BC4",
+    "colorPlanOut" : "#B7BDDC" , 
+    "colorFactIn" : "#66977B" , 
+    "colorPlanIn" : "#93CFA2" , 
+    "colorSaldo" : "#2D7BB0" , 
+    "spaceBetween" : "80" , 
+    "paddingLeft" : "120" , 
+    "paddingBottom" : "150"  , 
     "moveMounth":"-5" , 
     "gistPadding": "30"
 }
 
 data = [
-{"date":"2017" , "factIn": 1 , "planIn":5  , "factOut": 5 , "planOut":5 } , 
-{"date":"2017" , "factIn": 2 , "planIn":5  , "factOut": 4 , "planOut":6 } , 
-{"date":"2017" , "factIn": 3 , "planIn":5  , "factOut": 3 , "planOut":6 } , 
-{"date":"2017" , "factIn": 4 , "planIn":5  , "factOut": 2 , "planOut":5 } , 
-{"date":"2018" , "factIn": 5 , "planIn":5  , "factOut": 1 , "planOut":7 }
+{"date":"4.4.2017" , "factIn": 10000 , "planIn":50000 , "factOut": 20000 , "planOut":50000 } , 
+{"date":"2017" , "factIn": 20000 , "planIn":50000  , "factOut": 40000 , "planOut":60000 } , 
+{"date":"2017" , "factIn": 10000 , "planIn":50000  , "factOut": 30000 , "planOut":60000 } , 
+{"date":"2017" , "factIn": 10000 , "planIn":50000  , "factOut": 30000 , "planOut":60000 } , 
+{"date":"2017" , "factIn": 40000 , "planIn":40000  , "factOut": 30000 , "planOut":50000 } , 
+{"date":"2018" , "factIn": 0 , "planIn":80000  , "factOut": 0 , "planOut":70000 }
 ] ; 
 
 

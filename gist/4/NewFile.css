@@ -9,3 +9,28 @@
 	font-size:14 ; 
 	dominant-baseline : central ; 
 }
+
+.planGistLabel {
+	text-anchor :middle ; 
+	fill :#000 ; 
+	font-weight :bold;
+	font-size:14 ; 
+	dominant-baseline : central ; 	
+}
+.factGistLabel {
+	text-anchor :middle ; 
+	fill :#fff ; 
+	font-weight :bold;
+	font-size:14 ; 
+	dominant-baseline : central ; 	
+}
+.mounthLabes {
+	text-anchor :middle ; 
+	fill :gray ; 
+	font-weight :bold;
+	font-size:14 ; 
+	dominant-baseline : central ; 	
+}
+
+
+
