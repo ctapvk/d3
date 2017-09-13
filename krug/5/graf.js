@@ -24,7 +24,7 @@ function outerPie(data){
 	var pie = d3.pie().sort(null).value(function(d) {
 		//console.log(d['sum']);
 		return d['sum'];
-	});
+	}).padAngle(.04);
 	var path = d3.arc()
 					.outerRadius(prop.outerPieRadius)
 					.innerRadius(prop.outerPieInnerRadius);
@@ -64,11 +64,12 @@ function innerPie(data , index , showLegend){
 
 	donut = g.append("g").attr("class", "donut");
 
+paddd = 0.04 ; 
 	var pie = d3.pie() 
 				.sortValues(function compare(a, b) {   return b - a; 	})
 				.value(function(d) { return d3.values(d);  })
-				.startAngle(data[index].startAngle)
-				.endAngle(data[index].endAngle) 
+				.startAngle(data[index].startAngle  +  paddd)
+				.endAngle(data[index].endAngle - paddd) 
 	;
 
 	var path = d3.arc()
@@ -188,7 +189,7 @@ function legenda(index){
 	;
 	legend.append("rect")
 		  .attr("transform", function(d) {  return "translate( 0,-10)"; } )
-		  .attr("fill" , function (d) { return  red(d3.values(d.data)); })
+		  .attr("fill" , function(d) { return  red(d3.values(d.data)); })
 		  .attr("width" ,20)
 		  .attr("height" ,20)
 	;

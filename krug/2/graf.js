@@ -44,7 +44,7 @@ function legend(data) {
 			.attr("transform", "translate(700,100 )" )
 	;
 	legend = g.selectAll().data(data).enter().append("g")
-							.attr("transform", function (d,i){  return "translate(0, "+ (  i*50) +")"})
+							.attr("transform", function(d,i){  return "translate(0, "+ (  i*50) +")"})
 	;
 
 	legend.append("rect")
@@ -74,7 +74,7 @@ function legendLeft(data) {
 			.attr("transform", "translate(-110 , 120 )" )
 	;
 	legend = canv.selectAll().data(data).enter().append("g")
-							.attr("transform", function (d,i){  return "translate(0, "+ (  i*30) +")"})
+							.attr("transform", function(d,i){  return "translate(0, "+ (  i*30) +")"})
 	;
 
 	legend.append("rect")
@@ -113,7 +113,7 @@ function showPieLeft(data){
 			.attr("fill", function(d) { return colorRight(d.data['name']); });
 
 	arc.append("text")
-		  .attr("transform", function(d) { console.log(label.centroid(d));  return "translate(" + label.centroid(d) + ")"; })
+		  .attr("transform", function(d) { /*console.log(label.centroid(d));*/  return "translate(" + label.centroid(d) + ")"; })
 		  .attr("text-anchor"  , "middle" )
 		  .attr("dy", "0.35em")
 		  .attr("font-family" , "sans-serif")
