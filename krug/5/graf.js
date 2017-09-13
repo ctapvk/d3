@@ -24,7 +24,7 @@ function outerPie(data){
 	var pie = d3.pie().sort(null).value(function(d) {
 		//console.log(d['sum']);
 		return d['sum'];
-	}).padAngle(.04);
+	}).padAngle( +prop.paddingOuterPie);
 	var path = d3.arc()
 					.outerRadius(prop.outerPieRadius)
 					.innerRadius(prop.outerPieInnerRadius);
@@ -64,24 +64,25 @@ function innerPie(data , index , showLegend){
 
 	donut = g.append("g").attr("class", "donut");
 
-paddd = 0.04 ; 
-	var pie = d3.pie() 
+	var pie = d3.pie()
 				.sortValues(function compare(a, b) {   return b - a; 	})
 				.value(function(d) { return d3.values(d);  })
-				.startAngle(data[index].startAngle  +  paddd)
-				.endAngle(data[index].endAngle - paddd) 
+				.startAngle(data[index].startAngle  +  +prop.paddingInnerPieAngle)
+				.endAngle(data[index].endAngle - +prop.paddingInnerPieAngle) 
 	;
 
 	var path = d3.arc()
 					.outerRadius(prop.innerPieRadius)
 					.innerRadius(prop.innerPieInnerRaius  ) ;
 	var label = d3.arc()
-					.outerRadius( prop.innerPieRadius )
+					.outerRadius(prop.innerPieRadius )
 					.innerRadius(prop.innerPieRadius -25 )
 	;
 	var arc = donut.selectAll(".arc")
-						.data(pie(data[index].value)).enter().append("g")
-							.attr("class", "arc");
+						.data(pie(data[index].value)).enter()
+							.append("g")
+							.attr("class", "arc")
+	;
 
 	arc.append("path")
 			.attr("d", path)
@@ -90,7 +91,7 @@ paddd = 0.04 ;
 				// console.log(d3.event.clientX);
 					d3.select("#tooltip")
 						.style("left", width/2+path.centroid(d)[0] + "px")
-						.style("top", height/2+path.centroid(d)[1] + "px")				
+						.style("top", height/2+path.centroid(d)[1] + "px")
 						.select("#value")
 						.text(currencySwap( d3.values(d.data)) )
 					;
@@ -102,31 +103,38 @@ paddd = 0.04 ;
 			   })
 			.on("mouseout",function() { d3.select("#tooltip").classed("hidden", true);  })
 	;
+
 	if (showLegend ==1) {
 
 	coord = [250 , -180] ; 
 	coordArr = new Array();
-	legendCaption = donut.append("g").attr("transform" , "translate(" + [ coord[0]-35 , coord[1]-15 ]  + ")" ) ;
+	legendCaption = donut.append("g")
+							.attr("class" , "legendCaption")
+							.attr("transform" , "translate(" + [ coord[0]-35 , coord[1]-15 ]  + ")" )
+	;
 	legend = arc.append("g")
-					.attr("class" , "dotLegend")	
+					.attr("class" , "dotLegend")
 					.attr("transform" , function(d , i ) {
 										coord[1]+=40;  
 										coordArr.push( [ coord[0] , coord[1]  ] );  
 										return "translate(" + [ coord[0] , coord[1]+9 ]  + ")"; 
 									})
 	;
+	d3.selectAll(".dotLegend").attr("ad", function(d) {console.log(d)}) ; 
+
 	legenda(index);
 	arc.append("circle")
-			.attr("transform" ,function(d , i) {
-				drawLineConnection( label.centroid(d)[0],  label.centroid(d)[1] , coordArr[i][0] ,coordArr[i][1] , g);  
-				return "translate(" + label.centroid(d) + ")";
-			} ) 
+			.attr("transform" ,function(d , i) { return "translate(" + label.centroid(d) + ")";
+			}) 
 			.attr("r",6)
 			.attr("class", "whiteDot")
 			.attr("fill", "white")
 	;
 	arc.append("circle")
-				.attr("transform" ,function(d) {  return "translate(" + label.centroid(d) + ")"; }  )
+				.attr("transform" ,function(d , i) {
+					drawLineConnection( label.centroid(d)[0],  label.centroid(d)[1] , coordArr[i][0] ,coordArr[i][1] , g);  
+					return "translate(" + label.centroid(d) + ")"; 
+				})
 				.attr("r",3)
 				.attr("fill", function(d) {   return red(d3.values(d.data)); })
 	;
@@ -141,50 +149,32 @@ function legenda(index){
 	;
 	legendCaption.append("text")
 			.attr("transform", function(d) {  return "translate( 30,15)"; } )
-			.attr("text-anchor"  , "left" )
-			.attr("dy", "0.35em")
-			.attr("font-family" , "sans-serif")
-			.attr("font-size" , "14")
-			.attr("fill" , "black")
-			.attr("class" , "textLegend")
-			.text(function(d) { return currencySwap(data2[index].sum ); })	
+			.attr("class" , "legendTextSum")
+			.text(function(d) { return currencySwap(data2[index].sum ); })
+	;
+
 	legendCaption.append("rect")
 		  .attr("transform", function(d) {  return "translate( 0,-3)"; } )
-		  .attr("fill" , prop.colorsLeft[index] ) 
+		  .attr("fill" , prop.colorsLeft[index] )
 		  .attr("width" ,20)
 		  .attr("height" ,20)
 	;
 
 	legendCaption.append("text")
 			.attr("transform", function(d) { return "translate( 30,0)"; } )
-			.attr("text-anchor"  , "left" )
-			.attr("dy", "0.35em")
-			.attr("font-family" , "sans-serif")
-			.attr("font-size" , "14")
-			.attr("fill" , "#75777D")
-			.attr("class" , "textLegend")
-			.text(data2[index].name)
+			.attr("class" , "legendText")
+			.text(data2[index].name )
 	;
 
 	legend.append("text")
-			.attr("transform", function(d) {  return "translate( 30,-8)"; } )
-			.attr("text-anchor"  , "left" )
-			.attr("dy", "0.35em")
-			.attr("font-family" , "sans-serif")
-			.attr("font-size" , "14")
-			.attr("fill" , "#75777D")
-			.attr("class" , "textLegend")
+			.attr("transform", function(d) {  return "translate( 30,-4)"; } )
+			.attr("class" , "legendText")
 			.text(function(d) { return d3.keys(d.data); })
 	;
-	 console.log(legend);
+
 	legend.append("text")
 			.attr("transform", function(d) {  return "translate( 30,10)"; } )
-			.attr("text-anchor"  , "left" )
-			.attr("dy", "0.35em")
-			.attr("font-family" , "sans-serif")
-			.attr("font-size" , "14")
-			.attr("fill" , "black")
-			.attr("class" , "textLegend")
+			.attr("class" , "legendTextSum")
 			.text(function(d) { return currencySwap(d3.values(d.data)); })
 	;
 	legend.append("rect")
@@ -207,17 +197,16 @@ function drawLineConnection(x,y, xEnd , yEnd ,  canvas) {
 	}
 
 	var line = d3.line()
-	.x(function(d) { return d[0] ; })
-	.y(function(d) { return d[1] ; })
-	.curve(d3.curveCardinal.tension(0.8));
-					
-								
-canvas.append("path")
-	.style("fill","none")
-	.style("stroke","gray")
-	.style("stroke-width","2px")
-	.attr("class", "curveLine")
-	.attr("d",function(d,i){ return line(dat); })
+					.x(function(d) { return d[0] ; })
+					.y(function(d) { return d[1] ; })
+					.curve(d3.curveCardinal.tension(0.8))
+	;
+	canvas.append("path")
+		.style("fill","none")
+		.style("stroke","gray")
+		.style("stroke-width","2px")
+		.attr("class", "curveLine")
+		.attr("d",function(d,i){ return line(dat); })
 	;
 }
 
