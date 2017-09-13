@@ -82,8 +82,7 @@ function drawAsisY(canvas) {
 									.attr("transform" , function(d) { return "translate(" + [0,  y(dat) ] + ")" })	
 				; 
 				text .append("text")
-						.attr("text-anchor", "end")
-						.attr("dominant-baseline", "central")
+						.attr("class", "asisYcapiton")
 						.attr("transform" , function(d) { return "translate(" + [-10,  0 ] + ")" })
 						.text( function(d){ return currencySwap(dat)  })
 				;

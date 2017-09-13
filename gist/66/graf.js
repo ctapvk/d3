@@ -108,8 +108,7 @@ function drawAsisY(canvas) {
 				; 
 				text
 					.append("text")
-						.attr("text-anchor", "end")
-						.attr("dominant-baseline", "central")
+						.attr("class", "asisYcapiton")
 						.attr("transform" , function(d) { return "translate(" + [-10,  0 ] + ")" })
 						.text( function(d){ return currencySwap(dat)  })
 				;
@@ -181,13 +180,13 @@ function showLables(canvas) {
 		legend.append("text")
 					.attr("fill" , prop.planColor)
 					.attr("font-weight" , "bold" )
-					.text( function(d){ return data[i]  })
+					.text( function(d){ return cutLongSum(data[i])  })
 		;		
 		legend.append("text")
 					.attr("transform" , function(d) { return "translate(" + [ 0 ,  25 ] + ")" })
 					.attr("font-weight" , "bold" )
 					.attr("fill" , prop.faktColor)
-					.text( function(d){ return data2[i]  })
+					.text( function(d){ return cutLongSum(data2[i])  })
 		;
 	});
 
@@ -231,3 +230,9 @@ function currencySwap(d){
 	return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")  + "" ;
 }
 
+function cutLongSum(d){
+	if ( +d > 1000) 
+		return  d.toString().substr(0,3) ; 
+	else 
+		return d ; 
+}

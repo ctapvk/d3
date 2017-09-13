@@ -9,3 +9,10 @@
 	font-size:14 ; 
 	dominant-baseline : central ; 
 }
+
+.asisYcapiton {
+	font-size:18px ; 
+	fill :#aDa5aE ; 
+	dominant-baseline : central ; 
+	text-anchor :end ;
+}
