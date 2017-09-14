@@ -7,7 +7,7 @@ parameters = {
 
 // общая функция для создания графиков
 function chart(file_name, parameters) {
-  const {width, height, margin, offset} = parameters
+  const {width, height, margin, offset, ru_RU} = parameters
 
   const svg = d3.select("body")
     .append("svg")
@@ -64,7 +64,8 @@ function chart(file_name, parameters) {
 //удаляем 0 на оси Y
 d3.select(".y-axis")
 .select(".tick:first-child")
-.remove(); 
+.remove();
+
 
 // добавляем круги на ticks на оси y
     d3.select(".y-axis")
@@ -218,7 +219,7 @@ d3.select(".y-axis")
         return scaleY(d.rate) + margin;
       });
 
-      // вертикальные линии   
+// вертикальные линии   
 d3.selectAll("g.x-axis g.tick")
     .append("line")
     .classed("line", true) 
@@ -232,14 +233,13 @@ d3.selectAll("g.x-axis g.tick")
     .data(data)
     .enter()
     .append("p")
-    .attr("class", "p")
+    .attr("class", "p_one")
     .text(function(d) {
     return d.rate/1000 ;})
     .style("color", colorStroke)
     .style("font-weight", "bold")
     .style("font-size", "12pt")
     .style("margin-left", "30px");
-
 
 };
 }
@@ -249,3 +249,5 @@ d3.selectAll("g.x-axis g.tick")
     return data[i] } ;})  */
 
 //data[i].rate
+
+//https://stackoverflow.com/questions/24385582/localization-of-d3-js-d3-locale-example-of-usage
