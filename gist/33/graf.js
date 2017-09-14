@@ -23,27 +23,27 @@ asisY = svg.append("g")
 				.attr("height" , height)
 ;
 diff = 1.2 ; 
-min = findMinVal(data) ; 
-max = findMaxVal(data) ;
+min = findMaxVal2(data3) ; 
+max = findMinVal2(data3) ;
 y = d3.scaleLinear()
-		.domain([ min * diff , max * diff] )
+		.domain([ max * diff , min * diff] )
 		.range([  height ,0   ])
 ;
 
 console.log([max ,  min]);
+console.log( [ findMaxVal2(data3) , findMinVal2(data3) ] );
 x = d3.scaleLinear()
-		.domain([0  , data.length] )
+		.domain([0  , data3.length] )
 		.range([ +prop.gistPadding ,  width   ])
 ;
-barSize = width / data.length  - +prop.spaceBetween; 
+barSize = width / data3.length  - +prop.spaceBetween; 
+gistSize = barSize / 3 ; 
 
 drawAsisY(asisY);
 showLegend(asisX) ; 
 
 showPlanIn(gist);
 showFactIn(gist);
-showPlanOut(gist);
-showFactOut(gist);
 
 
 drawAsisX(gist);
@@ -94,98 +94,93 @@ function drawAsisY(canvas) {
 
 }
 
-function showPlanOut(canvas){
-	rects = canvas.append("g");
 
-	data.forEach(function(d , i){
-
-		rectHeight = y(d.planOut); 
-		rects.append("rect")
-				.attr("transform" , function() {   return "translate( "+ [ x(i) , -height+y(0)  ] +")" ; })
-				.attr("width" , barSize )
-				.attr("height" , function() { return -(rectHeight- y(0))  })
-				.attr("fill", prop.colorPlanOut)
-		;
-		rects.append("text")
-					.attr("class" , "planGistLabel")
-					.attr("transform" , "translate( "+ [  x(i)+ barSize/2  , -height + y(0) -rectHeight + y(0)  + 15 ] +")")
-					.text(-cutLongSum(d.planOut))
-		;
-	});
-}
-
-function showFactOut(canvas){
-	rects = canvas.append("g");
-
-	data.forEach(function(d , i){
-
-		rectHeight = y(d.factOut); 
-		rects.append("rect")
-				.attr("transform" , function() {   return "translate( "+ [ x(i) , -height+y(0)  ] +")" ; })
-				.attr("width" , barSize )
-				.attr("height" , function() { return -(rectHeight- y(0))  })
-				.attr("fill", prop.colorFactOut)
-		;
-		if (d.factOut != 0)
-		rects.append("text")
-					.attr("class" , "factGistLabel")
-					.attr("transform" , "translate( "+ [  x(i)+ barSize/2  , -height + y(0) -rectHeight + y(0)  - 15 ] +")")
-					.text(-cutLongSum(d.factOut) )
-		;
-	});
-}
 
 
 function showPlanIn(canvas){
 	rects = canvas.append("g");
 
-	data.forEach(function(d , i){
+	data3.forEach(function(d , i){
 
-		rectHeight = y(d.planIn); 
-		rects.append("rect")
-				.attr("transform" , function() {   return "translate( "+ [ x(i) , -height+y(d.planIn)  ] +")" ; })
-				.attr("width" , barSize )
-				.attr("height" , function() { return -(rectHeight- y(0))  })
-				.attr("fill", prop.colorPlanIn)
-		;
-		rects.append("text")
-					.attr("class" , "planGistLabel")
-					.attr("transform" , "translate( "+ [  x(i)+ barSize/2  , -height+rectHeight - 15 ] +")")
-					.text(cutLongSum(d.planIn))
-		;
+		dd3(d.dohodPlan , i , 0 , prop['доходы план'] ) ;
+		dd3(d.rashodPlan , i , 1 ,  prop['расходы план'] ) ;
+		dd3(d.deficitPlan , i , 2 ,  prop['деф проф план'] ) ;
+
 	});
 }
 
+function dd3 (dat , i , count ,   color ) {
+
+	rectHeight = y(dat); 
+	rects.append("rect")
+			.attr("transform" , function() {   
+				if (dat > 0 )  yy2 = -height+y(dat) ; else yy2 =  -height+y(0)   ;
+				return "translate( "+ [ x(i) + count*gistSize , yy2 ] +")" ; })
+			.attr("width" , gistSize )
+			.attr("height" , function() { 
+				if (dat > 0 )  yy2 = -(rectHeight- y(0)) ; else yy2 = (rectHeight- y(0)) ;
+				return yy2  })
+			.attr("fill", color)
+	;
+
+	rects.append("text")
+			.attr("class" , "planGistLabel")
+			.attr("transform" , function() {
+				if (dat > 0 )  yy2 = 15 ; else yy2 = - 15   ;
+				return "translate( "+ [  x(i)+ gistSize/2  + count*gistSize  , -height+rectHeight - yy2 ] +")"})
+			.text(cutLongSum(dat))
+	;
+
+}
 
 function showFactIn(canvas){
 	rects = canvas.append("g");
 
-	data.forEach(function(d , i){
+	data3.forEach(function(d , i){
 
-		rectHeight = y(d.factIn); 
-		rects.append("rect")
-				.attr("transform" , function() {   return "translate( "+ [ x(i) , -height+y(d.factIn)  ] +")" ; })
-				.attr("width" , barSize )
-				.attr("height" , function() { return -(rectHeight- y(0))  })
-				.attr("fill", prop.colorFactIn)
-		;
-		rects.append("text")
-					.attr("class" , "factGistLabel")
-					.attr("transform" , "translate( "+ [  x(i)+ barSize/2  , -height+rectHeight + 15 ] +")")
-					.text(cutLongSum(d.factIn))
-		;
+
+		dd32(d.dohodFact , i , 0 ,  prop['доходы факт'] ) ;
+		dd32(d.rashodFact , i , 1 ,   prop['расходы факт']) ;
+		dd32(d.deficitFact , i , 2 ,   prop['деф проф факт'] ) ;
 	});
 }
+
+function dd32 (dat , i , count ,   color ) {
+
+	rectHeight = y(dat); 
+	rects.append("rect")
+			.attr("transform" , function() {   
+				if (dat > 0 )  yy2 = -height+y(dat) ; else yy2 =  -height+y(0)   ;
+				return "translate( "+ [ x(i) + count*gistSize , yy2 ] +")" ; })
+			.attr("width" , gistSize )
+			.attr("height" , function() { 
+				if (dat > 0 )  yy2 = -(rectHeight- y(0)) ; else yy2 = (rectHeight- y(0)) ;
+				return yy2  })
+			.attr("fill", color)
+	;
+
+	rects.append("text")
+			.attr("class" , "factGistLabel")
+			.attr("transform" , function() {
+				if (dat > 0 )  yy2 = -15 ; else yy2 = 15   ;
+				return "translate( "+ [  x(i)+ gistSize/2  + count*gistSize  , -height+rectHeight - yy2 ] +")"})
+			.text(cutLongSum(dat))
+	;
+
+}
+
+
+
 
 function showLegend(canvas){
 
 	datas = canvas.append("g").attr("transform" , "translate(0,0)");
 
-	data.forEach(function(d,i){
+	data3.forEach(function(d,i){
 		datas.append("text")
 					.attr("transform", "translate("+[ x(i)+ barSize/2 , +prop.moveMounth ]+")")
 					.attr("class" , "mounthLabes")
-					.text(d.date)
+					.text(d.name)
 		;
 	});
 
@@ -195,23 +190,23 @@ function showLegend(canvas){
 	inLeg.append("rect")
 				.attr("width" , 20)
 				.attr("height" , 20)
-				.attr("fill" , prop.colorPlanIn)
+				.attr("fill" , prop["доходы план"])
 	;
 	inLeg.append("text")
 				.attr("transform" , "translate(30 , 15)")
 				.attr("class" , "legend")
-				.text("Привлеченные (План)")
+				.text("Доходы (план)")
 	;
 	inLeg = legend.append("g").attr("transform" , "translate(20,100)");
 	inLeg.append("rect")
 				.attr("width" , 20)
 				.attr("height" , 20)
-				.attr("fill" , prop.colorFactIn)
+				.attr("fill" , prop["доходы факт"])
 	;
 	inLeg.append("text")
 				.attr("transform" , "translate(30 , 15)")
 				.attr("class" , "legend")
-				.text("Привлеченные (Факт)")
+				.text("Доходы (факт)")
 	;
 
 
@@ -219,28 +214,49 @@ function showLegend(canvas){
 	outLeg.append("rect")
 				.attr("width" , 20)
 				.attr("height" , 20)
-				.attr("fill" , prop.colorPlanOut)
+				.attr("fill" ,  prop["расходы план"])
 	;
 	outLeg.append("text")
 				.attr("transform" , "translate(30 , 15)")
 				.attr("class" , "legend")
-				.text("Погашенные (План)")
+				.text("Расходы (план)")
 	;
+
+
 	outLeg = legend.append("g").attr("transform" , "translate(250,100)");
 	outLeg.append("rect")
 				.attr("width" , 20)
 				.attr("height" , 20)
-				.attr("fill" , prop.colorFactOut)
+				.attr("fill" ,  prop["расходы факт"])
 	;
 	outLeg.append("text")
 				.attr("transform" , "translate(30 , 15)")
 				.attr("class" , "legend")
-				.text("Погашенные (Факт)")
+				.text("Расходы (факт)")
 	;
 
-	saldo = legend.append("g").attr("transform" , "translate(450,75)");
-
-
+	outLeg = legend.append("g").attr("transform" , "translate(450,60)");
+	outLeg.append("rect")
+				.attr("width" , 20)
+				.attr("height" , 20)
+				.attr("fill" ,  prop["деф проф план"])
+	;
+	outLeg.append("text")
+				.attr("transform" , "translate(30 , 15)")
+				.attr("class" , "legend")
+				.text("Дефицит/профицит (план)")
+	;
+	outLeg = legend.append("g").attr("transform" , "translate(450,100)");
+	outLeg.append("rect")
+				.attr("width" , 20)
+				.attr("height" , 20)
+				.attr("fill" ,  prop["деф проф факт"])
+	;
+	outLeg.append("text")
+				.attr("transform" , "translate(30 , 15)")
+				.attr("class" , "legend")
+				.text("Дефицит/профицит (факт)")
+	;
 
 }
 
@@ -266,6 +282,25 @@ function findMinVal(d){
 
 }
 
+
+function findMinVal2(d){
+	mm1 = d[0].dohodPlan ; 
+	for (i in d)
+		for (key in d[i])
+			if (key!="name" && mm1 >  d[i][key]) mm1 =d[i][key] ; 
+	return mm1 ; 
+
+}
+function findMaxVal2(d){
+	ma1 = d[0].dohodPlan ; 
+	for (i in d)
+		for (key in d[i])
+			if (key!="name" && ma1 <  d[i][key]) ma1 =d[i][key] ; 
+	return ma1 ; 
+
+}
+
+
 function getElemWidth (el){
 	return d3.select(el)._groups["0"]["0"]._groups["0"]["0"].getAttribute("width");
 }
@@ -278,8 +313,11 @@ function currencySwap(d){
 }
 
 function cutLongSum(d){
-	if ( +d > 1000) 
-		return  d.toString().substr(0,3) ; 
+	if ( Math.abs(d) > 1000)
+		if (+d > 0 )
+			return  d.toString().substr(0, -max.toString().length +d.toString().length  +3) ; 
+		else
+			return  ( d.toString().substr(0, -min.toString().length +d.toString().length  +4  ) ) ; 
 	else 
 		return d ; 
 }
