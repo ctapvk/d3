@@ -47,7 +47,6 @@ showFactOut(gist);
 
 
 drawAsisX(gist);
-showSaldo(gist);
 
 function drawAsisX(canvas) {
 
@@ -241,56 +240,11 @@ function showLegend(canvas){
 
 	saldo = legend.append("g").attr("transform" , "translate(450,75)");
 
-	saldo.append("text")
-				.attr("transform" , "translate(120 , 15)")
-				.attr("class" , "legend")
-				.text("Сальдо")
-	;
-	line = d3.line().x(function(d){return d[0]}).y(function(d){return d[1]});
-	saldo.append("path")
-		.attr("d", line([[20,10], [80, 10]]))
-		.style("stroke", prop.colorSaldo)
-		.style("stroke-width", 4)
-	;
-
-	saldo.append("circle")
-					.style("fill", prop.colorSaldo)
-					.attr("class", "dot")
-					.attr("r", 6)
-					.attr("cx", 50 )
-					.attr("cy", 10)
-	;
-
 
 
 }
 
-function showSaldo(canvas){
 
-
-	line = d3.line()
-				.x(function(d , i ) { return x(i) + barSize/2 ;  })
-				.y(function(d) { return -height+y(d.factIn - d.factOut) ; })
-	;
-	g = canvas.append("g")
-					.attr("transform", "translate(0 ,0)")
-	;
-	g.append("path")
-		.attr("d", line(data))
-		.style("stroke", prop.colorSaldo)
-		.style("stroke-width", 4)
-	;
-
-	g.selectAll(".dot")
-			.data(data)
-			.enter().append("circle")
-					.style("fill", prop.colorSaldo)
-					.attr("class", "dot")
-					.attr("r", 6)
-					.attr("cx", function(d,i) { return x(i) +barSize/2; })
-					.attr("cy", function(d) { return -height+y(d.factIn - d.factOut) ; })
-	;
-}
 
 function findMaxVal(d){
 	max = d[0].factIn ; 

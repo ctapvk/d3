@@ -4,10 +4,10 @@ prop = {
     "colorFactIn" : "#66977B" , 
     "colorPlanIn" : "#93CFA2" , 
     "colorSaldo" : "#2D7BB0" , 
-    "spaceBetween" : "80" , 
+    "spaceBetween" : "20" , 
     "paddingLeft" : "120" , 
     "paddingBottom" : "150"  , 
-    "moveMounth":"15" , 
+    "moveMounth":"20" , 
     "gistPadding": "30"
 }
 
