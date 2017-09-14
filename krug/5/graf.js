@@ -24,7 +24,7 @@ function outerPie(data){
 	var pie = d3.pie().sort(null).value(function(d) {
 		//console.log(d['sum']);
 		return d['sum'];
-	});
+	}).padAngle( +prop.paddingOuterPie);
 	var path = d3.arc()
 					.outerRadius(prop.outerPieRadius)
 					.innerRadius(prop.outerPieInnerRadius);
@@ -55,87 +55,173 @@ function outerPie(data){
 		  .text(function(d) {  return ( (d.endAngle - d.startAngle)/6.28 * 100).toFixed(1)   + '%'; });
 }
 
-function sticks(data){	/* ------- SLICE TO TEXT POLYLINES -------*/
 
-	var pie = d3.pie()
-	.sortValues(function compare(a, b) {
-		  return b - a;
-	}) ;
-	
-	g.append("g")
-		.attr("class", "lines");
-	
-	var polyline = svg.select(".lines").selectAll("polyline")
-		.data(pie(data));
-	
-	polyline.enter()
-		.append("polyline");
 
-	polyline.transition().duration(1000)
-		.attrTween("points", function(d){
-		console.log(d);
-			this._current = this._current || d;
-			var interpolate = d3.interpolate(this._current, d);
-			this._current = interpolate(0);
-			return function(t) {
-				var d2 = interpolate(t);
-				var pos = outerArc.centroid(d2);
-				pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
-				console.log('asd');
-				return [arc.centroid(d2), outerArc.centroid(d2), pos];
-			};			
-		});
-	
-	polyline.exit()
-		.remove();
-
-}
-
-function innerPie(data , index){
+function innerPie(data , index , showLegend){
 	var red = d3.scaleLinear()
 					.domain([0 , (data[index].sum / 6) ]  )
 					.range(["white" , prop.colorsLeft[index]  ]);	
-	donut = g.append("g")
-	.attr("class", "donut");
+
+	donut = g.append("g").attr("class", "donut");
 
 	var pie = d3.pie()
-				.sortValues(function compare(a, b) {
-					  return b - a;
-				})
+				.sortValues(function compare(a, b) {   return b - a; 	})
 				.value(function(d) { return d3.values(d);  })
-				.startAngle(data[index].startAngle)
-				.endAngle(data[index].endAngle) ;
-	
+				.startAngle(data[index].startAngle  +  +prop.paddingInnerPieAngle)
+				.endAngle(data[index].endAngle - +prop.paddingInnerPieAngle) 
+	;
+
 	var path = d3.arc()
 					.outerRadius(prop.innerPieRadius)
 					.innerRadius(prop.innerPieInnerRaius  ) ;
 	var label = d3.arc()
-					.outerRadius( prop.innerPieRadius )
-					.innerRadius(prop.innerPieRadius );
+					.outerRadius(prop.innerPieRadius )
+					.innerRadius(prop.innerPieRadius -25 )
+	;
 	var arc = donut.selectAll(".arc")
-						.data(pie(data[index].value)).enter().append("g")
-							.attr("class", "arc");
+						.data(pie(data[index].value)).enter()
+							.append("g")
+							.attr("class", "arc")
+	;
 
 	arc.append("path")
 			.attr("d", path)
-			.attr("fill", function(d) {  return red(d3.values(d.data)); })
-			;
+			.attr("fill", function(d) { return red(d3.values(d.data)); })
+			.on("mouseover", function(d) {
+				// console.log(d3.event.clientX);
+					d3.select("#tooltip")
+						.style("left", width/2+path.centroid(d)[0] + "px")
+						.style("top", height/2+path.centroid(d)[1] + "px")
+						.select("#value")
+						.text(currencySwap( d3.values(d.data)) )
+					;
+					d3.select("#tooltip")
+						.select("#tipCaption")
+						.text( d3.keys(d.data));
+					//Show the tooltip
+					d3.select("#tooltip").classed("hidden", false);
+			   })
+			.on("mouseout",function() { d3.select("#tooltip").classed("hidden", true);  })
+	;
 
-	arc.append("text")
-		  .attr("transform", function(d) {  return "translate(" + label.centroid(d) + ")"; })
-		  .attr("text-anchor"  , "middle" )
-		  .attr("dy", "0.35em")
-		  .attr("font-family" , "sans-serif")
-		  .attr("font-size" , "14")
-		  .attr("fill" , "black")
-		  .attr("font-weight" , "bold")
-		  .text(function(d) {  return ( (d.endAngle - d.startAngle)/6.28 * 100).toFixed(1)   + '%'; });
-		  
+	if (showLegend ==1) {
+
+	coord = [250 , -180] ; 
+	coordArr = new Array();
+	legendCaption = donut.append("g")
+							.attr("class" , "legendCaption")
+							.attr("transform" , "translate(" + [ coord[0]-35 , coord[1]-15 ]  + ")" )
+	;
+	legend = arc.append("g")
+					.attr("class" , "dotLegend")
+					.attr("transform" , function(d , i ) {
+										coord[1]+=40;  
+										coordArr.push( [ coord[0] , coord[1]  ] );  
+										return "translate(" + [ coord[0] , coord[1]+9 ]  + ")"; 
+									})
+	;
+	d3.selectAll(".dotLegend").attr("ad", function(d) {console.log(d)}) ; 
+
+	legenda(index);
+	arc.append("circle")
+			.attr("transform" ,function(d , i) { return "translate(" + label.centroid(d) + ")";
+			}) 
+			.attr("r",6)
+			.attr("class", "whiteDot")
+			.attr("fill", "white")
+	;
+	arc.append("circle")
+				.attr("transform" ,function(d , i) {
+					drawLineConnection( label.centroid(d)[0],  label.centroid(d)[1] , coordArr[i][0] ,coordArr[i][1] , g);  
+					return "translate(" + label.centroid(d) + ")"; 
+				})
+				.attr("r",3)
+				.attr("fill", function(d) {   return red(d3.values(d.data)); })
+	;
+	}
+
+}
+
+function legenda(index){
+	var red = d3.scaleLinear()
+				.domain([0 , (data2[index].sum / 6) ]  )
+				.range(["white" , prop.colorsLeft[index]  ])
+	;
+	legendCaption.append("text")
+			.attr("transform", function(d) {  return "translate( 30,15)"; } )
+			.attr("class" , "legendTextSum")
+			.text(function(d) { return currencySwap(data2[index].sum ); })
+	;
+
+	legendCaption.append("rect")
+		  .attr("transform", function(d) {  return "translate( 0,-3)"; } )
+		  .attr("fill" , prop.colorsLeft[index] )
+		  .attr("width" ,20)
+		  .attr("height" ,20)
+	;
+
+	legendCaption.append("text")
+			.attr("transform", function(d) { return "translate( 30,0)"; } )
+			.attr("class" , "legendText")
+			.text(data2[index].name )
+	;
+
+	legend.append("text")
+			.attr("transform", function(d) {  return "translate( 30,-4)"; } )
+			.attr("class" , "legendText")
+			.text(function(d) { return d3.keys(d.data); })
+	;
+
+	legend.append("text")
+			.attr("transform", function(d) {  return "translate( 30,10)"; } )
+			.attr("class" , "legendTextSum")
+			.text(function(d) { return currencySwap(d3.values(d.data)); })
+	;
+	legend.append("rect")
+		  .attr("transform", function(d) {  return "translate( 0,-10)"; } )
+		  .attr("fill" , function(d) { return  red(d3.values(d.data)); })
+		  .attr("width" ,20)
+		  .attr("height" ,20)
+	;
+
+}
+
+
+function drawLineConnection(x,y, xEnd , yEnd ,  canvas) {
+	dif = 7 ; 
+
+	if (y < yEnd )
+		dat =[ [ x , y ],  [x, yEnd - dif ]   , [ x + dif, yEnd]  ,  [xEnd , yEnd]  ];
+	else {
+		dat =[ [ x , y ],  [x , yEnd + dif]   , [ x + dif , yEnd]  ,  [xEnd , yEnd]  ];
+	}
+
+	var line = d3.line()
+					.x(function(d) { return d[0] ; })
+					.y(function(d) { return d[1] ; })
+					.curve(d3.curveCardinal.tension(0.8))
+	;
+	canvas.append("path")
+		.style("fill","none")
+		.style("stroke","gray")
+		.style("stroke-width","2px")
+		.attr("class", "curveLine")
+		.attr("d",function(d,i){ return line(dat); })
+	;
+}
+
+
+function currencySwap(d){
+    return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")  + " тыс. руб." ;
 }
 
 
 
+
 data2 = countInnerDataForPie(data2);
+	// data2.sort(function(x, y){
+	// 		return d3.ascending(x.sum, y.sum);
+	// 	})
 g = svg.append('g')
 		.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")") 
 		.attr("class" , "donut"); 
@@ -144,16 +230,9 @@ innerDonut = g.append("g")
 
 
 outerPie(data2 );
-innerPie(data2, 0);
-innerPie(data2, 1);
-innerPie(data2, 2);
-
-sticks(data2);
-
-
-
-
-
+innerPie(data2, 0 , 1);
+innerPie(data2, 1 , 0);
+innerPie(data2, 2 , 0);
 
 
 

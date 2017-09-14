@@ -1,3 +1,5 @@
-@CHARSET "UTF-8";
-
-
+.gist {
+	fill:none;
+	stroke-width: 3;
+	stroke:#acc;
+}
