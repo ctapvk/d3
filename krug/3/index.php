@@ -36,10 +36,10 @@ var data = [{"letter":"10%", "presses":2, "legend":"Россельхоз",  "sum
 		    {"letter":"19%", "presses":2, "legend":"Росавтодор", "summa":"3 674 тыс.руб", "color":"#17905B", "text" : ["Комитет строительства ВО 10%",
                                                                    "Комитет по обеспечению безопасности жизнедеятельности населения ВО 5%",
 																   "Комитет жилищно - комунального хозяйства и топливно энергитического комплекса ВО 15%"]},
-		    {"letter":"9%", "presses":2, "legend":"Минэнерго", "summa":"3 674 тыс.руб", "color":"#706FC2", "text" : ["Комитет строительства ВО 10%",
+		    {"letter":"9%", "presses":2, "legend":"Минэнерго 2", "summa":"3 674 тыс.руб", "color":"#706FC2", "text" : ["Комитет строительства ВО 10%",
                                                                    "Комитет по обеспечению безопасности жизнедеятельности населения ВО 5%",
 																   "Комитет жилищно - комунального хозяйства и топливно энергитического комплекса ВО 15%"]},
-		    {"letter":"3", "presses":2, "legend":"Россвязь", "summa":"3 674 тыс.руб", "color":"#43CFA2", "text" : ["Комитет строительства ВО 10%",
+		    {"letter":"3", "presses":2, "legend":"Россвязь 2", "summa":"3 674 тыс.руб", "color":"#43CFA2", "text" : ["Комитет строительства ВО 10%",
                                                                    "Комитет по обеспечению безопасности жизнедеятельности населения ВО 5%",
 																   "Комитет жилищно - комунального хозяйства и топливно энергитического комплекса ВО 15%"]},
 		    {"letter":"2", "presses":2, "legend":"Иные", "summa":"3 674 тыс.руб", "color":"#C2BEC3", "text" : ["Комитет строительства ВО 10%",
@@ -118,18 +118,6 @@ function drawComplex(startAngle = null, endAngle = null, colo = null, slide = 0)
 				document.getElementById("pie").innerHTML = "";
 				drawComplex(d.startAngle, d.endAngle, d.data.color);
 			}
-			else if(isInside(backward_rect, d3.event.clientX - 8, d3.event.clientY - 8)) {
-				if(slide > 0) {
-					document.getElementById("pie").innerHTML = "";
-					drawComplex(startAngle, endAngle, colo, slide - 1);
-				}
-			}
-			else if(isInside(forward_rect, d3.event.clientX - 8, d3.event.clientY - 8)) {
-				if(slide < data[currentIndex].text.length - 3) {
-					document.getElementById("pie").innerHTML = "";
-					drawComplex(startAngle, endAngle, colo, slide + 1);
-				}
-			}
 		});
 
 	var	overlapping = Math.floor(outer * 0.6);
@@ -204,7 +192,13 @@ function drawComplex(startAngle = null, endAngle = null, colo = null, slide = 0)
 					.attr("stroke-width", 2)
 					.attr("fill", "white")
 					.attr('d', context_1.toString())
-					.attr("transform", "translate(-" + radius * 2 + ", 50)");							
+					.attr("transform", "translate(-" + radius * 2 + ", 50)")
+					.on("click",function(d) {
+						if(slide > 0) {
+							document.getElementById("pie").innerHTML = "";
+							drawComplex(startAngle, endAngle, colo, slide - 1);
+						}
+					});							
 							
 	var forward = g.append('path')
 					.attr('class', 'link')
@@ -212,22 +206,14 @@ function drawComplex(startAngle = null, endAngle = null, colo = null, slide = 0)
 					.attr("stroke-width", 2)
 					.attr("fill", "white")
 					.attr('d', context_2.toString())
-					.attr("transform", "translate(" + (radius * 2 - 10) + ", 50)");							
-	
-	var backward_rect = {
-            x: center[0] - radius * 2,
-            y: center[1] + overlapping + 310,
-            width: 10,
-            height: 10
-    };
-	
-	var forward_rect = {
-            x: center[0] + radius * 2 - 10,
-            y: center[1] + overlapping + 310,
-            width: 10,
-            height: 10
-    };
-	
+					.attr("transform", "translate(" + (radius * 2 - 10) + ", 50)")
+					.on("click",function(d) {
+						if(slide < data[currentIndex].text.length - 3) {
+							document.getElementById("pie").innerHTML = "";
+							drawComplex(startAngle, endAngle, colo, slide + 1);
+						}
+					});							
+
 	var slide_width = 60;
 	var step = 0;
 	if(data[currentIndex].text.length <= 3) slide_width = radius * 4 - 20;
@@ -263,7 +249,24 @@ function drawComplex(startAngle = null, endAngle = null, colo = null, slide = 0)
 		.selectAll("g")
 		.data(keys.slice())
 		.enter().append("g")
-		.attr("transform", function(d, i) { if(i < 7) { col = 0; oi = 0;} else { col = 200; oi = 7 } return "translate(" + col + "," + (i - oi) * 60 + ")"; });
+		.attr("transform", function(d, i) { if(i < 7) { col = 0; oi = 0;} else { col = 200; oi = 7 } return "translate(" + col + "," + (i - oi) * 60 + ")"; })
+		.on("click",function(d) {
+			var seach = d.split(':');
+			var startAngle = 0;
+			var endAngle = 0;
+			var cl = 0;
+			pie.forEach(function(item, i, pie) {
+  				if(item.data.legend == seach[0] && item.data.summa == seach[1]) {
+  					startAngle = item.startAngle;
+  					endAngle = item.endAngle;
+  					cl = item.data.color;
+  				}
+			});
+			if(startAngle != 0 || endAngle != 0) {
+				document.getElementById("pie").innerHTML = "";
+				drawComplex(startAngle, endAngle, cl);
+			}
+		});
 
 	legend.append("rect")
 		.attr("x", 360)
@@ -281,7 +284,7 @@ function drawComplex(startAngle = null, endAngle = null, colo = null, slide = 0)
 		.attr('x', 400)
 		.attr('dy', 20)
 		.text(function(d) { return d.split(":")[1]; });
-		
+
 //= = = =		
 		
 }	
@@ -309,10 +312,6 @@ function wrap(text, width) {
     }
 }
 
-
-function isInside(zone, x, y) {
-	if(x >= zone.x && x <= zone.x + zone.width && y >= zone.y && y <= zone.y + zone.height) return true;
-}
 
 
 drawComplex();
