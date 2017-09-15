@@ -104,9 +104,11 @@ function innerPie(data , index , showLegend){
 			.on("mouseout",function() { d3.select("#tooltip").classed("hidden", true);  })
 	;
 
-	if (showLegend ==1) {
+	if (data2[index].startAngle > 3 ) {
+		coord = [-250  , -180 - lstLeft] ; 
+	} else 
+		coord = [250  , -180] ;
 
-	coord = [250 , -180] ; 
 	coordArr = new Array();
 	legendCaption = donut.append("g")
 							.attr("class" , "legendCaption")
@@ -120,26 +122,43 @@ function innerPie(data , index , showLegend){
 										return "translate(" + [ coord[0] , coord[1]+9 ]  + ")"; 
 									})
 	;
-	d3.selectAll(".dotLegend").attr("ad", function(d) {console.log(d)}) ; 
+	dd = legend.data();
 
-	legenda(index);
-	arc.append("circle")
-			.attr("transform" ,function(d , i) { return "translate(" + label.centroid(d) + ")";
-			}) 
-			.attr("r",6)
-			.attr("class", "whiteDot")
-			.attr("fill", "white")
-	;
-	arc.append("circle")
-				.attr("transform" ,function(d , i) {
-					drawLineConnection( label.centroid(d)[0],  label.centroid(d)[1] , coordArr[i][0] ,coordArr[i][1] , g);  
-					return "translate(" + label.centroid(d) + ")"; 
-				})
-				.attr("r",3)
-				.attr("fill", function(d) {   return red(d3.values(d.data)); })
-	;
+	if (showLegend ==1) {
+
+		if (coord[0]<0 ) legendaLeft(index); else legenda(index);
+		g3 = g.append("g").attr("class" , "lineConn");
+		for (dat in dd ){
+			drawLineConnection( label.centroid(dd[dat])[0],  label.centroid(dd[dat])[1] , coordArr[dat][0] ,coordArr[dat][1] , g3);  
+		}
+		drawInnerPieDots();
+
 	}
 
+
+	function drawInnerPieDots(){
+		whiteG = g.append("g").attr("class" , "dots");
+		var whiteDdd = whiteG.selectAll(".whiteDdd")
+							.data(pie(data[index].value)).enter()
+								.append("g")
+								.attr("class", "whiteDdd")
+		;
+
+
+		whiteDdd.append("circle")
+				.attr("transform" ,function(d , i) { return "translate(" + label.centroid(dd[i]) + ")";
+				})
+				.attr("r", + prop["радиус белых кружков"])
+				.attr("class", "whiteDot")
+				.attr("fill", "white")
+		;
+		whiteDdd.append("circle")
+					.attr("transform" ,function(d , i) { return "translate(" + label.centroid(dd[i]) + ")"; })
+					.attr("r", + prop["радиус белых кружков"]-2)
+					.attr("fill", function(d) {   return prop.colorsLeft[index]; })
+					// .attr("fill", function(d) {   return red(d3.values(d.data)); })
+		;
+	}
 }
 
 function legenda(index){
@@ -156,8 +175,8 @@ function legenda(index){
 	legendCaption.append("rect")
 		  .attr("transform", function(d) {  return "translate( 0,-3)"; } )
 		  .attr("fill" , prop.colorsLeft[index] )
-		  .attr("width" ,20)
-		  .attr("height" ,20)
+		  .attr("width" ,prop.rect)
+		  .attr("height" , prop.rect)
 	;
 
 	legendCaption.append("text")
@@ -179,16 +198,62 @@ function legenda(index){
 	;
 	legend.append("rect")
 		  .attr("transform", function(d) {  return "translate( 0,-10)"; } )
-		  .attr("fill" , function(d) { return  red(d3.values(d.data)); })
-		  .attr("width" ,20)
-		  .attr("height" ,20)
+		  .attr("fill" , function(d , i ) {  return  red(d3.values(d.data)); })
+		  .attr("width" ,prop.rect)
+		  .attr("height"  , prop.rect)
+	;
+
+}
+
+function legendaLeft(index){
+
+	lstLeft = -220+coordArr[coordArr.length-1][1];
+	var red = d3.scaleLinear()
+				.domain([0 , (data2[index].sum / 6) ]  )
+				.range(["white" , prop.colorsLeft[index]  ])
+	;
+	legendCaption.append("text")
+			.attr("transform", function(d) {  return "translate( 40,15)"; } )
+			.attr("class" , "legendTextSumLeft")
+			.text(function(d) { return currencySwap(data2[index].sum ); })
+	;
+
+	legendCaption.append("rect")
+		  .attr("transform", function(d) {  return "translate( 50,-3)"; } )
+		  .attr("fill" , prop.colorsLeft[index] )
+		  .attr("width" ,prop.rect)
+		  .attr("height" , prop.rect)
+	;
+
+	legendCaption.append("text")
+			.attr("transform", function(d) { return "translate( 40,0)"; } )
+			.attr("class" , "legendTextLeft")
+			.text(data2[index].name )
+	;
+
+	legend.append("text")
+			.attr("transform", function(d) {  return "translate( -30,-4)"; } )
+			.attr("class" , "legendTextLeft")
+			.text(function(d) { return d3.keys(d.data); })
+	;
+
+	legend.append("text")
+			.attr("transform", function(d) {  return "translate( -30,10)"; } )
+			.attr("class" , "legendTextSumLeft")
+			.text(function(d) { return currencySwap(d3.values(d.data)); })
+	;
+	legend.append("rect")
+		  .attr("transform", function(d) {  return "translate( "+-prop.rect+",-10)"; } )
+		  .attr("fill" , function(d , i ) {  return  red(d3.values(d.data)); })
+		  .attr("width" ,prop.rect)
+		  .attr("height"  , prop.rect)
 	;
 
 }
 
 
 function drawLineConnection(x,y, xEnd , yEnd ,  canvas) {
-	dif = 7 ; 
+	dif = 5 ; 
 
 	if (y < yEnd )
 		dat =[ [ x , y ],  [x, yEnd - dif ]   , [ x + dif, yEnd]  ,  [xEnd , yEnd]  ];
@@ -199,9 +264,11 @@ function drawLineConnection(x,y, xEnd , yEnd ,  canvas) {
 	var line = d3.line()
 					.x(function(d) { return d[0] ; })
 					.y(function(d) { return d[1] ; })
-					.curve(d3.curveCardinal.tension(0.8))
+					// .curve(d3.curveCardinal.tension(0.5))
+					.curve(d3.curveBasis)
 	;
-	canvas.append("path")
+	gg = canvas.append("g").attr("class", "conn") ; 
+	gg.append("path")
 		.style("fill","none")
 		.style("stroke","gray")
 		.style("stroke-width","2px")
@@ -216,22 +283,23 @@ function currencySwap(d){
 }
 
 
-
+lstLeft = 0;
+lstRight = 0;
 
 data2 = countInnerDataForPie(data2);
 	// data2.sort(function(x, y){
 	// 		return d3.ascending(x.sum, y.sum);
 	// 	})
 g = svg.append('g')
-		.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")") 
-		.attr("class" , "donut"); 
+		.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
+		.attr("class" , "pie"); 
 innerDonut = g.append("g")
 				.attr("class", "outerDonut");
 
 
 outerPie(data2 );
 innerPie(data2, 0 , 1);
-innerPie(data2, 1 , 0);
+innerPie(data2, 1 , 1);
 innerPie(data2, 2 , 0);
 
 

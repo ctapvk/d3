@@ -37,9 +37,24 @@ path:hover {
 	font-size:14px ; 
 	fill:#75777D ; 
 }
+.legendTextLeft {
+	text-anchor:end ;
+	dy:0.35em;
+	font-family:sans-serif;
+	font-size:14px ; 
+	fill:#75777D ; 
+}
 
 .legendTextSum {
 	text-anchor:left;
+	dy:0.35em;
+	font-family:sans-serif;
+	font-size:14px ; 
+	fill:black;
+}
+
+.legendTextSumLeft {
+	text-anchor:end;
 	dy:0.35em;
 	font-family:sans-serif;
 	font-size:14px ; 
