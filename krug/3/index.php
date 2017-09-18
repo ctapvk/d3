@@ -3,7 +3,18 @@
 <head>
 <meta charset="utf-8">
 <style>
-
+	div.tooltip {   
+  		position: absolute;           
+  		text-align: center;           
+  		width: 160px;                  
+  		height: 28px;                 
+  		padding-top: 10px;             
+  		font: 12px sans-serif;        
+  		background: lightsteelblue;   
+  		border: 0px;      
+  		border-radius: 8px;           
+  		pointer-events: none;         
+	}
 
 </style>
 </head>
@@ -51,8 +62,13 @@ console.log(data);
 function drawComplex(startAngle = null, endAngle = null, colo = null, slide = 0) {
 	var width = 1200,
 		height = 1600,
-		// Think back to 5th grade. Radius is 1/2 of the diameter. What is the limiting factor on the diameter? Width or height, whichever is smaller 
 		radius = Math.min(width, height) / 8;
+
+	d3.select("div.tooltip").remove();
+
+	var div = d3.select("body").append("div")   
+    		.attr("class", "tooltip")               
+    		.style("opacity", 0);	
 
 	var clr = [];
 	var keys = [];
@@ -118,7 +134,23 @@ function drawComplex(startAngle = null, endAngle = null, colo = null, slide = 0)
 				document.getElementById("pie").innerHTML = "";
 				drawComplex(d.startAngle, d.endAngle, d.data.color);
 			}
-		});
+		})
+	 	.on("mouseover", function(d) {      
+	 		if(Math.sqrt(Math.pow((d3.event.clientX - center[0] - 8),2) + Math.pow((d3.event.clientY - center[1] - 8),2)) < outer) {
+            	div.transition()        
+                	.duration(200)      
+                	.style("opacity", .9);      
+            	div.html(d.data.legend)  
+                	.style("left", (d3.event.pageX) + "px")     
+                	.style("top", (d3.event.pageY - 28) + "px");    
+            }
+        })                  
+        .on("mouseout", function(d) {       
+            div.transition()        
+                .duration(500)      
+                .style("opacity", 0);   
+        });
+
 
 	var	overlapping = Math.floor(outer * 0.6);
 		
@@ -155,12 +187,12 @@ function drawComplex(startAngle = null, endAngle = null, colo = null, slide = 0)
 		wrap(g.append("text")
             // Position in the centre of the shape (vertical position is
             // manually set due to cross-browser problems with baseline)
-            .attr("x", rect.x - rect.width * 1.5 / 2.5)
+            .attr("x", rect.x - rect.width)
             .attr("y", rect.y + 80 )
             .attr("dx", "0em" )
             .attr("dy", "0.32em" )
             // Centre align
-            .style("text-anchor", "end")
+            .style("text-anchor", "middle")
 			.style("overflow-wrap","break-word")
             .style("font-size", "14px")
             .style("font-family", "sans-serif")
@@ -303,7 +335,7 @@ function wrap(text, width) {
     while (word = words.pop()) {
 		line.push(word);
 		tspan.text(line.join(" "));
-		if (tspan.node().getComputedTextLength() > width) {
+		if (tspan.node().getComputedTextLength() > width || /^\d+\%/.test(word)) {
 			line.pop();
 			tspan.text(line.join(" "));
 			line = [word];
