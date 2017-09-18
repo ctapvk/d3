@@ -17,8 +17,34 @@ function showDonut(data){
 														.attr("class", "arc");
 	arc.append("path")
 			.attr("d", path)
-			.attr("fill", function(d , i ) { return prop.colorDonut; });
+			.attr("fill", function(d , i ) { return prop.colorDonut; })
+	;
 
+/*	var gradient =  g.append('linearGradient')
+		.attr('id', 'linear-gradient')
+		.attr('x1', 0)
+		.attr('y1', 0)
+		.attr('x2', '80%')
+		.attr('y2', '100%');
+
+	gradient.append("stop")
+	   .attr('class', 'start')
+	   .attr("offset", "0%")
+	   .attr("stop-color", "#eeeeee")
+	   .attr("stop-opacity", 1);
+
+	gradient.append("stop")
+	   .attr('class', 'end')
+	   .attr("offset", "50%")
+	   .attr("stop-color", "#eaeaea")
+	   .attr("stop-opacity", 1);
+
+	gradient.append("stop")
+	   .attr('class', 'end')
+	   .attr("offset", "100%")
+	   .attr("stop-color", "#b6b6b6")
+	   .attr("stop-opacity", 1);*/
+	
 	
 }
 

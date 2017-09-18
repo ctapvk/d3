@@ -1,7 +1,7 @@
 prop = {
-	"font-size":"15" , 
-    "widthScale": 800, 
-    "spaceBetween": 30
+    "spaceBetween": 30,
+    "colorLeftBar" : "#2E78AA",
+    "colorRigthBar" :"#96C5E6" 
 }
 
 

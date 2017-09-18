@@ -94,7 +94,7 @@ function insertBarFields(){
 
 
 function showXAxis(){
-  var lineData = [ { "x": 0,   "y": 0},  { "x": width,  "y": 0}];
+  var lineData = [ { "x": 0,   "y": 0},  { "x": width + prop.spaceBetween,  "y": 0}];
   var lineFunction = d3.line()
 						  .x(function(d) { return d.x; })
 						  .y(function(d) { return d.y; });
@@ -217,7 +217,7 @@ function showInfo(barSize){
 		  .attr("x", function(d) {
 				//console.log("x=" + x1(d.code % 2));
 				if (d.code % 2) razz = prop.spaceBetween ; else razz = prop.spaceBetween*1.5  ; 
-				return x1(d.code % 2)  + barSize/ 2  +razz -10 ; }
+				return x1(d.code % 2)  + barSize/ 2  +razz -7 ; }
 			   )
 		  .attr("y", function(d) {
 				//console.log("y=" + y(d.value));
@@ -317,7 +317,7 @@ function currencySwap(d){
 
 
 var svg = d3.select("svg"),
-	margin = {top: 20, right: 20, bottom: 70, left: 80},
+	margin = {top: 20, right: 20, bottom: 70, left: 120},
 	width = + svg.attr("width") - margin.left - margin.right,
 	height = + svg.attr("height") - margin.top - margin.bottom,
 
@@ -332,7 +332,7 @@ var x0 = d3.scaleBand()
 
 var x1 = d3.scaleLinear().rangeRound([0, width]);
 var y = d3.scaleLinear().rangeRound([height, 0]);
-var z = d3.scaleOrdinal().range([ "#2E78AA", "#5095C3"]);
+var z = d3.scaleOrdinal().range([ prop.colorLeftBar , prop.colorRigthBar ]);
 
 data = data2 ; 
 
@@ -356,5 +356,5 @@ showRects(barSize);
 showInfo(barSize);
 showGridForX(barSize);
 
-  
+
   
