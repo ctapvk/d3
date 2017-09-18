@@ -1,0 +1,18 @@
+.gridX {
+	/*text-anchor :middle ; */
+	fill :gray ; 
+	/*font-weight :bold;*/
+	font-size:14 ; 
+	font-family: sans-serif;
+	dominant-baseline : central ; 	
+}
+
+
+
+.info {
+	fill :gray ; 
+	text-anchor :middle ; 
+	font-size:14 ; 
+	font-family: sans-serif;
+	dominant-baseline : central ; 	
+}

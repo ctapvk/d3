@@ -221,7 +221,7 @@ function showInfo(barSize){
 			   )
 		  .attr("y", function(d) {
 				//console.log("y=" + y(d.value));
-				return y(d.value) - 5; }
+				return y(d.value) - 10; }
 			  )
 		  .attr("width", barSize)
 		  .attr("text-anchor", "middle")
