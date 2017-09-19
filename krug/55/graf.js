@@ -150,8 +150,7 @@ function innerPie(data , index , showLegend){
 	}
 }
 
-function legenda(index){
-	console.log(222);
+function legenda(index){ 
 	var red = d3.scaleLinear()
 				.domain([0 , (data2[index].sum / 6) ]  )
 				.range(["white" , prop.colorsLeft[index]  ])
@@ -195,9 +194,7 @@ function legenda(index){
 
 }
 
-function legendaLeft(index){
-
-	console.log(123);
+function legendaLeft(index){ 
 	var red = d3.scaleLinear()
 				.domain([0 , (data2[index].sum / 6) ]  )
 				.range(["white" , prop.colorsLeft[index]  ])
@@ -287,6 +284,9 @@ innerDonut = g.append("g")
 
 for (i in data2)
 	data2[i].value.sort(function(x, y){ return d3.ascending(d3.values(x), d3.values(y)); }) ;
+
+	data2[1].value.sort(function(x, y){ return  d3.values(y) - d3.values(x) }) ;
+	data2[2].value.sort(function(x, y){ return  d3.values(y) - d3.values(x) }) ;
 
 
 

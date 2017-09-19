@@ -19,18 +19,18 @@ function countInnerDataForPie(d){
 	}
 	return d
 }
-radius = 100 ;
+
 function showPieLeft(data){
 	
 	var pie = d3.pie().sort(null).value(function(d) {
 		return d['sum'];
 	});
 	var path = d3.arc()
-					.outerRadius(radius)
-					.innerRadius(40);
+					.outerRadius(+prop['радиус'])
+					.innerRadius( +prop['белая дырка внутри'] );
 	var label = d3.arc()
-					.outerRadius( radius )
-					.innerRadius(radius / 3.5);
+					.outerRadius( +prop['радиус'] )
+					.innerRadius( +prop['радиус'] / 3.5);
 	
 	var arc = innerDonut.selectAll(".arc")
 								.data(pie(data)).enter().append("g")
@@ -72,11 +72,11 @@ function showPiePercents(data , index){
 				.endAngle(data[index].endAngle) ;
 	
 	var path = d3.arc()
-					.outerRadius(radius + radiusPlus)
-					.innerRadius(radius + 5 ) ;
+					.outerRadius(+prop['радиус'] + +prop['радиус гребешка'])
+					.innerRadius(+prop['радиус'] + 5 ) ;
 	var label = d3.arc()
-					.outerRadius( radius )
-					.innerRadius(radius +radiusPlus + 90);
+					.outerRadius( +prop['радиус'] )
+					.innerRadius( +prop['радиус'] + +prop['белая дырка внутри'] + +prop['радиус легенды гребешка']);
 	var arc = donut.selectAll(".arc")
 						.data(pie(data[index].value)).enter().append("g")
 							.attr("class", "arc");
@@ -98,6 +98,8 @@ function showPiePercents(data , index){
 }
 
 
+for (i in data2)
+	data2[i].value.sort(function(x, y){ return d3.ascending(d3.values(y), d3.values(x)); }) ;
 
 data2 = countInnerDataForPie(data2);
 g = svg.append('g')
@@ -121,7 +123,9 @@ function accr(){
 		rect5 = '<svg style="  top: 10; position: relative; " width="30" height="30"> '+
 		'<rect width="20" height="20" transform="translate(5,5)" style="fill:'+ prop.colorsLeft[i] +'; " /> </svg>';
 
-		document.write('<button class="accordion" count='+i+'>' +rect5 +data2[i].name + '</button> ');
+		document.write('<button class="accordion" count='+i+'>' );
+		document.write(' <div class="arrow right" id="arrToog'+ i  +'"> </div>' );
+		document.write( rect5 +data2[i].name + '</button> ' );
 		document.write('<div class="panel">');
 		for (dat in data2[i].value) {
 			rect5 = '<svg style="  top: 10; position: relative; " width="30" height="30"> '+
@@ -139,7 +143,10 @@ function accr(){
 	  acc[i].onclick = function() {
 	    this.classList.toggle("active");
 	    showPiePercents(data2 , this.getAttribute("count"));
-	    
+
+	    console.log(  );
+	    document.getElementById("arrToog"+this.getAttribute("count") ).classList.toggle("right");
+
 	    if ( (this.className).indexOf("active") == -1) {
 	    	d3.selectAll("g .donut").remove();
 	    }

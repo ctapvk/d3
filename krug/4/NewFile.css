@@ -1,5 +1,5 @@
 button.accordion {
-    background-color: #eee;
+    background-color: white;
     color: #444;
     cursor: pointer;
     padding: 18px;
@@ -12,7 +12,7 @@ button.accordion {
 }
 
 button.accordion.active, button.accordion:hover {
-    background-color: #ddd;
+    /*background-color: #ddd;*/
 }
 
 div.panel {
@@ -21,17 +21,70 @@ div.panel {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.2s ease-out;
+    padding-left: 71px;
 }
 
 div.accord {
 	position: absolute;
 	top: 100px;
-	left : 600px;
-	
-	
+	left : 600px; 
 }
 
 .svgcap {
 	position: relative;
     top: 10;
 }
+
+
+
+.arrow{
+  width: 0px;
+  height: 0px;
+  border: 10px solid transparent;
+  border-top-color: gray;
+  margin: 0;
+  padding: 0; 
+  float: left;
+  position: relative;
+  top: 15px;
+  left: -5px;
+}
+.arrow:before{
+  content:'';
+  width: 0px;
+  height: 0px;
+  border: 15px solid transparent;
+  border-top-color: white;
+  display: inline-block;
+  -webkit-transform: translate(-15px, -18px);
+}
+.arrow.left{
+  transform: rotate(90deg) translate(0px, 5px);
+  -webkit-transform: rotate(90deg) translate(0px, 5px);
+  -moz-transform: rotate(90deg) translate(0px, 5px);
+  -o-transform: rotate(90deg) translate(0px, 5px);
+  -ms-transform: rotate(90deg) translate(0px, 5px);
+}
+.arrow.down{
+  transform: rotate(0deg) translate(0px, 5px);
+  -webkit-transform: rotate(0deg) translate(0px, 5px);
+  -moz-transform: rotate(0deg) translate(0px, 5px);
+  -o-transform: rotate(0deg) translate(0px, 5px);
+  -ms-transform: rotate(0deg) translate(0px, 5px);
+}
+.arrow.up{
+  transform: rotate(180deg) translate(0px, 5px);
+  -webkit-transform: rotate(180deg) translate(0px, 5px);
+  -moz-transform: rotate(180deg) translate(0px, 5px);
+  -o-transform: rotate(180deg) translate(0px, 5px);
+  -ms-transform: rotate(180deg) translate(0px, 5px) translate(0px, 5px);
+}
+.arrow.right{
+  transform: rotate(270deg) translate(0px, 5px);
+  -webkit-transform: rotate(270deg) translate(0px, 5px);
+  -moz-transform: rotate(270deg) translate(0px, 5px);
+  -o-transform: rotate(270deg) translate(0px, 5px);
+  -ms-transform: rotate(270deg) translate(0px, 5px);
+}
+
+
