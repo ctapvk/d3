@@ -79,9 +79,6 @@ function insertBarFields(){
 	     var rect = document.createElementNS("http://www.w3.org/2000/svg","rect");
 		   this.append(rect);
 		   rect.setAttribute("class","bar");
-       rect = document.createElementNS("http://www.w3.org/2000/svg","rect");
-       this.append(rect);
-       rect.setAttribute("class","undertext");
 		   var txt = document.createElementNS("http://www.w3.org/2000/svg","text");
 		   this.append(txt);
 		   txt.setAttribute("class","info");
@@ -254,9 +251,9 @@ function showInfo(barSize){
                )
         .attr("y", function(d) {
             if (d.code % 2 == 0)
-                return y(d.value) - 10;
+                return y(d.value) - 5;
             else
-                return y(d.value) - 25;
+                return y(d.value) + 25;
         })
         .attr("fill", function (d){
             if (d.code % 2 != 0)
@@ -268,25 +265,22 @@ function showInfo(barSize){
         .attr("text-anchor", "middle")
         .attr("class", "planGistLabel")
         .text(function (d){return d.value});
-  g.selectAll(".undertext")
-      .attr("x", function(d) {
-          if (d.code % 2 != 0) return barSize * 1.15;
-      })
-      .attr("y", function(d) {
-          if (d.code % 2 != 0) return y(d.value) - 39;
-      })
-      .attr("fill", function(d) {
-          if (d.code % 2 != 0) return "#dadfe6";
-      })
-      .attr("width", function(d) {
-          if (d.code % 2 != 0) return "80";
-      })
-      .attr("height", function(d) {
-          if (d.code % 2 != 0) return "28";
-      })
-      .attr("drop-shadow", function(d) {
-          if (d.code % 2 != 0) return "0px 0px 3px #8a8a8a";
-      });
+    /*g.selectAll(".undertext")
+        .attr("x", function(d) {
+            if (d.code % 2 == 0) return barSize/ 2;
+        })
+        .attr("y", function(d) {
+            if (d.code % 2 == 0) return y(d.value);
+        })
+        .attr("color", function(d) {
+            if (d.code % 2 == 0) return "red";
+        })
+        .attr("width", function(d) {
+            if (d.code % 2 == 0) return "60";
+        })
+        .attr("height", function(d) {
+            if (d.code % 2 == 0) return "20";
+        });*/
 }
 
 function wrap(text, width) {
@@ -374,8 +368,7 @@ function showLegend() {
 	      .text(function(d) { return d; });
 }
 
-
-var svg = d3.select("div.svg1").select("svg"),
+var svg = d3.select("div.svg2").select("svg"),
     margin = {top: 20, right: 20, bottom: 70, left: 80},
     width = + svg.attr("width") - margin.left - margin.right,
     height = + svg.attr("height") - margin.top - margin.bottom,
@@ -387,7 +380,7 @@ var x0 = d3.scaleBand()
 
 var x1 = d3.scaleLinear().rangeRound([0, width]);
 var y = d3.scaleLinear().rangeRound([height, 0]);
-var z = d3.scaleOrdinal().range([ "#f3d5a8", "#f5ba63"]);
+var z = d3.scaleOrdinal().range([ "#c79bb0", "#a65e81"]);
 
 
 
