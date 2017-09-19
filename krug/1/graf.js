@@ -17,10 +17,10 @@ function showDonut(data){
 														.attr("class", "arc");
 	arc.append("path")
 			.attr("d", path)
-			.attr("fill", function(d , i ) { return prop.colorDonut; })
+			.attr("fill", "url(#linear-gradient)")
 	;
 
-/*	var gradient =  g.append('linearGradient')
+	var gradient =  g.append('linearGradient')
 		.attr('id', 'linear-gradient')
 		.attr('x1', 0)
 		.attr('y1', 0)
@@ -43,7 +43,7 @@ function showDonut(data){
 	   .attr('class', 'end')
 	   .attr("offset", "100%")
 	   .attr("stop-color", "#b6b6b6")
-	   .attr("stop-opacity", 1);*/
+	   .attr("stop-opacity", 1);
 	
 	
 }

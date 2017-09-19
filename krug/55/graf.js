@@ -59,7 +59,7 @@ function outerPie(data){
 
 function innerPie(data , index , showLegend){
 	var red = d3.scaleLinear()
-					.domain([0 , (data[index].sum / 6) ]  )
+					.domain([0 , (data[index].sum / +prop['количество градиента']) ]  )
 					.range(["white" , prop.colorsLeft[index]  ]);	
 
 	donut = g.append("g").attr("class", "donut");
@@ -152,7 +152,7 @@ function innerPie(data , index , showLegend){
 
 function legenda(index){ 
 	var red = d3.scaleLinear()
-				.domain([0 , (data2[index].sum / 6) ]  )
+				.domain([0 , (data2[index].sum / +prop['количество градиента']) ]  )
 				.range(["white" , prop.colorsLeft[index]  ])
 	;
 	legendCaption.append("text")
@@ -177,7 +177,7 @@ function legenda(index){
 	legend.append("text")
 			.attr("transform", function(d) {  return "translate( 30,-4)"; } )
 			.attr("class" , "legendText")
-			.text(function(d) { return d3.keys(d.data); })
+			.text(function(d) { return cutLongText(d3.keys(d.data).toString() ) ; })
 	;
 
 	legend.append("text")
@@ -196,7 +196,7 @@ function legenda(index){
 
 function legendaLeft(index){ 
 	var red = d3.scaleLinear()
-				.domain([0 , (data2[index].sum / 6) ]  )
+				.domain([0 , (data2[index].sum / +prop['количество градиента']) ]  )
 				.range(["white" , prop.colorsLeft[index]  ])
 	;
 	legendCaption.append("text")
@@ -221,7 +221,7 @@ function legendaLeft(index){
 	legend.append("text")
 			.attr("transform", function(d) {  return "translate( -30,-4)"; } )
 			.attr("class" , "legendTextLeft")
-			.text(function(d) { return d3.keys(d.data); })
+			.text(function(d) { return cutLongText(d3.keys(d.data).toString()); })
 	;
 
 	legend.append("text")
@@ -269,6 +269,12 @@ function currencySwap(d){
     return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")  + " тыс. руб." ;
 }
 
+function cutLongText (str) { 
+	if (str.length > 25)
+		return str.substr(0,25) + "..." ;
+	else
+		return str ;
+}
 
 lstLeft = 0;
 lstRight = 0;
