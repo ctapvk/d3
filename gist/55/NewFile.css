@@ -1,0 +1,40 @@
+.gist {
+	fill:none;
+}
+
+.asisXmounthText {
+	text-anchor :middle ; 
+	font-family: sans-serif;
+	fill : gray ; 
+	/*font-weight :bold;*/
+	font-size:14 ; 
+	dominant-baseline : central ; 
+}
+
+.asisYcapiton {
+	font-size:18px ; 
+	fill :#aDa5aE ; 
+	dominant-baseline : central ; 
+	text-anchor :end ;
+}
+
+.rectsBar{
+	stroke-width: 2px;
+	stroke:white;
+
+}
+
+.legendText {
+	text-anchor:left ;
+	dy:0.35em;
+	font-family:sans-serif;
+	font-size:14px ; 
+	fill:#75777D ; 
+}
+.legendTextRigth {
+	text-anchor:end ;
+	dy:0.35em;
+	font-family:sans-serif;
+	font-size:14px ; 
+	fill:#75777D ; 
+}
