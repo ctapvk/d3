@@ -150,7 +150,7 @@ function innerPie(data , index , showLegend){
 	}
 }
 
-function legenda(index){ 
+function legenda(index){
 	var red = d3.scaleLinear()
 				.domain([0 , (data2[index].sum / +prop['количество градиента']) ]  )
 				.range(["white" , prop.colorsLeft[index]  ])
@@ -240,13 +240,13 @@ function legendaLeft(index){
 
 
 function drawLineConnection(x,y, xEnd , yEnd ,  canvas) {
-	dif = 5 ; 
+	dif = 5 ;
 
-	if (y < yEnd )
-		dat =[ [ x , y ],  [x, yEnd - dif ]   , [ x + dif, yEnd]  ,  [xEnd , yEnd]  ];
-	else {
-		dat =[ [ x , y ],  [x , yEnd + dif]   , [ x + dif , yEnd]  ,  [xEnd , yEnd]  ];
-	}
+    if (y < yEnd )
+        dat =[ [ x , y ],  [x, yEnd - dif ]   , [ x + dif, yEnd]  ,  [xEnd , yEnd]  ];
+    else {
+        dat =[ [ x , y ],  [x , yEnd + dif]   , [ x + dif , yEnd]  ,  [xEnd , yEnd]  ];
+    }
 
 	var line = d3.line()
 					.x(function(d) { return d[0] ; })
