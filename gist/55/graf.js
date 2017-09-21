@@ -4,6 +4,12 @@ heightSvg = +svg.attr("height");
 width = +svg.attr("width") - +(prop.paddingLeft) - +prop.paddingRight;
 height = +svg.attr("height") - +(prop.paddingBottom);
 
+asisY = svg.append("g")
+				.attr("class", "asisY")
+				.attr("transform", "translate("+[0,  0  ]+")")
+				.attr("width" ,  +prop.paddingLeft)
+				.attr("height" , height)
+;
 gist = svg.append("g")
 				.attr("class", "gist")
 				.attr("transform", "translate("+[ +prop.paddingLeft,  height  ]+")")
@@ -15,12 +21,6 @@ asisX = svg.append("g")
 				.attr("transform", "translate("+[ +prop.paddingLeft,  heightSvg  ]+")")
 				.attr("width" ,  width)
 				.attr("height" , heightSvg - height)
-;
-asisY = svg.append("g")
-				.attr("class", "asisY")
-				.attr("transform", "translate("+[0,  0  ]+")")
-				.attr("width" ,  +prop.paddingLeft)
-				.attr("height" , height)
 ;
 
 y = d3.scaleLinear()
@@ -85,7 +85,7 @@ function draw(canvas) {
 						.attr("class" , "legLeft")  
 			; 
 
-			leftSideConn( x(i)+22, sumRect-rectHeight*0.5 +y(100) ,   0 ,  height + 40 + count*15  ,  legLeft   , count) ; 
+			leftSideConn( x(i)+22, sumRect-rectHeight*0.5 +y(100) ,   0 ,  height + 40 + count*15 +1 ,  legLeft   , count) ; 
 
 			whiteDdd = legLeft.append("g")
 						.attr("class" , "leftDots") 
@@ -123,7 +123,7 @@ function draw(canvas) {
 						.attr("class" , "legLeft")  
 			; 
 
-			rigthSideConn( x(i) + barSize- 22, sumRect-rectHeight*0.5 +y(100) ,   width ,  height + 40 + count*15  ,  legLeft   , count) ; 
+			rigthSideConn( x(i) + barSize- 22, sumRect-rectHeight*0.5 +y(100) ,   width ,  height + 40 + count*15 +1 ,  legLeft   , count) ; 
 
 			whiteDdd = legLeft.append("g")
 						.attr("class" , "leftDots") 
@@ -180,9 +180,6 @@ di = prop.paddingLeft - i*10 ;
 	;
 	gg = canvas.append("g").attr("class", "conn") ; 
 	gg.append("path")
-		.style("fill","none")
-		.style("stroke","gray")
-		.style("stroke-width","2px")
 		.attr("class", "curveLine")
 		.attr("d",function(d,i){ return line(dat); })
 	;
@@ -209,9 +206,6 @@ function rigthSideConn(x,y, xEnd , yEnd ,  canvas , i) {
 	;
 	gg = canvas.append("g").attr("class", "conn") ; 
 	gg.append("path")
-		.style("fill","none")
-		.style("stroke","gray")
-		.style("stroke-width","2px")
 		.attr("class", "curveLine")
 		.attr("d",function(d,i){ return line(dat); })
 	;
@@ -254,12 +248,6 @@ function drawAsisX(canvas) {
 						.attr("transform" , function(d) { return "translate(" + [ barSize/2 ,  25 ] + ")" })
 						.attr("class" , "asisXmounthText")
 						.text( function(d){ return dat.year  })
-				;
-				line = d3.line().x(function(d){return d[0]}).y(function(d){return d[1]});
-				text.append("path")
-							.attr("d",line( [  [0,0] , [0,-height]  ] ))
-							.attr("stroke-width",2)
-							.attr("stroke" , "#acc")
 				;
 
 			}) ;

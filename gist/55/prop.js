@@ -10,7 +10,7 @@ prop = {
     "paddingBottom" : "250"  , 
     "moveMounth":"-5" , 
     "gistPadding": "50" , 
-    "радиус белых кружков" : 7
+    "радиус белых кружков" : 4
 }
 
 data3 = [
