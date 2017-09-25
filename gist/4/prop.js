@@ -8,7 +8,8 @@ prop = {
     "paddingLeft" : "120" , 
     "paddingBottom" : "150"  , 
     "moveMounth":"15" , 
-    "gistPadding": "30"
+    "gistPadding": "30" ,
+    "backColor": "#F8F9FA"
 }
 
 data = [

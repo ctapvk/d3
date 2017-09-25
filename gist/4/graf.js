@@ -4,17 +4,17 @@ heightSvg = +svg.attr("height");
 width = +svg.attr("width") - +(prop.paddingLeft);
 height = +svg.attr("height") - +(prop.paddingBottom);
 
+asisX = svg.append("g")
+    .attr("class", "asisX")
+    .attr("transform", "translate("+[ widthSvg- width,  height  ]+")")
+    .attr("width" ,  width)
+    .attr("height" , heightSvg - height)
+;
 gist = svg.append("g")
 				.attr("class", "gist")
 				.attr("transform", "translate("+[ widthSvg- width,  height  ]+")")
 				.attr("width" , width)
 				.attr("height" , height)
-;
-asisX = svg.append("g")
-				.attr("class", "asisX")
-				.attr("transform", "translate("+[ widthSvg- width,  height  ]+")")
-				.attr("width" ,  width)
-				.attr("height" , heightSvg - height)
 ;
 asisY = svg.append("g")
 				.attr("class", "asisY")
@@ -30,16 +30,16 @@ y = d3.scaleLinear()
 		.range([  height ,0   ])
 ;
 
-console.log([max ,  min]);
+// console.log([max ,  min]);
 x = d3.scaleLinear()
 		.domain([0  , data.length] )
 		.range([ +prop.gistPadding ,  width   ])
 ;
-barSize = width / data.length  - +prop.spaceBetween; 
+barSize = width / data.length  - +prop.spaceBetween;
 
+drawBack(asisX);
 drawAsisY(asisY);
-showLegend(asisX) ; 
-
+showLegend(asisX) ;
 showPlanIn(gist);
 showFactIn(gist);
 showPlanOut(gist);
@@ -113,6 +113,28 @@ function showPlanOut(canvas){
 					.text(-cutLongSum(d.planOut))
 		;
 	});
+}
+
+
+function drawBack(canvas){
+    rects = canvas.append("g").attr("class" , "backRects");
+
+    tis = y.ticks() ;
+    backHei = y( tis[0]) - y( tis[1]) ;
+    tis.forEach(function(d , i){
+        // console.log(y.ticks());
+        if (i %2 ==0) {
+            rectHeight = y(d.planOut);
+            rects.append("rect")
+                .attr("transform", function () {
+                    return "translate( " + [0, y(d) - height] + ")";
+                })
+                .attr("width", width)
+                .attr("height", backHei)
+                .attr("fill", prop.backColor)
+            ;
+        }
+    });
 }
 
 function showFactOut(canvas){
