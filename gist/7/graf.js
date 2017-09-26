@@ -85,6 +85,9 @@ function insertBarFields(){
 		   var txt = document.createElementNS("http://www.w3.org/2000/svg","text");
 		   this.append(txt);
 		   txt.setAttribute("class","info");
+       var line = document.createElementNS("http://www.w3.org/2000/svg","line");
+       this.append(line);
+       line.setAttribute("class", "bridge");
 		   rect = document.createElementNS("http://www.w3.org/2000/svg","rect");
 		   this.append(rect);
 		   rect.setAttribute("class","bar");
@@ -94,6 +97,9 @@ function insertBarFields(){
 		   txt = document.createElementNS("http://www.w3.org/2000/svg","text");
 		   this.append(txt);
 		   txt.setAttribute("class","info");
+       line = document.createElementNS("http://www.w3.org/2000/svg","line");
+       this.append(line);
+       line.setAttribute("class", "bridge");
 		});
 }
 
@@ -201,6 +207,7 @@ function mapRects(){
     rects.data(entries);
     d3.selectAll(".info").data(entries);
     d3.selectAll(".undertext").data(entries);
+    d3.selectAll(".bridge").data(entries);
 }
 
 
@@ -210,21 +217,23 @@ function showRects(barSize){
         .attr("x", function(d) {
             if (d.code % 2 == 0) prevWidth = d.value;
             if (d.code % 2 != 0) {
-                tmp = d.value * 100 / prevWidth;
-                if ( tmp > barSize - 10) return (barSize + 10) / 2;
+                tmp = Math.floor(d.value * 100 / prevWidth);
+                if (tmp >= 95) return (barSize + 10) / 2;
+                if (tmp <= 50) return (barSize / 2) + (barSize - 50) / 2;;
                 return (barSize / 2) + (barSize - tmp) / 2;
             }
             return barSize / 2;
         })
         .attr("y", function(d) {
-            //console.log("y=" + y(d.value));
+            if (height - y(d.value) <= 15) return height - 15;
             return y(d.value);
             })
         .attr("width", function(d) {
+          if (d.code % 2 == 0) prevWidth = d.value;
           if (d.code % 2 != 0) {
-              tmp = d.value * 100 / prevWidth;
-              if ( tmp < 46 ) return 46;
-              if ( tmp > barSize - 10) return barSize - 10;
+              tmp = Math.floor(d.value * 100 / prevWidth);
+              if (tmp <= 50) return 50;
+              if ( tmp >= 95) return barSize - 10;
               return tmp;
           } else {
               return barSize;
@@ -234,6 +243,7 @@ function showRects(barSize){
           if (d.code % 2 == 0) {
                 prevHeigth = height - y(d.value);
           }
+          if (height - y(d.value) <= 15) return 15;
           return height - y(d.value);
         })
         .attr("fill", function(d) { return z(d.key); })
@@ -248,15 +258,16 @@ function showInfo(barSize){
               if (d.code % 2 != 0)
                 return x1(d.code % 2)  + barSize/ 2;
               else {
-                  return (barSize ) ;
+                  return barSize;
               }
-        }
-               )
+        })
         .attr("y", function(d) {
-            if (d.code % 2 == 0)
+            if (d.code % 2 == 0){
                 return y(d.value) - 10;
-            else
+            } else {
+                if (height - y(d.value) <= 15) return y(d.value) - 25 - 15;
                 return y(d.value) - 25;
+            }
         })
         .attr("fill", function (d){
             if (d.code % 2 != 0)
@@ -273,7 +284,10 @@ function showInfo(barSize){
           if (d.code % 2 != 0) return barSize * 1.15;
       })
       .attr("y", function(d) {
-          if (d.code % 2 != 0) return y(d.value) - 39;
+          if (d.code % 2 != 0) {
+            if (height - y(d.value) <= 15) return y(d.value) - 39 - 15;
+            return y(d.value) - 39;
+          }
       })
       .attr("fill", function(d) {
           if (d.code % 2 != 0) return "#dadfe6";
@@ -286,6 +300,31 @@ function showInfo(barSize){
       })
       .attr("drop-shadow", function(d) {
           if (d.code % 2 != 0) return "0px 0px 3px #8a8a8a";
+      });
+  g.selectAll(".bridge")
+      .attr("stroke", function(d) {
+          if (d.code % 2 != 0) return "#dadfe6";
+      })
+      .attr("stroke-width", function(d) {
+          if (d.code % 2 != 0) return "2px";
+      })
+      .attr("x1", function(d) {
+          if (d.code % 2 != 0) return barSize;
+      })
+      .attr("y1", function(d) {
+          if (d.code % 2 != 0) {
+            if (height - y(d.value) <= 15) return y(d.value);
+            return y(d.value) + 15;
+          }
+      })
+      .attr("x2", function(d) {
+          if (d.code % 2 != 0) return barSize * 1.15;
+      })
+      .attr("y2", function(d) {
+          if (d.code % 2 != 0) {
+            if (height - y(d.value) <= 15) return y(d.value) - 11 - 15;
+            return y(d.value) - 11;
+          }
       });
 }
 
