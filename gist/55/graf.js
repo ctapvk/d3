@@ -187,7 +187,7 @@ di = prop.paddingLeft - i*10 ;
 
 function rigthSideConn(x,y, xEnd , yEnd ,  canvas , i) {
 	dif = 15 ; 
-	console.log(x,y, xEnd , yEnd  , i) ; 
+	// console.log(x,y, xEnd , yEnd  , i) ;
 	di = -(prop.paddingLeft - i*10) ;
 	dat =[ 
 		[x , y ], 

@@ -168,7 +168,7 @@ var text = axisY.selectAll("text")
 var textLabels = text
                  .attr("x", function(d) { return d.x_axis-70; })
                  .attr("y", function(d) { return d.y_axis + 5; })
-                 .text( function (d) { return d.text ; })
+                 .text( function (d) { return currencySwap(d.text ); })
                  .attr("font-family", "sans-serif")
                  .attr("font-size", "14px")
                  .attr("fill", "#CDD5DE");
@@ -253,12 +253,18 @@ function showRects(barSize){
 
 
 function showInfo(barSize){
+    e3 = -1;
 	g.selectAll(".info")
         .attr("x", function(d) {
               if (d.code % 2 != 0)
                 return x1(d.code % 2)  + barSize/ 2;
               else {
-                  return barSize;
+                      e3++;
+                      if (data[e3]["План"]<data[e3]["Факт"])
+                          // console.log(d);
+                      return barSize + barSize/ 1.4;
+                        else
+                      return barSize  ;
               }
         })
         .attr("y", function(d) {
@@ -278,7 +284,7 @@ function showInfo(barSize){
         .attr("width", barSize)
         .attr("text-anchor", "middle")
         .attr("class", "planGistLabel")
-        .text(function (d){return d.value});
+        .text(function (d){return currencySwap(d.value ) });
   g.selectAll(".undertext")
       .attr("x", function(d) {
           if (d.code % 2 != 0) return barSize * 1.15;
@@ -411,6 +417,11 @@ function showLegend() {
 	      .attr("y", height + 9.5 + indent + 10)
 	      .attr("dy", "0.32em")
 	      .text(function(d) { return d; });
+}
+
+
+function currencySwap(d){
+    return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")  + "" ;
 }
 
 
