@@ -57,7 +57,7 @@ function outerPie(data){
 
 
 
-function innerPie(data , index , showLegend){
+function innerPie(data , index ){
 	var red = d3.scaleLinear()
 					.domain([0 , (data[index].sum / +prop['количество градиента']) ]  )
 					.range(["white" , prop.colorsLeft[index]  ]);	
@@ -103,11 +103,18 @@ function innerPie(data , index , showLegend){
 	;
 
 	if (data2[index].startAngle > 2  )
-		coord = [-250  , 100] ; 
+		coord = [-250  , -180] ;
 	else 
 		coord = [250  , -180] ;
 
-	if (index ==2) coord[1] += -280; 
+	sumka = 0 ; padd = 45; razz = data2.length - index-1 ;
+	if ( data2[index].startAngle > 2 ) {
+        for (i = index + 1; i < data2.length; i++)
+            sumka += data2[i].value.length;
+        coord[1] +=  sumka * padd + razz * (padd + 10);
+        // console.log(-180 + sumka * padd + razz*padd);
+        // console.log(sumka);
+    }
 	
 	legendCaption = donut.append("g")
 							.attr("class" , "legendCaption")
@@ -118,7 +125,7 @@ function innerPie(data , index , showLegend){
 					.attr("class" , "dotLegend")
 					.attr("transform" , function(d , i ) {  return "translate(" + [ coord[0] , coord[1] + (i+1)*40 +9 ]  + ")";  })
 	;
-	if (showLegend ==1) {
+
 
 		if (coord[0]<0 ) legendaLeft(index); else legenda(index);
 
@@ -147,7 +154,7 @@ function innerPie(data , index , showLegend){
 					.attr("r", + prop["радиус белых кружков"]-2)
 					.attr("fill", function(d) {   return prop.colorsLeft[index]; }) 
 		;
-	}
+
 }
 
 function legenda(index){
@@ -297,9 +304,8 @@ for (i in data2)
 
 
 outerPie(data2 );
-innerPie(data2, 0 , 1);
-innerPie(data2, 1 , 1);
-innerPie(data2, 2 , 1);
+for (let i = 0; i<data2.length; i++)
+	innerPie(data2, i );
 
 
 
