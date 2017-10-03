@@ -1,6 +1,8 @@
 svg = d3.select("svg");
 
 
+data = dataProcc(data);
+
 widthSvg = +svg.attr("width");
 heightSvg = +svg.attr("height");
 width = +svg.attr("width") - +(prop.paddingLeft);
@@ -33,11 +35,19 @@ y = d3.scaleLinear()
 ;
 
 // console.log([max ,  min]);
-x = d3.scaleLinear()
+if ( data.length < 5) {
+	x = d3.scaleLinear()
+			.domain([0  , data.length] )
+			.range([ +prop.gistPadding ,  ( +prop.barSize + +prop.spaceBetween) * data.length   ])
+	;
+	barSize = +prop.barSize ;
+} else {
+	x = d3.scaleLinear()
 		.domain([0  , data.length] )
 		.range([ +prop.gistPadding ,  width   ])
-;
-barSize = width / data.length  - +prop.spaceBetween;
+	;
+	barSize = width / data.length  - +prop.spaceBetween;
+}
 
 drawBack(asisX);
 drawAsisY(asisY);
@@ -80,6 +90,7 @@ function drawAsisY(canvas) {
 	;
 
 	y.ticks().forEach(function(dat , i) {
+			if (i!=y.ticks().length-1) {
 				text = legend.append("g") 
 									.attr("transform" , function(d) { return "translate(" + [0,  y(dat) ] + ")" })	
 				; 
@@ -92,9 +103,15 @@ function drawAsisY(canvas) {
 						.attr("r" , 5)
 						.attr("fill",  "#CDD5DE" )
 				;
+			}
 			})
 	;
 
+    legend.append("text")
+		.attr("class" , "asisYcapiton")
+		.attr("transform" , "translate( "+ [  -10,10 ] +")")
+		.text("млн. руб." )
+	;
 }
 
 function showPlanOut(canvas){
@@ -151,12 +168,7 @@ function showFactOut(canvas){
 				.attr("height" , function() { return -(rectHeight- y(0))  })
 				.attr("fill", prop.colorFactOut)
 		;
-		if (d.factOut != 0)
-		rects.append("text")
-					.attr("class" , "factGistLabel")
-					.attr("transform" , "translate( "+ [  x(i)+ barSize/2  , -height + y(0) -rectHeight + y(0)  - 15 ] +")")
-					.text(-cutLongSum(d.factOut) )
-		;
+
 	});
 }
 
@@ -194,11 +206,7 @@ function showFactIn(canvas){
 				.attr("height" , function() { return -(rectHeight- y(0))  })
 				.attr("fill", prop.colorFactIn)
 		;
-		rects.append("text")
-					.attr("class" , "factGistLabel")
-					.attr("transform" , "translate( "+ [  x(i)+ barSize/2  , -height+rectHeight + 15 ] +")")
-					.text(cutLongSum(d.factIn))
-		;
+
 	});
 }
 
@@ -214,7 +222,7 @@ function showLegend(canvas){
 		;
 	});
 
-	legend = canvas.append("g").attr("transform" , "translate(0,0)");
+	legend = canvas.append("g").attr("transform" , "translate(60,0)");
 
 	inLeg = legend.append("g").attr("transform" , "translate(20,60)");
 	inLeg.append("rect")
@@ -225,7 +233,7 @@ function showLegend(canvas){
 	inLeg.append("text")
 				.attr("transform" , "translate(30 , 15)")
 				.attr("class" , "legend")
-				.text("Привлеченные (План)")
+				.text("Привлеченные")
 	;
 	inLeg = legend.append("g").attr("transform" , "translate(20,100)");
 	inLeg.append("rect")
@@ -236,11 +244,23 @@ function showLegend(canvas){
 	inLeg.append("text")
 				.attr("transform" , "translate(30 , 15)")
 				.attr("class" , "legend")
-				.text("Привлеченные (Факт)")
+				.text("Привлеченные")
 	;
 
 
-	outLeg = legend.append("g").attr("transform" , "translate(250,60)");
+    outLeg = legend.append("g").attr("transform" , "translate(-80,60)");
+    outLeg.append("text")
+        .attr("transform" , "translate(30 , 15)")
+        .attr("class" , "legend")
+        .text("План")
+    ;
+    outLeg.append("text")
+        .attr("transform" , "translate(30 , 55)")
+        .attr("class" , "legend")
+        .text("Факт")
+    ;
+
+	outLeg = legend.append("g").attr("transform" , "translate(200,60)");
 	outLeg.append("rect")
 				.attr("width" , 20)
 				.attr("height" , 20)
@@ -249,9 +269,9 @@ function showLegend(canvas){
 	outLeg.append("text")
 				.attr("transform" , "translate(30 , 15)")
 				.attr("class" , "legend")
-				.text("Погашенные (План)")
+				.text("Погашенные")
 	;
-	outLeg = legend.append("g").attr("transform" , "translate(250,100)");
+	outLeg = legend.append("g").attr("transform" , "translate(200,100)");
 	outLeg.append("rect")
 				.attr("width" , 20)
 				.attr("height" , 20)
@@ -260,10 +280,10 @@ function showLegend(canvas){
 	outLeg.append("text")
 				.attr("transform" , "translate(30 , 15)")
 				.attr("class" , "legend")
-				.text("Погашенные (Факт)")
+				.text("Погашенные")
 	;
 
-	saldo = legend.append("g").attr("transform" , "translate(450,75)");
+	saldo = legend.append("g").attr("transform" , "translate(350,75)");
 
 	saldo.append("text")
 				.attr("transform" , "translate(120 , 15)")
@@ -336,6 +356,18 @@ function findMinVal(d){
 
 }
 
+function dataProcc(d) {
+    for (i in d){2
+        if (d[i].factOut < 0) d[i].factOut=0;
+        if (d[i].factIn < 0) d[i].factIn=0;
+        if (d[i].planIn < 0) d[i].planIn=0;
+        if (d[i].planOut < 0) d[i].planOut=0;
+	}
+
+	return d ;
+
+}
+
 function getElemWidth (el){
 	return d3.select(el)._groups["0"]["0"]._groups["0"]["0"].getAttribute("width");
 }
@@ -344,6 +376,7 @@ function getElemHeight (el){
 }
 
 function currencySwap(d){
+	d= parseInt(d * 0.001);
 	return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")  + "" ;
 }
 
