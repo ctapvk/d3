@@ -30,13 +30,16 @@ y = d3.scaleLinear()
 		.range([  height ,0   ])
 ;
 
-console.log([max ,  min]);
-console.log( [ findMaxVal2(data3) , findMinVal2(data3) ] );
+// console.log([max ,  min]);
+// console.log( [ findMaxVal2(data3) , findMinVal2(data3) ] );
+
+
 x = d3.scaleLinear()
 		.domain([0  , data3.length] )
 		.range([ +prop.gistPadding ,  width   ])
 ;
 barSize = width / data3.length  - +prop.spaceBetween; 
+
 gistSize = barSize / 3 ; 
 
 drawAsisY(asisY);
@@ -112,10 +115,15 @@ function showPlanIn(canvas){
 function dd3 (dat , i , count ,   color ) {
 
 	rectHeight = y(dat); 
-	rects.append("rect")
-			.attr("transform" , function() {   
-				if (dat > 0 )  yy2 = -height+y(dat) ; else yy2 =  -height+y(0)   ;
-				return "translate( "+ [ x(i) + count*gistSize , yy2 ] +")" ; })
+	text = rects.append("g") 
+				 .attr("transform" , function(d) {
+										if (dat > 0 )  yy2 = -height+y(dat) ; else yy2 =  -height+y(0)   ;
+										return "translate( "+ [ x(i) + count*gistSize , yy2 ] +")" ; 
+				})
+	;
+
+	text.append("rect")
+			.attr("transform" , function() { return "translate(" + [0+ count * +prop.gistPaddInG  , 0 ] + ")" })
 			.attr("width" , gistSize )
 			.attr("height" , function() { 
 				if (dat > 0 )  yy2 = -(rectHeight- y(0)) ; else yy2 = (rectHeight- y(0)) ;
@@ -123,11 +131,13 @@ function dd3 (dat , i , count ,   color ) {
 			.attr("fill", color)
 	;
 
-	rects.append("text")
+	text.append("text")
 			.attr("class" , "planGistLabel")
 			.attr("transform" , function() {
 				if (dat > 0 )  yy2 = 15 ; else yy2 = - 15   ;
-				return "translate( "+ [  x(i)+ gistSize/2  + count*gistSize  , -height+rectHeight - yy2 ] +")"})
+				// return "translate( "+ [  x(i)+ gistSize/2  + count*gistSize  , -height+rectHeight - yy2 ] +")"
+				return "translate( "+ [ 0 +barSize/6 + count * +prop.gistPaddInG  , -15 ] +")"
+			})
 			.text(cutLongSum(dat))
 	;
 
@@ -148,10 +158,18 @@ function showFactIn(canvas){
 function dd32 (dat , i , count ,   color ) {
 
 	rectHeight = y(dat); 
-	rects.append("rect")
-			.attr("transform" , function() {   
-				if (dat > 0 )  yy2 = -height+y(dat) ; else yy2 =  -height+y(0)   ;
-				return "translate( "+ [ x(i) + count*gistSize , yy2 ] +")" ; })
+	text = rects.append("g") 
+				 .attr("transform" , function(d) {
+										if (dat > 0 )  yy2 = -height+y(dat) ; else yy2 =  -height+y(0)   ;
+										return "translate( "+ [ x(i) + count*gistSize , yy2 ] +")" ; 
+				})
+	;	
+	text.append("rect")
+			.attr("transform" , function() { return "translate(" + [0+ count * +prop.gistPaddInG  , 0 ] + ")" })
+
+			// .attr("transform" , function() {   
+			// 	if (dat > 0 )  yy2 = -height+y(dat) ; else yy2 =  -height+y(0)   ;
+			// 	return "translate( "+ [ x(i) + count*gistSize , yy2 ] +")" ; })
 			.attr("width" , gistSize )
 			.attr("height" , function() { 
 				if (dat > 0 )  yy2 = -(rectHeight- y(0)) ; else yy2 = (rectHeight- y(0)) ;
@@ -159,11 +177,13 @@ function dd32 (dat , i , count ,   color ) {
 			.attr("fill", color)
 	;
 
-	rects.append("text")
+	text.append("text")
 			.attr("class" , "factGistLabel")
 			.attr("transform" , function() {
 				if (dat > 0 )  yy2 = -15 ; else yy2 = 15   ;
-				return "translate( "+ [  x(i)+ gistSize/2  + count*gistSize  , -height+rectHeight - yy2 ] +")"})
+				// return "translate( "+ [  x(i)+ gistSize/2  + count*gistSize  , -height+rectHeight - yy2 ] +")"
+				return "translate( "+ [ 0 +barSize/6 + count * +prop.gistPaddInG  , 15 ] +")"
+				})
 			.text(cutLongSum(dat))
 	;
 
