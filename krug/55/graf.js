@@ -1,4 +1,6 @@
-var svg = d3.select("svg"),
+function drawGraph() {
+
+var svg = d3.select(".krug55"),
 width = +svg.attr("width"),
 height = +svg.attr("height") ;
 
@@ -309,3 +311,4 @@ for (let i = 0; i<data2.length; i++)
 
 
 
+}
