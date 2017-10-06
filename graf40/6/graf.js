@@ -76,6 +76,8 @@ drawLegend(gist);
                     legs = text.append("g").attr("transform", "translate(" + [barSize/2 - prop6.barSize/2
                         , -sumRect +height ] + ")")
 					;
+
+                    let sss=dd;
                     legs.append("rect")
                         .attr("transform", "translate(" + [0,0] + ")")
 							// , -height + sumRect - rectHeight + y(dat[dd])] + ")")
@@ -83,7 +85,18 @@ drawLegend(gist);
                         .attr("height", rectHeight)
                         .attr("width", prop6.barSize)
                         .attr("fill", prop6.colors[count++])
+                        .on("mouseover", function() {
+                            d3.select("#tooltip")
+                                .style("left", 100 + "px")
+                                .style("top", 100 + "px")
+                                .select("#value")
+                                .text(sss);
+                            //Show the tooltip
+                            d3.select("#tooltip").classed("hidden", false);
+                              })
+                        .on("mouseout",function() { d3.select("#tooltip").classed("hidden", true);  })
                     ;
+
                     legs.append("text")
 							.attr("class" , "percentsInGist")
 							.attr("fill" , "red")
