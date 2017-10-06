@@ -381,7 +381,7 @@
         return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")  + "" ;
     }
 
-    function cutLongSum(d){
+    function ascutLongSum(d){
         if ( +d > 1000)
             return  d.toString().substr(0,3) ;
         else
