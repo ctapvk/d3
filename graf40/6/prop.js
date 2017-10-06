@@ -1,4 +1,4 @@
-prop = {
+prop6 = {
 	"colors": [
 			"#73ADD5", "#F3C37E", "#508FB9",
 			"#939BC9", "#F2AD5E", "#9FCC5F",

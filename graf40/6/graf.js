@@ -3,24 +3,24 @@ function drawGraph() {
     svg = d3.select(".gist6");
     widthSvg = +svg.attr("width");
     heightSvg = +svg.attr("height");
-    width = +svg.attr("width") - +(prop.paddingLeft) - +prop.paddingRight;
-    height = +svg.attr("height") - +(prop.paddingBottom);
+    width = +svg.attr("width") - +(prop6.paddingLeft) - +prop6.paddingRight;
+    height = +svg.attr("height") - +(prop6.paddingBottom);
 
     asisY = svg.append("g")
         .attr("class", "asisY")
         .attr("transform", "translate(" + [0, 0] + ")")
-        .attr("width", +prop.paddingLeft)
+        .attr("width", +prop6.paddingLeft)
         .attr("height", height)
     ;
     gist = svg.append("g")
         .attr("class", "gist")
-        .attr("transform", "translate(" + [+prop.paddingLeft, height] + ")")
+        .attr("transform", "translate(" + [+prop6.paddingLeft, height] + ")")
         .attr("width", width)
         .attr("height", height)
     ;
     asisX = svg.append("g")
         .attr("class", "asisX")
-        .attr("transform", "translate(" + [+prop.paddingLeft, heightSvg] + ")")
+        .attr("transform", "translate(" + [+prop6.paddingLeft, heightSvg] + ")")
         .attr("width", width)
         .attr("height", heightSvg - height)
     ;
@@ -37,10 +37,10 @@ function drawGraph() {
     ;
     x = d3.scaleLinear()
         .domain([0, data3.length])
-        .range([+prop.gistPadding, width])
+        .range([+prop6.gistPadding, width])
     ;
 
-    barSize = width / data3.length - +prop.gistPadding;
+    barSize = width / data3.length - +prop6.gistPadding;
 
 draw(gist);
 drawCircle(gist);
@@ -73,7 +73,7 @@ drawLegend(gist);
                 if (dd != "year" && dd != "sum") {
                     rectHeight = (y(0)-y(max)) * dat[dd] /max;
                     sumRect += rectHeight;
-                    legs = text.append("g").attr("transform", "translate(" + [barSize/2 - prop.barSize/2
+                    legs = text.append("g").attr("transform", "translate(" + [barSize/2 - prop6.barSize/2
                         , -sumRect +height ] + ")")
 					;
                     legs.append("rect")
@@ -81,13 +81,13 @@ drawLegend(gist);
 							// , -height + sumRect - rectHeight + y(dat[dd])] + ")")
                         .attr("class", "rectsBar")
                         .attr("height", rectHeight)
-                        .attr("width", prop.barSize)
-                        .attr("fill", prop.colors[count++])
+                        .attr("width", prop6.barSize)
+                        .attr("fill", prop6.colors[count++])
                     ;
                     legs.append("text")
 							.attr("class" , "percentsInGist")
 							.attr("fill" , "red")
-							.attr("transform" , "translate(" + [+prop.barSize/2 , rectHeight/2 ] + ")")
+							.attr("transform" , "translate(" + [+prop6.barSize/2 , rectHeight/2 ] + ")")
 							.text((dat[dd] /dat.sum).toFixed(2)*100 + '%')
 					;
                 }
@@ -104,7 +104,7 @@ function drawCircle(canvas) {
 		.attr("cx", function (d) { return 0 ; })
         .attr("cy", function (d) { return 0 ; })
         .attr("r", function (d) { return radius; })
-        .style("fill", function(d) { return prop.circleColor; })
+        .style("fill", function(d) { return prop6.circleColor; })
     ;
     te.append("text")
         .attr("class" , "percentsInGist")
@@ -238,7 +238,6 @@ function drawLegend(canvas) {
     }
 
     function currencySwap(d) {
-    	console.log(d);
         return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "";
     }
 
