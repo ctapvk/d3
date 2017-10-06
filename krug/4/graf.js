@@ -1,8 +1,8 @@
 function drawGraph() {
 
-    var svg = d3.select(".krug4"),
-        width = +svg.attr("width"),
-        height = +svg.attr("height") ;
+    var svg2 = d3.select(".krug4"),
+        width = +svg2.attr("width"),
+        height = +svg2.attr("height") ;
 
 
     var color = d3.scaleOrdinal(prop123.colorsLeft);
@@ -10,7 +10,7 @@ function drawGraph() {
         data2[i].value.sort(function(x, y){ return d3.ascending(d3.values(y), d3.values(x)); }) ;
 
     data2 = countInnerDataForPie(data2);
-    g_gist4 = svg.append('g')
+    g_gist4 = svg2.append('g')
         .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
         .attr("class" , "donut");
 
@@ -18,9 +18,9 @@ function drawGraph() {
         .attr("class", "innerDonut");
 
 
-    showPieLeft(data2 );
+    showPieLeft2(data2 );
     accr() ;
-    showPiePercents(data2  ,0);
+
 
 
 
@@ -41,7 +41,7 @@ function drawGraph() {
         return d
     }
 
-    function showPieLeft(data){
+    function showPieLeft2(data){
 
         var pie = d3.pie().sort(null).value(function(d) {
             return d['sum'];
