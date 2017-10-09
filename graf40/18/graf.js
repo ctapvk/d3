@@ -20,6 +20,9 @@ function drawGraph() {
 
     showPieLeft2(data2 );
     accr() ;
+    showPiePercents(data2 ,0);
+    showPiePercents(data2 ,1);
+    showPiePercents(data2 ,2);
 
 
 
@@ -44,8 +47,9 @@ function drawGraph() {
     function showPieLeft2(data){
 
         var pie = d3.pie().sort(null).value(function(d) {
-            return d['sum'];
-        });
+                    return d['sum'];
+                })
+            .padAngle( 0.04);;
         var path = d3.arc()
             .outerRadius(+prop123['радиус'])
             .innerRadius( +prop123['белая дырка внутри'] );
@@ -79,7 +83,7 @@ function drawGraph() {
     function showPiePercents(data , index){
         donut = g_gist4.append("g")
             .attr("class", "donut"+index);
-console.log(index);
+// console.log(index);
         var radiusPlus = 40 ;
         var red = d3.scaleLinear()
             .domain([0 , (data[index].sum / 6) ]  )
@@ -89,8 +93,8 @@ console.log(index);
                 return b - a;
             })
             .value(function(d) { return d3.values(d);  })
-            .startAngle(data[index].startAngle)
-            .endAngle(data[index].endAngle) ;
+            .startAngle(data[index].startAngle +0.02)
+            .endAngle(data[index].endAngle - 0.02) ;
 
         var path = d3.arc()
             .outerRadius(+prop123['радиус'] + +prop123['радиус гребешка'])
@@ -104,7 +108,7 @@ console.log(index);
 
         arc.append("path")
             .attr("d", path)
-            .attr("fill", function(d) {  return red(d3.values(d.data)); })
+            .attr("fill", function(d , i ) {  return prop123.colorsComb[i] ;  })
         ;
 
         arc.append("text")
@@ -112,10 +116,10 @@ console.log(index);
             .attr("text-anchor"  , "middle" )
             .attr("dy", "0.35em")
             .attr("font-family" , "sans-serif")
-            .attr("font-size" , "14")
+            .attr("font-size" , "13")
             .attr("fill" , "black")
             .attr("font-weight" , "bold")
-            .text(function(d) {  return ( (d.endAngle - d.startAngle)/6.28 * 100).toFixed(1)   + '%'; });
+            .text(function(d , i) { return ( (d3.values(d.data) / data2[index].sum)* 100).toFixed(1)   + '%'; });
     }
 
 
@@ -133,12 +137,13 @@ console.log(index);
 
             str1+=('<button class="accordion" count='+i+'>' );
             str1+=(' <div class="arrow right" id="arrToog'+ i  +'"> </div>' );
-            str1+=( rect5 +data2[i].name + '</button> ' );
+            str1+=( rect5 +'<div class="g18TextLegHeader">'+data2[i].name + '</div> </button> ' );
             str1+=('<div class="panel">');
             for (dat in data2[i].value) {
                 rect5 = '<svg style="  top: 10; position: relative; " width="30" height="30"   > '+
-                    '<rect width="20" height="20" transform="translate(5,5)" style="fill:'+ red(d3.values( data2[i].value[dat])) +'; " /> </svg>';
-                str1+=('  <p  > ' + rect5 +  Object.keys(data2[i].value[dat])  + ' </p>');
+                    '<rect width="20" height="20" transform="translate(5,5)" style="fill:'+ prop123.colorsComb[dat] +'; " /> </svg>';
+                str1+=('  <p  class="g18TextLegCaption"> ' + rect5 +  Object.keys(data2[i].value[dat])  + ' </p>');
+                str1+=('  <p  class="g18TextLeg"> '  +  Object.values(data2[i].value[dat])  + ' тыс. руб. </p>');
             }
             str1+=('</div>');
         }
@@ -158,7 +163,7 @@ console.log(index);
                 document.getElementById("arrToog"+this.getAttribute("count") ).classList.toggle("right");
 
                 if ( (this.className).indexOf("active") == -1) {
-                    d3.selectAll("g .donut"+this.getAttribute("count")).remove();
+                    // d3.selectAll("g .donut"+this.getAttribute("count")).remove();
                 }
 
 
