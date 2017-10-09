@@ -181,7 +181,13 @@ function gist8() {
     }
 
 
-
+    function wrapDate(d) {
+        arr = d.split("-");
+        if (arr[2]!=undefined)
+            return arr[2] + '.' + arr[1] + '.' + arr[0];
+                else
+            return d ;
+    }
 
     function showLegend(canvas) {
 
@@ -191,7 +197,7 @@ function gist8() {
             datas.append("text")
                 .attr("transform", "translate(" + [x(i) + barSize / 2, +prop8.moveMounth] + ")")
                 .attr("class", "mounthLabes")
-                .text(d.date)
+                .text(wrapDate(d.date))
             ;
         });
 
@@ -322,6 +328,10 @@ function gist8() {
         else
             return d;
     }
+
+
+
+
 
 
 }

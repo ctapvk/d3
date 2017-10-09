@@ -13,10 +13,11 @@ prop8 = {
 
 
 data8 =[
-    {"date":"4.4.2017" ,  "zadolzhen":500000000  }  ,
-    {"date":"4.4.2017" ,  "zadolzhen":600000000  }  ,
-    {"date":"4.4.2017" ,  "zadolzhen":400000000  }  ,
-    {"date":"4.4.2017" ,  "zadolzhen":900000000  }  ,
+    {"date":"2qwe1" ,  "zadolzhen":500000000  }  ,
+    {"date":"2015-01-01" ,  "zadolzhen":600000000  }  ,
+    {"date":"2015-01-01" ,  "zadolzhen":400000000  }  ,
+    {"date":"2015-01-01" ,  "zadolzhen":900000000  }  ,
 ]  ;
+
 
 
