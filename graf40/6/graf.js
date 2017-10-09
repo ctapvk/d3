@@ -6,6 +6,12 @@ function drawGraph() {
     width = +svg.attr("width") - +(prop6.paddingLeft) - +prop6.paddingRight;
     height = +svg.attr("height") - +(prop6.paddingBottom);
 
+    asisX = svg.append("g")
+        .attr("class", "asisX")
+        .attr("transform", "translate(" + [+prop6.paddingLeft, heightSvg] + ")")
+        .attr("width", width)
+        .attr("height", heightSvg - height)
+    ;
     asisY = svg.append("g")
         .attr("class", "asisY")
         .attr("transform", "translate(" + [0, 0] + ")")
@@ -17,12 +23,6 @@ function drawGraph() {
         .attr("transform", "translate(" + [+prop6.paddingLeft, height] + ")")
         .attr("width", width)
         .attr("height", height)
-    ;
-    asisX = svg.append("g")
-        .attr("class", "asisX")
-        .attr("transform", "translate(" + [+prop6.paddingLeft, heightSvg] + ")")
-        .attr("width", width)
-        .attr("height", heightSvg - height)
     ;
     countInnerDataForPie(data3);
 	max = Math.max(data3[0].sum, data3[1].sum);
@@ -42,14 +42,15 @@ function drawGraph() {
 
     barSize = width / data3.length - +prop6.gistPadding;
 
+    drawBack(asisX);
+    drawAsisX(asisX);
+    drawAsisY(asisY);
 draw(gist);
 drawCircle(gist);
 drawLegend(gist);
+    drawBottomLine(gist);
 
-    drawAsisX(asisX);
-    drawAsisY(asisY);
 
-// showLegend(asisX);
 
     function draw(canvas) {
         legend = canvas.append("g")
@@ -77,24 +78,29 @@ drawLegend(gist);
                         , -sumRect +height ] + ")")
 					;
 
-                    let sss=dd;
+                    let sss= currencySwap(dat[dd]) + ' руб';
+                    let sss1=dd;
+
                     legs.append("rect")
                         .attr("transform", "translate(" + [0,0] + ")")
 							// , -height + sumRect - rectHeight + y(dat[dd])] + ")")
-                        .attr("class", "rectsBar")
+                        .attr("class", "rectsg6")
                         .attr("height", rectHeight)
                         .attr("width", prop6.barSize)
                         .attr("fill", prop6.colors[count++])
-                        .on("mouseover", function() {
-                            d3.select("#tooltip")
-                                .style("left", 100 + "px")
-                                .style("top", 100 + "px")
-                                .select("#value")
-                                .text(sss);
+                        //.attr("onmousemove", '  console.log(event.x );  d3.select("#tooltipg6").select("#captionG6") .text(123); d3.select("#tooltipg6").classed("hidden", false); '  )
+                        .on("mousemove", function(event) {
+                            // console.log( d3.event);
+                            d3.select("#tooltipg6").select("#captionG6") .text(sss1);
+                            d3.select("#tooltipg6")
+                                .style("left", d3.event.pageX  + "px")
+                                .style("top", d3.event.pageY + "px")
+                                .select("#valueG6") .text(sss)
+                            ;
                             //Show the tooltip
-                            d3.select("#tooltip").classed("hidden", false);
-                              })
-                        .on("mouseout",function() { d3.select("#tooltip").classed("hidden", true);  })
+                            d3.select("#tooltipg6").classed("hidden", false);
+                        })
+                        .on("mouseout",function() { d3.select("#tooltipg6").classed("hidden", true);  })
                     ;
 
                     legs.append("text")
@@ -123,7 +129,7 @@ function drawCircle(canvas) {
         .attr("class" , "percentsInGist")
         .attr("fill" , "red")
         .attr("transform" , "translate(" + [0,0 ] + ")")
-        .text((data3[0].sum /data3[1].sum).toFixed(2)*100 + '%')
+        .text((data3[1].sum /data3[0].sum).toFixed(2)*100 + '%')
     ;
 
 }
@@ -145,7 +151,7 @@ function drawLegend(canvas) {
 
 
 
-    function drawAsisX(canvas) {
+    function drawBottomLine(canvas) {
         line = d3.line().x(function (d) {
             return d[0]
         }).y(function (d) {
@@ -153,12 +159,17 @@ function drawLegend(canvas) {
         });
         canvas.append("path")
             .attr("transform", function (d) {
-                return "translate(" + [0, -getElemHeight(canvas)] + ")"
+                return "translate(" + [0, 0] + ")"
             })
             .attr("d", line([[0, 0], [width, 0]]))
             .attr("stroke-width", 4)
             .attr("stroke", "#CDD5DE")
         ;
+
+    }
+
+    function drawAsisX(canvas) {
+
 
         legend = canvas.append("g")
             .attr("transform", "translate(" + [0, -getElemHeight(asisX)] + ")")
@@ -183,6 +194,27 @@ function drawLegend(canvas) {
 
         });
 
+    }
+
+    function drawBack(canvas) {
+        rects = canvas.append("g").attr("class", "backRects");
+
+        tis = y.ticks();
+        backHei = y(tis[0]) - y(tis[1]);
+        tis.forEach(function (d, i) {
+            // console.log(y.ticks());
+            if (i % 2 == 0) {
+                rectHeight = y(d.planOut);
+                rects.append("rect")
+                    .attr("transform", function () {
+                        return "translate( " + [0, y(d) - height + 4 -backHei*3] + ")";
+                    })
+                    .attr("width", width)
+                    .attr("height", backHei)
+                    .attr("fill", prop6.backColor)
+                ;
+            }
+        });
     }
 
     function drawAsisY(canvas) {
