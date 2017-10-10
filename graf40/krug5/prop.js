@@ -1,4 +1,4 @@
-prop21 = {
+prop = {
 	"colorsLeft": ["#828BC4", "#529ACB", "#1E5F9C", "#66977B", "#828BC4", "#828BC4", "#8DC2D7"] , 
 	"legendValue":"#CFCFD1",
 	"legendText":"#818388" , 
@@ -14,7 +14,7 @@ prop21 = {
 		
 }
 
-var data21 = [
+var data2 = [
 {"name":"налоговые доходы dasd"  ,
 "value": [
 			 {"задолжен 6  сть  ": 166} ,

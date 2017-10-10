@@ -41,15 +41,15 @@ path:hover {
 	text-anchor:end ;
 	dy:0.35em;
 	font-family:sans-serif;
-	font-size:14px ;
-	fill:#75777D ;
+	font-size:14px ; 
+	fill:#75777D ; 
 }
 
 .legendTextSum {
 	text-anchor:left;
 	dy:0.35em;
 	font-family:sans-serif;
-	font-size:14px ;
+	font-size:14px ; 
 	fill:black;
 }
 
