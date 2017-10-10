@@ -1,15 +1,15 @@
-function drawGraph() {
+function drawGraph18() {
 
-    var svg2 = d3.select(".krug4"),
+    var svg2 = d3.select(".krug18"),
         width = +svg2.attr("width"),
         height = +svg2.attr("height") ;
 
 
-    var color = d3.scaleOrdinal(prop123.colorsLeft);
-    for (i in data2)
-        data2[i].value.sort(function(x, y){ return d3.ascending(d3.values(y), d3.values(x)); }) ;
+    var color = d3.scaleOrdinal(prop18.colorsLeft);
+    for (i in data18)
+        data18[i].value.sort(function(x, y){ return d3.ascending(d3.values(y), d3.values(x)); }) ;
 
-    data2 = countInnerDataForPie(data2);
+    data18 = countInnerDataForPie(data18);
     g_gist4 = svg2.append('g')
         .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
         .attr("class" , "donut");
@@ -18,11 +18,10 @@ function drawGraph() {
         .attr("class", "innerDonut");
 
 
-    showPieLeft2(data2 );
+    showPieLeft2(data18 );
     accr() ;
-    showPiePercents(data2 ,0);
-    showPiePercents(data2 ,1);
-    showPiePercents(data2 ,2);
+    for (w22=0 ; w22<data18.length;w22++)
+        showPiePercents(data18 ,w22);
 
 
 
@@ -51,11 +50,11 @@ function drawGraph() {
                 })
             .padAngle( 0.04);;
         var path = d3.arc()
-            .outerRadius(+prop123['радиус'])
-            .innerRadius( +prop123['белая дырка внутри'] );
+            .outerRadius(+prop18['радиус'])
+            .innerRadius( +prop18['белая дырка внутри'] );
         var label = d3.arc()
-            .outerRadius( +prop123['радиус'] )
-            .innerRadius( +prop123['радиус'] / 3.5);
+            .outerRadius( +prop18['радиус'] )
+            .innerRadius( +prop18['радиус'] / 3.5);
 
         var arc = innerDonut.selectAll(".arc")
             .data(pie(data)).enter().append("g")
@@ -64,8 +63,8 @@ function drawGraph() {
         arc.append("path")
             .attr("d", path)
             .attr("fill", function(d , i ) {
-                data2[i].startAngle = d.startAngle ;
-                data2[i].endAngle = d.endAngle ;
+                data18[i].startAngle = d.startAngle ;
+                data18[i].endAngle = d.endAngle ;
                 return color(d.data['name']); });
 
         arc.append("text")
@@ -81,13 +80,14 @@ function drawGraph() {
 
 
     function showPiePercents(data , index){
+
         donut = g_gist4.append("g")
             .attr("class", "donut"+index);
-// console.log(index);
+// console.log(data);
         var radiusPlus = 40 ;
         var red = d3.scaleLinear()
             .domain([0 , (data[index].sum / 6) ]  )
-            .range(["white" , prop123.colorsLeft[index]  ]);
+            .range(["white" , prop18.colorsLeft[index]  ]);
         var pie = d3.pie()
             .sortValues(function compare(a, b) {
                 return b - a;
@@ -97,18 +97,18 @@ function drawGraph() {
             .endAngle(data[index].endAngle - 0.02) ;
 
         var path = d3.arc()
-            .outerRadius(+prop123['радиус'] + +prop123['радиус гребешка'])
-            .innerRadius(+prop123['радиус'] + 5 ) ;
+            .outerRadius(+prop18['радиус'] + +prop18['радиус гребешка'])
+            .innerRadius(+prop18['радиус'] + 5 ) ;
         var label = d3.arc()
-            .outerRadius( +prop123['радиус'] )
-            .innerRadius( +prop123['радиус'] + +prop123['белая дырка внутри'] + +prop123['радиус легенды гребешка']);
+            .outerRadius( +prop18['радиус'] )
+            .innerRadius( +prop18['радиус'] + +prop18['белая дырка внутри'] + +prop18['радиус легенды гребешка']);
         var arc = donut.selectAll(".arc")
             .data(pie(data[index].value)).enter().append("g")
             .attr("class", "arc");
 
         arc.append("path")
             .attr("d", path)
-            .attr("fill", function(d , i ) {  return prop123.colorsComb[i] ;  })
+            .attr("fill", function(d , i ) {  return prop18.colorsComb[i] ;  })
         ;
 
         arc.append("text")
@@ -119,31 +119,40 @@ function drawGraph() {
             .attr("font-size" , "13")
             .attr("fill" , "black")
             .attr("font-weight" , "bold")
-            .text(function(d , i) { return ( (d3.values(d.data) / data2[index].sum)* 100).toFixed(1)   + '%'; });
+            .text(function(d , i) { return ( (d3.values(d.data) / data18[index].sum)* 100).toFixed(1)   + '%'; });
     }
 
+    drawCaption(d3.select(".krug18"));
+function drawCaption(canvas) {
+    te = canvas.append("g").attr("transform", "translate( " + [ getElemWidth(canvas)/2 ,15]+  ")");
 
+    te.append("text")
+        .attr("class", "textCaption18")
+        .text(prop18.header)
+    ;
+}
 
 
     function accr(){
         str1 = "";
         str1+=('<div class="accord"> ');
-        for (i =0 ; i < data2.length ;i ++) {
+        for (i =0 ; i < data18.length ;i ++) {
             var red = d3.scaleLinear()
-                .domain([0 , (data2[i].sum / 6) ]  )
-                .range(["white" , prop123.colorsLeft[i]  ]);
+                .domain([0 , (data18[i].sum / 6) ]  )
+                .range(["white" , prop18.colorsLeft[i]  ]);
             rect5 = '<svg style="  top: 10; position: relative; " width="30" height="30"> '+
-                '<rect width="20" height="20" transform="translate(5,5)" style="fill:'+ prop123.colorsLeft[i] +'; " /> </svg>';
+                '<rect width="20" height="20" transform="translate(5,5)" style="fill:'+ prop18.colorsLeft[i] +'; " /> </svg>';
 
-            str1+=('<button class="accordion" count='+i+'>' );
+            str1+=('<button class="accordion18" count='+i+'>' );
             str1+=(' <div class="arrow right" id="arrToog'+ i  +'"> </div>' );
-            str1+=( rect5 +'<div class="g18TextLegHeader">'+data2[i].name + '</div> </button> ' );
+            str1+=( rect5 +'<div class="g18TextLegHeader">'+data18[i].name + '' );
+            str1+=('<p class="g18TextLegHeaderSum"> ' + currencySwap(data18[i].sum) +  '</p> </div> </button> ' );
             str1+=('<div class="panel">');
-            for (dat in data2[i].value) {
+            for (dat in data18[i].value) {
                 rect5 = '<svg style="  top: 10; position: relative; " width="30" height="30"   > '+
-                    '<rect width="20" height="20" transform="translate(5,5)" style="fill:'+ prop123.colorsComb[dat] +'; " /> </svg>';
-                str1+=('  <p  class="g18TextLegCaption"> ' + rect5 +  Object.keys(data2[i].value[dat])  + ' </p>');
-                str1+=('  <p  class="g18TextLeg"> '  +  Object.values(data2[i].value[dat])  + ' тыс. руб. </p>');
+                    '<rect width="20" height="20" transform="translate(5,5)" style="fill:'+ prop18.colorsComb[dat] +'; " /> </svg>';
+                str1+=('  <p  class="g18TextLegCaption"> ' + rect5 +  Object.keys(data18[i].value[dat])  + ' </p>');
+                str1+=('  <p  class="g18TextLeg"> '  +  currencySwap(Object.values(data18[i].value[dat]) )   + '</p>');
             }
             str1+=('</div>');
         }
@@ -151,13 +160,13 @@ function drawGraph() {
 
         d3.select("#str").html(str1);
 
-        var acc = document.getElementsByClassName("accordion");
+        var acc = document.getElementsByClassName("accordion18");
 
         for (i = 0; i < acc.length; i++) {
 
             acc[i].onclick = function() {
                 this.classList.toggle("active");
-                showPiePercents(data2 , this.getAttribute("count"));
+                showPiePercents(data18 , this.getAttribute("count"));
 
 
                 document.getElementById("arrToog"+this.getAttribute("count") ).classList.toggle("right");
@@ -178,7 +187,18 @@ function drawGraph() {
     }
 
 
+    function currencySwap(d) {
+        // d = parseInt(d * 0.001);
+        return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " тыс. руб. ";
+    }
 
+    function getElemWidth(el) {
+        return d3.select(el)._groups["0"]["0"]._groups["0"]["0"].getAttribute("width");
+    }
+
+    function getElemHeight(el) {
+        return d3.select(el)._groups["0"]["0"]._groups["0"]["0"].getAttribute("height");
+    }
 
 
 
