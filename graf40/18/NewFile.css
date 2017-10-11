@@ -10,6 +10,7 @@ button.accordion18 {
     font-size: 15px;
     transition: 0.4s;
     padding: 0px;
+    height: 60px;
 }
 
 button.accordion18.active, button.accordion18:hover {
@@ -17,12 +18,13 @@ button.accordion18.active, button.accordion18:hover {
 }
 
 div.panel {
-    padding: 0 18px;
+    padding: 0;
+    margin: 0;
     background-color: white;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.2s ease-out;
-    padding-left: 71px;
+    padding-left: 47px;
 }
 
 div.accord {
@@ -33,7 +35,7 @@ div.accord {
 
 .svgcap {
     position: relative;
-    top: 10;
+    top: 10px;
 }
 
 
@@ -47,12 +49,15 @@ div.accord {
 }
 
 .g18TextLegCaption {
+    position: relative;
+    top:-10px;
     padding: 0px;
     margin: 0px;
 }
 
 .g18TextLeg {
     position: relative;
+    top:-10px;
     left: 30px;
     padding: 0px;
     margin: 0px;

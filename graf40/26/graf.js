@@ -228,10 +228,10 @@ function drawGraph26() {
                     var entries = getEntries();
                     // console.log(d.value.toString().length);
                     if  ( entries[i].value <  entries[i - 1].value )   dif = barSize / 2 ; else dif=0;
-                    return x1(d.code % 2) + barSize / 2  + dif ;
+                    return barSize +  barSize / 2  + dif ;
                 } else {
                     var entries = getEntries();
-                    if  (y(entries[i].value) - y(entries[i + 1].value) >0)   dif = -d.value.toString().length*5 ; else dif=0;
+                    if  (y(entries[i].value) - y(entries[i + 1].value) >0)   dif = -barSize / 2 ; else dif=0;
                     return (barSize + dif );
                 }
             })
@@ -372,8 +372,8 @@ function drawGraph26() {
     mapRects();
     showLegend();
 
-    var barSize = width / (data26.length * 2);
-    // var barSize = 75;
+    // var barSize = width / (data26.length * 2);
+    var barSize = +prop26.barSize;
     showRects(barSize);
     showInfo(barSize);
     showGridForX(barSize);

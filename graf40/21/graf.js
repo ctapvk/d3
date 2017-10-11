@@ -37,7 +37,7 @@ function outerPie(data){
 	var arc = outerDonut.selectAll(".arc")
 								.data(pie(data)).enter().append("g")
 														.attr("class", "arc");
-
+flag = -10;
 	arc.append("path")
 			.attr("d", path)
 			.attr("fill", function(d , i ) {
@@ -48,8 +48,12 @@ function outerPie(data){
 			.on("click" , function (d,i) {
 				d3.select(".lineConn").remove();
 				d3.select(".dots").remove();
+				d3.select(".donut").remove();
 				d3.selectAll(".legend21").remove();
-                innerPie(data21 , i);
+				if (flag !=i){
+					flag= i ;
+                	innerPie(data21 , i);
+                } else flag = -10;
                 drawWhiteInside( innerDonat ) ;
 			})
 	;
@@ -305,7 +309,6 @@ function drawLegend(canvas) {
             .attr("width", prop21.rect)
             .attr("height", prop21.rect)
         ;
-	console.log(d.name);
     })
 }
 
@@ -321,8 +324,6 @@ outerDonut = innerDonat.append("g")
 for (i in data21)
 	data21[i].value.sort(function(x, y){ return d3.ascending(d3.values(x), d3.values(y)); }) ;
 
-	data21[1].value.sort(function(x, y){ return  d3.values(y) - d3.values(x) }) ;
-	data21[2].value.sort(function(x, y){ return  d3.values(y) - d3.values(x) }) ;
 
 
 

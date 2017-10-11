@@ -1,6 +1,7 @@
 prop26 = {
 "colorLeft":"#f6bd68",
 "colorRight":"#009cff",
+"barSize":"90",
 }
 
 

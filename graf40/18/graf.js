@@ -65,7 +65,8 @@ function drawGraph18() {
             .attr("fill", function(d , i ) {
                 data18[i].startAngle = d.startAngle ;
                 data18[i].endAngle = d.endAngle ;
-                return color(d.data['name']); });
+                // console.log(color(d.data['name']));
+                return prop18.colorsLeft[i]; });
 
         arc.append("text")
             .attr("transform", function(d) {  return "translate(" + label.centroid(d) + ")"; })
@@ -149,7 +150,7 @@ function drawCaption(canvas) {
             str1+=('<p class="g18TextLegHeaderSum"> ' + currencySwap(data18[i].sum) +  '</p> </div> </button> ' );
             str1+=('<div class="panel">');
             for (dat in data18[i].value) {
-                rect5 = '<svg style="  top: 10; position: relative; " width="30" height="30"   > '+
+                rect5 = '<svg style="  top: 20px; position: relative; " width="30" height="30"   > '+
                     '<rect width="20" height="20" transform="translate(5,5)" style="fill:'+ prop18.colorsComb[dat] +'; " /> </svg>';
                 str1+=('  <p  class="g18TextLegCaption"> ' + rect5 +  Object.keys(data18[i].value[dat])  + ' </p>');
                 str1+=('  <p  class="g18TextLeg"> '  +  currencySwap(Object.values(data18[i].value[dat]) )   + '</p>');
