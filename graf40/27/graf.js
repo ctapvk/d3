@@ -94,7 +94,7 @@ function drawGraph27() {
 
         var path = d3.arc()
             .outerRadius(+prop123['радиус'] + +prop123['радиус гребешка'])
-            .innerRadius(+prop123['радиус'] + 5 ) ;
+            .innerRadius(+prop123['радиус']  ) ;
         var label = d3.arc()
             .outerRadius( +prop123['радиус'] )
             .innerRadius( +prop123['радиус'] + +prop123['белая дырка внутри'] + +prop123['радиус легенды гребешка']);
@@ -102,9 +102,29 @@ function drawGraph27() {
             .data(pie(data[index].value)).enter().append("g")
             .attr("class", "arc");
 
+
+        var div = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+
         arc.append("path")
             .attr("d", path)
-            .attr("fill", function(d) {  return red(d3.values(d.data)); })
+            .attr("fill", function(d , i ) {  return prop123.colorsComb[i] })
+            .on("mousemove", function(d) {
+                console.log(d);
+                div.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                div.html( d3.keys(d.data) + " : "+ d3.values(d.data)+" тыс. руб. </br>"+
+                          "Доля в общих расходах :" +  " % </br>   " )
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px");
+            })
+            .on("mouseout", function(d) {
+                div.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+            })
         ;
 
         arc.append("text")
@@ -137,7 +157,7 @@ function drawGraph27() {
             str1+=('<div class="panel">');
             for (dat in data2[i].value) {
                 rect5 = '<svg style="  top: 10; position: relative; " width="30" height="30"   > '+
-                    '<rect width="20" height="20" transform="translate(5,5)" style="fill:'+ red(d3.values( data2[i].value[dat])) +'; " /> </svg>';
+                    '<rect width="20" height="20" transform="translate(5,5)" style="fill:'+  prop123.colorsComb[dat] +'; " /> </svg>';
                 str1+=('  <p  > ' + rect5 +  Object.keys(data2[i].value[dat])  + ' </p>');
             }
             str1+=('</div>');

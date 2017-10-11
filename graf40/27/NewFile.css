@@ -2,26 +2,28 @@ button.accordion {
 	background-color: white;
 	color: #444;
 	cursor: pointer;
-	padding: 18px;
 	width: 100%;
 	border: none;
 	text-align: left;
 	outline: none;
 	font-size: 15px;
 	transition: 0.4s;
+	height: 10px;
 }
 
 button.accordion.active, button.accordion:hover {
 	/*background-color: #ddd;*/
 }
-
+div.panel p{
+	margin: 0;
+}
 div.panel {
 	padding: 0 18px;
 	background-color: white;
 	max-height: 0;
 	overflow: hidden;
 	transition: max-height 0.2s ease-out;
-	padding-left: 71px;
+	padding-left: 41px;
 }
 
 div.accord {
@@ -86,5 +88,24 @@ div.accord {
 	-o-transform: rotate(270deg) translate(0px, 5px);
 	-ms-transform: rotate(270deg) translate(0px, 5px);
 }
+
+
+div.tooltip {
+	position: absolute;
+	text-align: left;
+	width: 360px;
+	/*height: px;*/
+	padding-top: 10px;
+	padding-left: 10px;
+	font: 14px sans-serif;
+	line-height: 1.4;
+	background: white;
+	border-style: solid;
+	border-width: 1px;
+	border-color: blue;
+	pointer-events: none;
+}
+
+
 
 
