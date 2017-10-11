@@ -1,3 +1,5 @@
+function drawGraph26() {
+
 
 function findMaxY(entries){
   var max = null;
@@ -197,7 +199,7 @@ function showRects(barSize){
         .attr("width", barSize)
         .attr("height", function(d) { return height - y(d.value); })
         .attr("fill", function(d) { return z(d.key); })
-        .on("mouseover", function(d) {
+        .on("mousemove", function(d) {
                 var ind = Math.floor(d.code / 2);
                 div.transition()        
                   .duration(200)      
@@ -334,7 +336,7 @@ function stringDivide(val) {
   return r;
 }
 
-var svg = d3.select("svg"),
+var svg = d3.select(".graf26"),
     margin = {top: 20, right: 20, bottom: 70, left: 140},
     width = + svg.attr("width") - margin.left - margin.right,
     height = + svg.attr("height") - margin.top - margin.bottom,
@@ -348,12 +350,21 @@ var x1 = d3.scaleLinear().rangeRound([0, width]);
 var y = d3.scaleLinear().rangeRound([height, 0]);
 var z = d3.scaleOrdinal().range([ "#f6bd68", "#009cff"]);
 
-d3.json("d1.json", function(data) {
-  var obj = data[0];
+
+
+  data26 =   [
+        {"State":"2015", "План":760000, "Факт":600000},
+        {"State":"2016", "План":850000, "Факт":680000},
+        {"State":"2017", "План":800000, "Факт":700000},
+        {"State":"2018", "План":900000, "Факт":0},
+        {"State":"2019", "План":870000, "Факт":0}
+    ];
+
+  var obj = data26[0];
   var keys = [];
   
   keys = initKeys(obj);
-  initCoords(data,keys);
+  initCoords(data26,keys);
   
   createViewers();
   insertBarFields();
@@ -362,8 +373,10 @@ d3.json("d1.json", function(data) {
   mapRects();
   showLegend();
 	  
-  var barSize = width / (data.length * 2)
+  var barSize = width / (data26.length * 2)
   showRects(barSize);
   showInfo(barSize);
   showGridForX(barSize);
-});
+
+
+}
