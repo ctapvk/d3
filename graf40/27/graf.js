@@ -116,7 +116,7 @@ function drawGraph27() {
                     .duration(200)
                     .style("opacity", .9);
                 div.html( d3.keys(d.data) + " : "+ d3.values(d.data)+" тыс. руб. </br>"+
-                          "Доля в общих расходах :" +  " % </br>   " )
+                          "Доля в общих расходах :" + ((d.endAngle - d.startAngle)/6.28 * 100).toFixed(1)  +" % </br>   " )
                     .style("left", (d3.event.pageX) + "px")
                     .style("top", (d3.event.pageY - 28) + "px");
             })

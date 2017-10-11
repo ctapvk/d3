@@ -93,8 +93,6 @@ div.accord {
 div.tooltip {
 	position: absolute;
 	text-align: left;
-	width: 360px;
-	/*height: px;*/
 	padding-top: 10px;
 	padding-left: 10px;
 	font: 14px sans-serif;
