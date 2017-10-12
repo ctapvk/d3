@@ -95,6 +95,29 @@ function drawGraph26() {
             .attr("fill", "none");
     }
 
+
+
+    function drawBack(canvas){
+        rects = canvas.append("g").attr("class" , "backRects");
+
+        tis = y.ticks() ;
+        backHei = y( tis[0]) - y( tis[1]) ;
+        tis.forEach(function(d , i){
+            // console.log(y.ticks());
+            if (i %2 ==0) {
+                rectHeight = y(d.planOut);
+                rects.append("rect")
+                    .attr("transform", function () {
+                        return "translate( " + [0, y(d)  ] + ")";
+                    })
+                    .attr("width", width)
+                    .attr("height", backHei)
+                    .attr("fill", prop26.backColor)
+                ;
+            }
+        });
+    }
+
     function showYAxis(){
 
         var lineData = [ { "x": 0,   "y": 0},  { "x": 0,  "y": -height}];
@@ -110,6 +133,10 @@ function drawGraph26() {
             .attr("stroke", "#CDD5DE")
             .attr("stroke-width", 4)
             .attr("fill", "none");
+
+
+        drawBack(axisY);
+
 
         var ts = y.ticks();
         var jsonCircles = new Array();
@@ -365,10 +392,10 @@ function drawGraph26() {
     keys = initKeys(obj);
     initCoords(data26,keys);
 
+    showYAxis();
     createViewers();
     insertBarFields();
     showXAxis();
-    showYAxis();
     mapRects();
     showLegend();
 

@@ -5,11 +5,11 @@ function drawGraph27() {
         height = +svg2.attr("height") ;
 
 
-    var color = d3.scaleOrdinal(prop123.colorsLeft);
-    for (i in data2)
-        data2[i].value.sort(function(x, y){ return d3.ascending(d3.values(y), d3.values(x)); }) ;
+    var color = d3.scaleOrdinal(prop27.colorsLeft);
+    for (i in data27)
+        data27[i].value.sort(function(x, y){ return d3.ascending(d3.values(y), d3.values(x)); }) ;
 
-    data2 = countInnerDataForPie(data2);
+    data27 = countInnerDataForPie(data27);
     g_gist4 = svg2.append('g')
         .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
         .attr("class" , "donut");
@@ -18,7 +18,7 @@ function drawGraph27() {
         .attr("class", "innerDonut");
 
 
-    showPieLeft2(data2 );
+    showPieLeft2(data27 );
     accr() ;
 
 
@@ -47,11 +47,11 @@ function drawGraph27() {
             return d['sum'];
         });
         var path = d3.arc()
-            .outerRadius(+prop123['радиус'])
-            .innerRadius( +prop123['белая дырка внутри'] );
+            .outerRadius(+prop27['радиус'])
+            .innerRadius( +prop27['белая дырка внутри'] );
         var label = d3.arc()
-            .outerRadius( +prop123['радиус'] )
-            .innerRadius( +prop123['радиус'] / 3.5);
+            .outerRadius( +prop27['радиус'] )
+            .innerRadius( +prop27['радиус'] / 3.5);
 
         var arc = innerDonut.selectAll(".arc")
             .data(pie(data)).enter().append("g")
@@ -60,8 +60,8 @@ function drawGraph27() {
         arc.append("path")
             .attr("d", path)
             .attr("fill", function(d , i ) {
-                data2[i].startAngle = d.startAngle ;
-                data2[i].endAngle = d.endAngle ;
+                data27[i].startAngle = d.startAngle ;
+                data27[i].endAngle = d.endAngle ;
                 return color(d.data['name']); });
 
         arc.append("text")
@@ -83,7 +83,7 @@ function drawGraph27() {
         var radiusPlus = 40 ;
         var red = d3.scaleLinear()
             .domain([0 , (data[index].sum / 6) ]  )
-            .range(["white" , prop123.colorsLeft[index]  ]);
+            .range(["white" , prop27.colorsLeft[index]  ]);
         var pie = d3.pie()
             .sortValues(function compare(a, b) {
                 return b - a;
@@ -93,11 +93,11 @@ function drawGraph27() {
             .endAngle(data[index].endAngle) ;
 
         var path = d3.arc()
-            .outerRadius(+prop123['радиус'] + +prop123['радиус гребешка'])
-            .innerRadius(+prop123['радиус']  ) ;
+            .outerRadius(+prop27['радиус'] + +prop27['радиус гребешка'])
+            .innerRadius(+prop27['радиус']  ) ;
         var label = d3.arc()
-            .outerRadius( +prop123['радиус'] )
-            .innerRadius( +prop123['радиус'] + +prop123['белая дырка внутри'] + +prop123['радиус легенды гребешка']);
+            .outerRadius( +prop27['радиус'] )
+            .innerRadius( +prop27['радиус'] + +prop27['белая дырка внутри'] + +prop27['радиус легенды гребешка']);
         var arc = donut.selectAll(".arc")
             .data(pie(data[index].value)).enter().append("g")
             .attr("class", "arc");
@@ -109,9 +109,8 @@ function drawGraph27() {
 
         arc.append("path")
             .attr("d", path)
-            .attr("fill", function(d , i ) {  return prop123.colorsComb[i] })
+            .attr("fill", function(d , i ) {  return prop27.colorsComb[i] })
             .on("mousemove", function(d) {
-                console.log(d);
                 div.transition()
                     .duration(200)
                     .style("opacity", .9);
@@ -144,21 +143,21 @@ function drawGraph27() {
     function accr(){
         str1 = "";
         str1+=('<div class="accord"> ');
-        for (i =0 ; i < data2.length ;i ++) {
+        for (i =0 ; i < data27.length ;i ++) {
             var red = d3.scaleLinear()
-                .domain([0 , (data2[i].sum / 6) ]  )
-                .range(["white" , prop123.colorsLeft[i]  ]);
+                .domain([0 , (data27[i].sum / 6) ]  )
+                .range(["white" , prop27.colorsLeft[i]  ]);
             rect5 = '<svg style="  top: 10; position: relative; " width="30" height="30"> '+
-                '<rect width="20" height="20" transform="translate(5,5)" style="fill:'+ prop123.colorsLeft[i] +'; " /> </svg>';
+                '<rect width="20" height="20" transform="translate(5,5)" style="fill:'+ prop27.colorsLeft[i] +'; " /> </svg>';
 
-            str1+=('<button class="accordion" count='+i+'>' );
+            str1+=('<button class="accordion27" count='+i+'>' );
             str1+=(' <div class="arrow right" id="arrToog'+ i  +'"> </div>' );
-            str1+=( rect5 +data2[i].name + '</button> ' );
+            str1+=( rect5 +data27[i].name + '</button> ' );
             str1+=('<div class="panel">');
-            for (dat in data2[i].value) {
+            for (dat in data27[i].value) {
                 rect5 = '<svg style="  top: 10; position: relative; " width="30" height="30"   > '+
-                    '<rect width="20" height="20" transform="translate(5,5)" style="fill:'+  prop123.colorsComb[dat] +'; " /> </svg>';
-                str1+=('  <p  > ' + rect5 +  Object.keys(data2[i].value[dat])  + ' </p>');
+                    '<rect width="20" height="20" transform="translate(5,5)" style="fill:'+  prop27.colorsComb[dat] +'; " /> </svg>';
+                str1+=('  <p  > ' + rect5 +  Object.keys(data27[i].value[dat])  + ' </p>');
             }
             str1+=('</div>');
         }
@@ -166,13 +165,13 @@ function drawGraph27() {
 
         d3.select("#str").html(str1);
 
-        var acc = document.getElementsByClassName("accordion");
+        var acc = document.getElementsByClassName("accordion27");
 
         for (i = 0; i < acc.length; i++) {
 
             acc[i].onclick = function() {
                 this.classList.toggle("active");
-                showPiePercents(data2 , this.getAttribute("count"));
+                showPiePercents(data27 , this.getAttribute("count"));
 
 
                 document.getElementById("arrToog"+this.getAttribute("count") ).classList.toggle("right");

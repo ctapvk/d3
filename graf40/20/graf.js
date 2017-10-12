@@ -1,6 +1,6 @@
-function drawGraph37() {
+function drawGraph20() {
 
-var svg = d3.select(".graf37");
+var svg = d3.select(".graf20");
 
 
 }

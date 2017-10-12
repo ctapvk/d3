@@ -1,4 +1,4 @@
-button.accordion {
+button.accordion27 {
 	background-color: white;
 	color: #444;
 	cursor: pointer;
@@ -11,7 +11,7 @@ button.accordion {
 	height: 10px;
 }
 
-button.accordion.active, button.accordion:hover {
+button.accordion27.active, button.accordion27:hover {
 	/*background-color: #ddd;*/
 }
 div.panel p{
@@ -93,10 +93,9 @@ div.accord {
 div.tooltip {
 	position: absolute;
 	text-align: left;
-	padding-top: 10px;
-	padding-left: 10px;
 	font: 14px sans-serif;
 	line-height: 1.4;
+	padding: 5px;
 	background: white;
 	border-style: solid;
 	border-width: 1px;
