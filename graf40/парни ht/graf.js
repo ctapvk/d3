@@ -474,7 +474,7 @@ function drawGraph27() {
             .attr("font-weight" , "bold")
             .text(function(d) {
                 percfen = ( (d.endAngle - d.startAngle)/6.28 * 100).toFixed(1);
-                if (percfen > 1)
+                if (percfen > 3)
                     return percfen + '%';
                 else
                     return ""

@@ -2,7 +2,7 @@ prop21 = {
 	"colorsLeft": ["#828BC4", "#529ACB", "#1E5F9C", "#66977B", "#828BC4", "#828BC4", "#8DC2D7"] , 
 	"legendValue":"#CFCFD1",
 	"legendText":"#818388" , 
-	"paddingOuterPie":"0.04" , 
+	"paddingOuterPie":"0.04" ,
 	"paddingInnerPieAngle":"0.04" , 
 	"innerPieRadius": 120 ,
 	"innerPieInnerRaius": 40 , 

@@ -1,0 +1,55 @@
+/*gist 8*/
+.gist {
+    fill:none;
+}
+
+.asisXmounthText {
+    text-anchor :middle ;
+    fill :#CDD5DE ;
+    font-weight :bold;
+    font-family: sans-serif;
+    font-size:14 ;
+    dominant-baseline : central ;
+}
+
+.planGistLabel {
+    text-anchor :middle ;
+    fill :#999999 ;
+    font-weight :bold;
+    font-family: sans-serif;
+    font-size:14px ;
+    dominant-baseline : central ;
+}
+.factGistLabel {
+    text-anchor :middle ;
+    fill :#fff ;
+    font-weight :bold;
+    font-family: sans-serif;
+    font-size:14px ;
+    dominant-baseline : central ;
+}
+.mounthLabes {
+    text-anchor :middle ;
+    fill :gray ;
+    /*font-weight :bold;*/
+    font-size:14 ;
+    font-family: sans-serif;
+    dominant-baseline : central ;
+}
+
+
+.asisYcapiton {
+    font-size:18px ;
+    fill :#aDa5aE ;
+    dominant-baseline : central ;
+    text-anchor :end ;
+    font-family: sans-serif;
+}
+
+.legend {
+    font-size:15px ;
+    font-family: sans-serif;
+}
+
+
+/*gist 8*/
