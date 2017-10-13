@@ -51,10 +51,11 @@ function gist8() {
     } else {
         x = d3.scaleLinear()
             .domain([0, data8.length-1])
-            .range([ 5 , (+prop8.barSize-5 )*11])
+            .range([ +prop8.gistPadding/2 , (+prop8.barSize-5 )*11])
         ;
         rotText = "rotate(30 )";
-        barSize = +prop8.barSize-5; ;
+        if (data8.length==12) c = 10; else c=5;
+        barSize = +prop8.barSize-c; ;
     }
 
     drawBack(asisX);
@@ -328,8 +329,28 @@ function gist8() {
 
     function cutLongText (str) {
         str = str[0];
-        if (str.length > 25)
+        if (str.length > 25){
             return str.substr(0,25) + "..." ;
+        }
+        else
+            return str ;
+    }
+
+    function breakLongText (str , limit) {
+        str = str[0];
+
+        if (str.length > limit){
+            s="";
+            if (str[limit-1]!=" ") for (i=limit;i< limit+10;i++) {
+                if (str[i]==" ") {
+                    limit=i+1;
+                    break;
+                }
+            }
+            s = "<tspan y='-20' x='0' dy='1.2em'>" + str.substr(0,limit) + "</tspan>" ;
+            s += "<tspan x='0' dy='1.2em'>" + str.substr(limit) + "</tspan>" ;
+            return s ;
+        }
         else
             return str ;
     }
@@ -423,6 +444,8 @@ function gist8() {
 
         }
 
+
+
         function drawLegend(canvas) {
             te = canvas.append("g")
                 .attr("transform" , "translate("+[ 50 ,  +prop8.radius*2 + 100 ]+")")
@@ -432,8 +455,11 @@ function gist8() {
                 leg = te.append("g").attr("transform" , "translate("+[ 0, i*40  ]+")");
 
                 leg.append("text")
-                    .attr("class", "krugLegText").text( cutLongText(Object.keys(data[i]) ) )
+                    .attr("class", "krugLegText").html( breakLongText(Object.keys(data[i]) , 18) )
+                    // .attr("class", "krugLegText").text( Object.keys(data[i])  )
                 ;
+
+
                 leg.append("rect")
                     .attr("class" , "krugRectLeg")
                     .attr("transform" , "translate("+[ -35,-18 ]+")")

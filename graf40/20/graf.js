@@ -24,7 +24,7 @@ function drawGraph20() {
     function drawBase(canvas){
         te = canvas.append("g").attr("class" , "basePie");
 
-        pie = d3.pie().padAngle(.09);
+        pie = d3.pie().padAngle(.0);
         arc = d3.arc();
 
         pie(data20.base.value).forEach( function (t, i ) {
