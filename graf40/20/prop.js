@@ -1,6 +1,7 @@
 prop20 = {
-"radius":"150",
-"radiusOfHole":"35",
+"radius":"140",
+"radiusOfHole":"30",
+"paddingLeft":"0",
 "colorsBase": ["#5B90BB", "#D8D7D8", "#A2A9D3", "#93C5D9", "#828BC4", "#828BC4", "#8DC2D7"] ,
 "colorsOverBase": ["#1E5F9C", "#C2BEC3", "#828BC4", "#529ACB", "#828BC4", "#828BC4", "#8DC2D7"] ,
 

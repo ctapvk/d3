@@ -44,7 +44,6 @@ draw(gist);
 drawAsisX(asisX);
 drawAsisY(asisY);
 
-// showLegend(asisX);
 
 function draw(canvas) {
 	legend = canvas.append("g")
@@ -290,102 +289,6 @@ function drawAsisY(canvas) {
 
 }
 
-function drawGist(canvas , data , colorStroke, label) {
-
-y = d3.scaleLinear()
-		.domain([ maxHeightRange , 0 ] )
-		.range([  heightSvg ,heightSvg- height   ])
-;
-
-	g = canvas.append("g")
-					.attr("transform", "translate(29 ,0)")
-	;
-
-	margin = +getElemHeight(asisX) ; 
-	line = d3.line()
-				.x(function(d , i ) { return x(i) ;  })
-				.y(function(d) { return -y(d) + margin; })
-	;
-	area = d3.area()
-				.x(function(d , i ) {  return x(i) ; })
-				.y0(0)
-				.y1(function(d) {  return -y(d) + margin; })
-	;
-	g.append("path")
-		.attr("d", line(data))
-		.style("stroke", colorStroke)
-		.style("stroke-width", 2)
-	;
-	g.append("path")
-		.attr("d", area(data))
-		.style("fill", colorStroke)
-		.style("opacity", .3)
-	;
- 	// добавляем отметки к точкам
-	g.selectAll(".dot " + label)
-			.data(data)
-			.enter().append("circle")
-					.style("fill", colorStroke)
-					.attr("class", "dot " + label)
-					.attr("r", 6)
-					.attr("cx", function(d,i) { return x(i) ; })
-					.attr("cy", function(d) { return -y(d) + margin; })
-	;
-
-}
-
-
-function showLables(canvas) {
-
-	text =canvas.append("g")
-					.attr("transform" , function(d) { return "translate(" + [ 5 ,  25-height ] + ")" })
-					.attr("class" , "ted")
-	;
-	data.forEach(function(dat , i) {
-		legend = text.append("g")
-				.attr("transform" , function(d ) { return "translate(" + [ 29+x(i) , - 3 ] + ")" })
-		;
-		legend.append("text")
-					.attr("fill" , prop.planColor)
-					.attr("font-weight" , "bold" )
-					.text( function(d){ return cutLongSum(data[i])  })
-		;		
-		legend.append("text")
-					.attr("transform" , function(d) { return "translate(" + [ 0 ,  25 ] + ")" })
-					.attr("font-weight" , "bold" )
-					.attr("fill" , prop.faktColor)
-					.text( function(d){ return cutLongSum(data2[i])  })
-		;
-	});
-
-}
-
-function showLegend(canvas){
-
-	legend = canvas.append("g").attr("transform"  , "translate(20,-50)") ;
-
-	text = legend.append("g").attr("transform"  , "translate(20,0)") ;
-	text.append("text")
-				.text("План")
-				.attr("transform"  , "translate(35,17)") 
-	;
-	text.append("rect")
-			.attr("width"  , 25 )
-			.attr("height" , 25 )
-			.attr("fill" , prop.planColor)
-	;
-
-	text = legend.append("g").attr("transform"  , "translate(150,0)") ;
-	text.append("text")
-				.text("Факт")
-				.attr("transform"  , "translate(35,17)") 
-	;
-	text.append("rect")
-			.attr("width"  , 25 )
-			.attr("height" , 25 )
-			.attr("fill" , prop.faktColor)
-	;
-}
 
 function getElemWidth (el){
 	return d3.select(el)._groups["0"]["0"]._groups["0"]["0"].getAttribute("width");
