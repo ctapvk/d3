@@ -87,15 +87,19 @@ function drawGraph20(prop, data , index) {
                 .text(per + '%')
             ;
 
-        t.outerRadius = 230  ;
-
-        if ( t.endAngle > 3 ) leftDots(arc.centroid(t) , leftcount++ , i );
-        //if ( t.endAngle <= 3 ) rightDots(arc.centroid(t) , leftcount++ , i );
+            t.outerRadius = 230  ;
+             console.log(data.vals[i]);
+            text= [
+                data.baseName.value[i],
+                data.vals[i].name
+            ];
+            if ( t.endAngle > 3 ) leftDots(arc.centroid(t) , leftcount++ , i , text );
+            //if ( t.endAngle <= 3 ) rightDots(arc.centroid(t) , leftcount++ , i );
 
         });
 
 
-function leftDots(aa , leftcount, color){
+function leftDots(aa , leftcount, color, text){
 
     legLeft = leftSide.append("g")
         .attr("class" , "legLeft")
@@ -130,8 +134,13 @@ function leftDots(aa , leftcount, color){
     ;
     leftLegend.append("text")
         .attr("class", "legendText")
-        .attr("transform" , "translate(30 , 15)" )
-        .text(123)
+        .attr("transform" , "translate(30 , 5)" )
+        .text(text[0])
+    ;
+    leftLegend.append("text")
+        .attr("class", "legendText")
+        .attr("transform" , "translate(30 , 20)" )
+        .text(text[1])
     ;
 
 }
