@@ -1,5 +1,6 @@
 function gist8(data , prop ) {
 
+    console.log(data);
     svg = d3.select(".gist8");
     svg.selectAll("*").remove(); 
 
@@ -117,7 +118,7 @@ function gist8(data , prop ) {
         legend.append("text")
             .attr("class", "asisYcapiton")
             .attr("transform", "translate( " + [-10, 10] + ")")
-            .text("тыс. руб.")
+            .text("руб.")
         ;
     }
 
@@ -245,15 +246,15 @@ function gist8(data , prop ) {
     }
 
     function currencySwap(d) {
-        d = parseInt(d * 0.001);
+        // d = parseInt(d * 0.001);
         return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "";
     }
 
 
     function cutLongText (str) {
         str = str[0];
-        if (str.length > 25){
-            return str.substr(0,25) + "..." ;
+        if (str.length > 22){
+            return str.substr(0,22) + "..." ;
         }
         else
             return str ;
@@ -285,7 +286,7 @@ function gist8(data , prop ) {
     }
 
     function currencySwapNoCut(d) {
-        d= parseInt(parseFloat(d) );
+        d= (parseFloat(d) ).toFixed(3);
         return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " руб.";
     }
 
