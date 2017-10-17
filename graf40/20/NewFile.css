@@ -39,7 +39,7 @@ h1 {
 .control-group {
     display: inline-block;
     vertical-align: top;
-    background: #fff;
+    background: #F6F6F6;
     text-align: left;
     box-shadow: 0 1px 2px rgba(0,0,0,0.1);
     padding: 30px;
@@ -66,21 +66,21 @@ h1 {
     left: 0;
     height: 20px;
     width: 20px;
-    background: #e6e6e6;
+    background: #fff;
 }
 .control--radio .control__indicator {
     border-radius: 50%;
 }
 .control:hover input ~ .control__indicator,
 .control input:focus ~ .control__indicator {
-    background: #ccc;
+    background: #fff;
 }
 .control input:checked ~ .control__indicator {
-    background: #2aa1c0;
+    /*background: #2aa1c0;*/
 }
 .control:hover input:not([disabled]):checked ~ .control__indicator,
 .control input:checked:focus ~ .control__indicator {
-    background: #0e647d;
+    /*background: #0e647d;*/
 }
 .control input:disabled ~ .control__indicator {
     background: #e6e6e6;
@@ -144,7 +144,7 @@ h1 {
 .select select:hover,
 .select select:focus {
     color: #000;
-    background: #ccc;
+    background: #fff;
 }
 .select select:disabled {
     opacity: 0.5;
@@ -166,7 +166,7 @@ h1 {
     border-top-color: #000;
 }
 .select select:disabled ~ .select__arrow {
-    border-top-color: #ccc;
+    border-top-color: #fff;
 }
 
 
@@ -177,3 +177,44 @@ h1 {
     stroke : #aDa5aE ;
     stroke-width : 2px;
 }
+
+.leftLegTop{
+    font-family: sans-serif;
+    font-size: 12px;
+    fill: black;
+
+}
+
+.leftLegUnder{
+    font-family: sans-serif;
+    font-size: 12px;
+    fill: gray;
+
+}
+
+.rightLegTop{
+    font-family: sans-serif;
+    font-size: 12px;
+    fill: black;
+    text-anchor: end;
+
+
+}
+
+.rightLegUnder{
+    font-family: sans-serif;
+    font-size: 12px;
+    fill: gray;
+    text-anchor: end;
+
+}
+
+.leftLegUnderBold{
+    font-family: sans-serif;
+    font-size: 12px;
+    fill: black;
+    font-weight: bold;
+
+}
+
+

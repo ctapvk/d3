@@ -38,7 +38,7 @@ function drawGraph20(prop, data , index) {
                 .attr("d", arc(t))
                 .on("mousemove", function(d) {
                     div.transition().duration(200).style("opacity", .9);
-                    div.html( data.base.value[i] )
+                    div.html( currencySwapNoCut(data.base.value[i]) )
                         .style("left", (d3.event.pageX) + "px")
                         .style("top", (d3.event.pageY - 28) + "px");
                 })
@@ -58,9 +58,9 @@ function drawGraph20(prop, data , index) {
         arc = d3.arc();
         label = d3.arc();
 
-        leftSide = canvas.append("g").attr("class", "leftSide")  ;
+        leftSide = canvas.append("g").attr("class", "legend")  ;
 
-        leftcount=0;
+        leftcount=0;rightcount=0;
 
         pie(data.base.value).forEach( function (t, i ) {
             var per =   (data.vals[index].value[i]/ data.base.value[i]).toFixed(2)*100 ;
@@ -70,7 +70,7 @@ function drawGraph20(prop, data , index) {
                 .attr("d", arc(t))
                 .on("mousemove", function(d) {
                     div.transition().duration(200).style("opacity", .9);
-                    div.html( data.vals[index].name+ ' : ' + data.vals[index].value[i]  +' ( '+ per.toFixed(0) + '% )' )
+                    div.html( data.vals[index].name+ ' : ' + currencySwapNoCut(data.vals[index].value[i] ) +' ( '+ per.toFixed(0) + '% )' )
                         .style("left", (d3.event.pageX) + "px")
                         .style("top", (d3.event.pageY - 28) + "px");
                 })
@@ -88,13 +88,15 @@ function drawGraph20(prop, data , index) {
             ;
 
             t.outerRadius = 230  ;
-             console.log(data.vals[i]);
             text= [
                 data.baseName.value[i],
-                data.vals[i].name
+
+                data.vals[index].name + ' <tspan class="leftLegUnderBold"> ' +
+                currencySwapNoCut((data.vals[index].value[i]))  + ' ' +
+                per  + '% </tspan>  '
             ];
             if ( t.endAngle > 3 ) leftDots(arc.centroid(t) , leftcount++ , i , text );
-            //if ( t.endAngle <= 3 ) rightDots(arc.centroid(t) , leftcount++ , i );
+            if ( t.endAngle <= 3 ) rightDots(arc.centroid(t) , rightcount++ , i ,text);
 
         });
 
@@ -105,7 +107,7 @@ function leftDots(aa , leftcount, color, text){
         .attr("class" , "legLeft")
     ;
 
-    bb = [ -prop.radius-30 ,  +prop.radius + 40 + leftcount*45 ];
+    bb = [ -prop.radius-100 ,  +prop.radius + 40 + leftcount*45 ];
 
     leftSideConn( aa[0] ,aa[1] , bb[0], bb[1] ,  legLeft   , leftcount) ;
 
@@ -133,14 +135,60 @@ function leftDots(aa , leftcount, color, text){
         .attr("fill" , prop.colorsBase[color] )
     ;
     leftLegend.append("text")
-        .attr("class", "legendText")
+        .attr("class", "leftLegTop")
         .attr("transform" , "translate(30 , 5)" )
         .text(text[0])
     ;
     leftLegend.append("text")
-        .attr("class", "legendText")
+        .attr("class", "leftLegUnder")
         .attr("transform" , "translate(30 , 20)" )
-        .text(text[1])
+        .html(text[1])
+    ;
+
+}
+
+function rightDots(aa ,rightcount, color, text){
+
+    legRight = leftSide.append("g")
+        .attr("class" , "legRight")
+    ;
+
+    bb = [ +prop.radius+100 ,  +prop.radius + 40 + rightcount*45 ];
+
+    rigthSideConn( aa[0] ,aa[1] , bb[0]+20, bb[1] ,  legRight   , rightcount) ;
+
+    whiteDdd = legRight.append("g")
+        .attr("class" , "leftDots")
+        .attr("transform" , "translate("+ aa +")")
+    ;
+    whiteDdd.append("circle")
+        .attr("r", 5)
+        .attr("class", "whiteDot")
+        .attr("fill", "white")
+    ;
+    whiteDdd.append("circle")
+        .attr("r", + 5-2.5)
+        .attr("fill", function(d) {   return prop.colorsBase[color]; })
+    ;
+
+    leftLegend =  legRight.append("g")
+        .attr("transform" , function(d) { return "translate(" + [  bb[0], bb[1]  ] + ")" })
+        .attr("class" , "leftLegend")
+    ;
+    leftLegend.append("rect")
+        .attr("width" , 20)
+        .attr("height" , 20)
+        .attr("fill" , prop.colorsBase[color] )
+    ;
+    leftLegend.append("text")
+        .attr("class", "rightLegTop")
+        .attr("transform" , "translate(-30 , 5)" )
+        .text(text[0])
+    ;
+    leftLegend.append("text")
+        .attr("class", "rightLegUnder")
+        .attr("transform" , "translate(-30 , 20)" )
+        .html(text[1])
     ;
 
 }
@@ -184,7 +232,7 @@ function leftDots(aa , leftcount, color, text){
     function rigthSideConn(x,y, xEnd , yEnd ,  canvas , i) {
         dif = 15 ;
         // console.log(x,y, xEnd , yEnd  , i) ;
-        di = -(prop.paddingLeft - i*10) ;
+        di = prop.paddingLeft - (i+2)*10 ;
         dat =[
             [x , y ],
             [xEnd - di - dif , y ]   ,
