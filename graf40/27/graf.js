@@ -104,7 +104,7 @@ function drawGraph27() {
 
 
         var div = d3.select("body").append("div")
-            .attr("class", "tooltip")
+            .attr("class", "tooltipBud")
             .style("opacity", 0);
 
         arc.append("path")
@@ -134,10 +134,23 @@ function drawGraph27() {
             .attr("font-size" , "14")
             .attr("fill" , "black")
             .attr("font-weight" , "bold")
-            .text(function(d) {  return ( (d.endAngle - d.startAngle)/6.28 * 100).toFixed(1)   + '%'; });
+            .text(function(d) {
+                percfen = ( (d.endAngle - d.startAngle)/6.28 * 100).toFixed(1);
+                if (percfen > 3)
+                    return percfen + '%';
+                else
+                    return ""
+            });
     }
 
 
+    function cutLongText (str) {
+        str = str[0];
+        if (str.length > 25)
+            return str.substr(0,25) + "..." ;
+        else
+            return str ;
+    }
 
 
     function accr(){
@@ -157,7 +170,7 @@ function drawGraph27() {
             for (dat in data27[i].value) {
                 rect5 = '<svg style="  top: 10; position: relative; " width="30" height="30"   > '+
                     '<rect width="20" height="20" transform="translate(5,5)" style="fill:'+  prop27.colorsComb[dat] +'; " /> </svg>';
-                str1+=('  <p  > ' + rect5 +  Object.keys(data27[i].value[dat])  + ' </p>');
+                str1+=('  <p  > ' + rect5 +  cutLongText(Object.keys(data27[i].value[dat]) )   + ' </p>');
             }
             str1+=('</div>');
         }
