@@ -7,81 +7,108 @@ function gist8(data , prop ) {
     widthSvg = +svg.attr("width");
     heightSvg = +svg.attr("height");
     width = +svg.attr("width") - +(prop.paddingLeft);
-    height = +svg.attr("height") - +(prop.paddingBottom);
+    height = +svg.attr("height") - +(prop.paddingBottom) - +prop.paddingTop;
 
     asisX = svg.append("g")
         .attr("class", "asisX")
-        .attr("transform", "translate(" + [widthSvg - width, height] + ")")
+        .attr("transform", "translate(" + [widthSvg - width, 0] + ")")
         .attr("width", width)
-        .attr("height", heightSvg - height)
+        .attr("height", +prop.paddingTop)
     ;
     gist = svg.append("g")
         .attr("class", "gist")
-        .attr("transform", "translate(" + [widthSvg - width, height] + ")")
+        .attr("transform", "translate(" + [widthSvg - width,  +prop.paddingTop] + ")")
         .attr("width", width)
-        .attr("height", height)
+        .attr("height", height - +prop.paddingBottom)
     ;
     asisY = svg.append("g")
         .attr("class", "asisY")
-        .attr("transform", "translate(" + [0, 0] + ")")
+        .attr("transform", "translate(" + [0, +prop.paddingTop] + ")")
         .attr("width", widthSvg - width)
         .attr("height", height)
     ;
-    diff = 1.0;
+    // showBorders(asisX);
+    // showBorders(gist);
+    // showBorders(asisY);
+
+    diff = 1.3;
     min = 0;
     max = +findMaxVal(data);
-    y = d3.scaleLinear()
+// console.log([max ,  min]);
+
+    x = d3.scaleLinear()
         .domain([min * diff, max * diff])
-        .range([height, 0])
+        .range([0, width])
+    ;
+    y = d3.scaleLinear()
+        .domain([0, data.length])
+        .range([+prop.gistPadding, ( +prop.barSize + +prop.spaceBetween) * data.length])
     ;
 
-// console.log([max ,  min]);
-    x = d3.scaleLinear()
-        .domain([0, 21])
-        .range([+prop.gistPadding, ( +prop.barSize + +prop.spaceBetween) * 21])
-    ;
-    rotText = "";
     barSize = +prop.barSize;
 
     drawBack(asisX);
+    drawAsisX(asisX);
     drawAsisY(asisY);
-    showLegend(asisX);
+
+    showLegend(asisY);
     drawNach(gist);
 
-    drawAsisX(gist);
 
+    function showBorders(canvas ) {
+        g = canvas.append("g");
+        line = d3.line().x(function(d) {return d[0];} ).y(function(d) { return d[1]} ) ;
+        d = [
+            [0,0] ,
+            [0,getElemHeight(canvas)] ,
+            [getElemWidth(canvas),getElemHeight(canvas)] ,
+            [getElemWidth(canvas),0] ,
+            [0,0] ,
+        ]
 
-    function drawAsisX(canvas) {
-
-        line = d3.line().x(function (d) {
-            return d[0]
-        }).y(function (d) {
-            return d[1]
-        });
-        canvas.append("path")
-            .attr("transform", function (d) {
-                return "translate(" + [0, -height + y(0)] + ")"
-            })
-            .attr("d", line([[0, 0], [getElemWidth(canvas), 0]]))
+        g.append("path")
+            .attr("d", line(d))
             .attr("stroke-width", 4)
             .attr("stroke", "#CDD5DE")
         ;
+
     }
 
     function drawAsisY(canvas) {
-        line = d3.line()
-            .x(function (d) {
-                return d[0]
-            })
-            .y(function (d) {
-                return d[1]
-            })
+
+        line = d3.line().x(function(d) {return d[0];} ).y(function(d) { return d[1]} ) ;
+
+        canvas.append("path")
+            .attr("transform",   "translate(" + [0, 0 ] + ")" )
+            .attr("d", line([[getElemWidth(canvas), 0], [getElemWidth(canvas), getElemHeight(canvas)]]))
+            .attr("stroke-width", 4)
+            .attr("stroke", "#CDD5DE")
         ;
+
+        datas = canvas.append("g").attr("transform", "translate(0,0)");
+
+
+        data.forEach(function (d, i) {
+            datas.append("text")
+                .attr("transform", " translate(" + [
+                    getElemWidth(canvas) - +prop.moveMounth,
+                    y(i)
+                ] + ") ")
+                .attr("class", "asisYcapiton")
+                .text(i+1)
+            ;
+        });
+
+    }
+
+    function drawAsisX(canvas) {
+        line = d3.line().x(function(d) {return d[0];} ).y(function(d) { return d[1]} ) ;
+
         canvas.append("path")
             .attr("transform", function (d) {
                 return "translate(" + [0, 0] + ")"
             })
-            .attr("d", line([[getElemWidth(canvas), 0], [getElemWidth(canvas), getElemHeight(canvas)]]))
+            .attr("d", line([[0, getElemHeight(canvas)], [ getElemWidth(canvas),getElemHeight(canvas) ]]))
             .attr("stroke-width", 4)
             .attr("stroke", "#CDD5DE")
         ;
@@ -91,35 +118,24 @@ function gist8(data , prop ) {
             .attr("class", "legend")
         ;
 
-        y.ticks().forEach(function (dat, i) {
-            if (i != y.ticks().length - 1) {
+        x.ticks().forEach(function (dat, i) {
                 text = legend.append("g")
                     .attr("transform", function (d) {
-                        return "translate(" + [0, y(dat)] + ")"
+                        return "translate(" + [x(dat) - getElemWidth(canvas), getElemHeight(canvas)] + ")"
                     })
                 ;
                 text.append("text")
-                    .attr("class", "asisYcapiton")
-                    .attr("transform", function (d) {
-                        return "translate(" + [-10, 0] + ")"
-                    })
-                    .text(function (d) {
-                        return currencySwap(dat)
-                    })
+                    .attr("class", "AsisXText")
+                    .attr("transform", "translate(" + [0, -10] + ")")
+                    .text(currencySwap(dat))
                 ;
                 text.append("circle")
                     .attr("r", 5)
                     .attr("fill", "#CDD5DE")
                 ;
-            }
         })
         ;
 
-        legend.append("text")
-            .attr("class", "asisYcapiton")
-            .attr("transform", "translate( " + [-10, 10] + ")")
-            .text("руб.")
-        ;
     }
 
 
@@ -128,18 +144,14 @@ function gist8(data , prop ) {
     function drawBack(canvas) {
         rects = canvas.append("g").attr("class", "backRects");
 
-        tis = y.ticks();
-        backHei = y(tis[0]) - y(tis[1]);
+        tis = x.ticks();
+        widthRec = x(tis[1]) - x(tis[0]);
         tis.forEach(function (d, i) {
-            // console.log(y.ticks());
-            if (i % 2 == 0) {
-                rectHeight = y(d.planOut);
+            if (i % 2 != 0) {
                 rects.append("rect")
-                    .attr("transform", function () {
-                        return "translate( " + [0, y(d) - height] + ")";
-                    })
-                    .attr("width", width)
-                    .attr("height", backHei)
+                    .attr("transform", "translate( " + [x(d), getElemHeight(canvas)] + ")" )
+                    .attr("width", widthRec)
+                    .attr("height",height)
                     .attr("fill", prop.backColor)
                 ;
             }
@@ -154,16 +166,14 @@ function gist8(data , prop ) {
 
         data.forEach(function (d, i) {
 
-            rectHeight = y(Object.values(d));
+            rectWidth = x(Object.values(d));
 
             rects.append("rect")
                 .attr("transform", function () {
-                    return "translate( " + [x(i), -height + y(Object.values(d) )] + ")";
+                    return "translate( " +  [ 0, y(i) - barSize/2 ] + ")";
                 })
-                .attr("width", barSize)
-                .attr("height", function () {
-                    return -(rectHeight - y(0))
-                })
+                .attr("height", barSize)
+                .attr("width",  rectWidth)
                 .attr("fill", prop.colors[i])
                 .on("mousemove", function() {
                     div.transition().duration(200).style("opacity", .9);
@@ -176,35 +186,15 @@ function gist8(data , prop ) {
 
             ;
 
-            /*rects.append("text")
-                .attr("class", "planGistLabel")
-                .attr("transform", "translate( " + [x(i) + barSize / 2, -height + rectHeight - 15] + ")")
-                .text(cutLongSum(Object.values(d)))
-            ;*/
         });
     }
 
     
     function showLegend(canvas) {
 
-        datas = canvas.append("g").attr("transform", "translate(0,0)");
-
-
+        legend = canvas.append("g").attr("transform", "translate("+(20 ) +",0)");
+        itemPos = 0;
         data.forEach(function (d, i) {
-            datas.append("text")
-                .attr("transform", " translate(" + [x(i) + barSize / 2, +prop.moveMounth] + ") ")
-                .attr("class", "mounthLabes")
-                .text(i+1)
-            ;
-        });
-
-
-        pos = 0 ;
-        data.forEach(function (d, i) {
-            if (i %7 ==0){
-            legend = canvas.append("g").attr("transform", "translate("+(20+ 250*pos++) +",0)");
-            itemPos = 0;
-            }
 
 
             outLeg = legend.append("g").attr("transform", "translate(0,"+(60 + itemPos++*30)+")");
@@ -299,11 +289,11 @@ function gist8(data , prop ) {
     }
 
 
-    printTable(data);
+    // printTable(data);
     function printTable(d){
         console.log(d);
 
-        s="<table class='table-bughet-calc'> " ;
+        s="<table> " ;
         s+="<tr>";
         s+="<td valign='top'>";
         for (i=0; i <11 ; i++){
