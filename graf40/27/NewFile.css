@@ -16,6 +16,7 @@ button.accordion27.active, button.accordion27:hover {
 }
 div.panel p{
 	margin: 0;
+	font-family: sans-serif;
 }
 div.panel {
 	padding: 0 18px;
@@ -102,6 +103,8 @@ div.tooltipBud {
 	border-color: blue;
 	pointer-events: none;
 }
+
+
 
 
 

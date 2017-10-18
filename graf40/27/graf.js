@@ -114,7 +114,7 @@ function drawGraph27() {
                 div.transition()
                     .duration(200)
                     .style("opacity", .9);
-                div.html( d3.keys(d.data) + " : "+ d3.values(d.data)+" тыс. руб. </br>"+
+                div.html( d3.keys(d.data) + " : "+ currencySwapNoCut(d3.values(d.data))+"</br>"+
                           "Доля в общих расходах :" + ((d.endAngle - d.startAngle)/6.28 * 100).toFixed(1)  +" % </br>   " )
                     .style("left", (d3.event.pageX) + "px")
                     .style("top", (d3.event.pageY - 28) + "px");
@@ -143,6 +143,11 @@ function drawGraph27() {
             });
     }
 
+    function currencySwapNoCut(d) {
+        d= parseInt(parseFloat(d) );
+        return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " руб.";
+    }
+
 
     function cutLongText (str) {
         str = str[0];
@@ -168,9 +173,13 @@ function drawGraph27() {
             str1+=( rect5 +data27[i].name + '</button> ' );
             str1+=('<div class="panel">');
             for (dat in data27[i].value) {
-                rect5 = '<svg style="  top: 10; position: relative; " width="30" height="30"   > '+
+                rect5 = '<svg style="   position: relative; top:3px; " width="30" height="30"   > '+
                     '<rect width="20" height="20" transform="translate(5,5)" style="fill:'+  prop27.colorsComb[dat] +'; " /> </svg>';
-                str1+=('  <p  > ' + rect5 +  cutLongText(Object.keys(data27[i].value[dat]) )   + ' </p>');
+                str1+=( '<table><tr> <td valign="top">'  + rect5 +
+                    '  </td> <td width="200px"  >'+
+                    '<p style="  padding: 0px;  text-align: left;"> '   +
+                         Object.keys(data27[i].value[dat])    +
+                    ' </p> </td></tr></table>');
             }
             str1+=('</div>');
         }
