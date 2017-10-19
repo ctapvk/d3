@@ -79,11 +79,9 @@ function drawGraph27() {
     function showPiePercents(data , index){
         donut = g_gist4.append("g")
             .attr("class", "donut"+index);
-        console.log(index);
+
         var radiusPlus = 40 ;
-        var red = d3.scaleLinear()
-            .domain([0 , (data[index].sum / 6) ]  )
-            .range(["white" , prop27.colorsLeft[index]  ]);
+
         var pie = d3.pie()
             .sortValues(function compare(a, b) {
                 return b - a;
@@ -103,13 +101,18 @@ function drawGraph27() {
             .attr("class", "arc");
 
 
-        var div = d3.select("body").append("div")
+        var div = d3.select("#hide27").append("div")
             .attr("class", "tooltipBud")
             .style("opacity", 0);
 
+        var red = d3.scaleLinear()
+            .domain([0 , data27[index].value.length  ]  )
+            .range([ prop27.colorsLeft[index] ,prop27.gradientColor  ]);
+
+
         arc.append("path")
             .attr("d", path)
-            .attr("fill", function(d , i ) {  return prop27.colorsComb[i] })
+            .attr("fill", function(d , i ) { return red(i) })
             .on("mousemove", function(d) {
                 div.transition()
                     .duration(200)
@@ -161,25 +164,32 @@ function drawGraph27() {
     function accr(){
         str1 = "";
         str1+=('<div class="accord"> ');
+
         for (i =0 ; i < data27.length ;i ++) {
-            var red = d3.scaleLinear()
-                .domain([0 , (data27[i].sum / 6) ]  )
-                .range(["white" , prop27.colorsLeft[i]  ]);
+
+        var red = d3.scaleLinear()
+            .domain([0 , data27[i].value.length ]  )
+            .range([ prop27.colorsLeft[i] , prop27.gradientColor  ]);
+
             rect5 = '<svg style="  top: 10; position: relative; " width="30" height="30"> '+
-                '<rect width="20" height="20" transform="translate(5,5)" style="fill:'+ prop27.colorsLeft[i] +'; " /> </svg>';
+                '<rect width="20" height="20" transform="translate(5,5)" style="fill:'+ prop27.colorsLeft[i]+'; " /> </svg>';
 
             str1+=('<button class="accordion27" count='+i+'>' );
             str1+=(' <div class="arrow right" id="arrToog'+ i  +'"> </div>' );
             str1+=( rect5 +data27[i].name + '</button> ' );
             str1+=('<div class="panel">');
+            data27[i].value.sort(function(x, y){
+                return d3.descending( parseFloat(d3.values(x)), parseFloat(d3.values(y)) );
+            })
+            // console.log(data27[i].value);
             for (dat in data27[i].value) {
                 rect5 = '<svg style="   position: relative; top:3px; " width="30" height="30"   > '+
-                    '<rect width="20" height="20" transform="translate(5,5)" style="fill:'+  prop27.colorsComb[dat] +'; " /> </svg>';
+                    '<rect width="20" height="20" transform="translate(5,5)" style="fill:'+  red(dat) +'; " /> </svg>';
                 str1+=( '<table><tr> <td valign="top">'  + rect5 +
                     '  </td> <td width="200px"  >'+
                     '<p style="  padding: 0px;  text-align: left;"> '   +
-                         Object.keys(data27[i].value[dat])    +
-                    ' </p> </td></tr></table>');
+                         d3.keys(data27[i].value[dat])    +
+                    ' </p> <p> '+ currencySwapNoCut(d3.values(data27[i].value[dat])) +'</p></td></tr></table>');
             }
             str1+=('</div>');
         }

@@ -31,14 +31,14 @@ function drawGraph20(prop, data , index) {
         pie = d3.pie().padAngle(.0).sort(null);
         arc = d3.arc();
 
-        pie(data.base.value).forEach( function (t, i ) {
+        pie(data.vals[0].value).forEach( function (t, i ) {
             t.outerRadius = +prop.radius;  t.innerRadius = +prop.radiusOfHole ;
             te.append("path")
                 .attr("fill" ,  prop.colorsBase[i] )
                 .attr("d", arc(t))
                 .on("mousemove", function(d) {
                     div.transition().duration(200).style("opacity", .9);
-                    div.html( currencySwapNoCut(data.base.value[i]) )
+                    div.html( data.vals[0].name+ ' : ' + currencySwapNoCut(data.vals[0].value[i]) )
                         .style("left", (d3.event.pageX) + "px")
                         .style("top", (d3.event.pageY - 28) + "px");
                 })
@@ -62,9 +62,11 @@ function drawGraph20(prop, data , index) {
 
         leftcount=0;rightcount=0;
 
-        pie(data.base.value).forEach( function (t, i ) {
-            var per =   (data.vals[index].value[i]/ data.base.value[i]).toFixed(2)*100 ;
+        pie(data.vals[0].value).forEach( function (t, i ) {
+
+            var per =   (data.vals[index].value[i]/ data.vals[0].value[i]).toFixed(2)*100 ;
             t.outerRadius = x(per) ;  t.innerRadius = +prop.radiusOfHole;
+            if (index!=0) {
             te.append("path")
                 .attr("fill" ,  prop.colorsOverBase[i] )
                 .attr("d", arc(t))
@@ -86,6 +88,7 @@ function drawGraph20(prop, data , index) {
                 .attr("transform", "translate("+  arc.centroid(t)+")")
                 .text(per + '%')
             ;
+            }
 
             t.outerRadius = 230  ;
             text= [
@@ -95,6 +98,7 @@ function drawGraph20(prop, data , index) {
                 currencySwapNoCut((data.vals[index].value[i]))  + ' ' +
                 per  + '% </tspan>  '
             ];
+
             if ( t.endAngle > 3 ) leftDots(arc.centroid(t) , leftcount++ , i , text );
             if ( t.endAngle <= 3 ) rightDots(arc.centroid(t) , rightcount++ , i ,text);
 
@@ -278,6 +282,7 @@ function rightDots(aa ,rightcount, color, text){
 
 
 drawBase(center);
+
 drawOverBase(center , index);
 }
 
@@ -287,7 +292,7 @@ s ='<div class="control-group">' ;
 data20.vals.forEach(function(d, i) {
     // console.log(d);
     s+= '<label class="control control--radio" >' + d.name ;
-    s+= '<input onclick="drawGraph20(prop20 ,data20 ,'+i +')" type="radio" name="radio"/>';
+    s+= '<input onclick="drawGraph20(prop20 ,data20 ,'+i +')" type="radio" name="radio" />';
     s+= '<div class="control__indicator"></div>';
     s+= '</label>';
 
@@ -295,3 +300,5 @@ data20.vals.forEach(function(d, i) {
 s+= "</div>";
 
 te.html(s);
+
+

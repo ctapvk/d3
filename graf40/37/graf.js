@@ -14,7 +14,7 @@ data.forEach(function (t, i ) {
 
     gist = main.append("g").attr("transform" , "translate("+[ 0 , i*80 ]+")").attr("class" , "gist") ;
 
-    text = gist.append("g").attr("transform" , "translate("+[ 20 ,30]+")").attr("class" , "textLegend") ;
+    text = gist.append("g").attr("transform" , "translate("+[ 20 ,30]+")").attr("class" , "textLegend37") ;
     text.append("text").html(breakLongText(Object.keys(t) , 25));
 
     propgress = gist.append("g").attr("transform" , "translate("+[ 350 ,10]+")").attr("class" , "propgress") ;
@@ -80,7 +80,7 @@ data.forEach(function (t, i ) {
 
 
 
-    text = gist.append("g").attr("transform" , "translate("+[ 350+ barSize +50 ,35]+")").attr("class" , "textLegendRight") ;
+    text = gist.append("g").attr("transform" , "translate("+[ 350+ barSize +50 ,35]+")").attr("class" , "textLegendRight37") ;
     text.append("text").html(currencySwapWithText( d3.values(t) [0][1] ));
 
 

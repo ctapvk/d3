@@ -1,13 +1,16 @@
-.textLegend{
+.textLegend37{
     font-family: sans-serif;
     font-size: 20px;
+    fill: black;
 
 }
 
-.textLegendRight{
+.textLegendRight37{
     font-family: sans-serif;
     font-size: 20px;
     font-weight: bold;
+    fill: black;
+
 
 }
 
