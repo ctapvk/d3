@@ -218,3 +218,24 @@ h1 {
 }
 
 
+
+
+
+/*  */
+.legendCaption{
+    font-family: sans-serif;
+    fill: gray ;
+    text-anchor: middle;
+}
+.legendCaption2{
+    font-family: sans-serif;
+    fill: white ;
+    text-anchor: middle;
+}
+
+svg text {
+    font-family: sans-serif;
+}
+
+
+

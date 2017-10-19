@@ -209,7 +209,7 @@ function rightDots(aa ,rightcount, color, text){
     function leftSideConn(x,y, xEnd , yEnd ,  canvas , i) {
         dif = 15 ;
 // console.log(x,y, xEnd , yEnd  , i) ;
-        di = prop.paddingLeft + (i+2)*10 ;
+        di =  (i+2)*10 ;
         dat =[
             [x , y ],
             [xEnd - di + dif , y ]   ,
@@ -236,7 +236,7 @@ function rightDots(aa ,rightcount, color, text){
     function rigthSideConn(x,y, xEnd , yEnd ,  canvas , i) {
         dif = 15 ;
         // console.log(x,y, xEnd , yEnd  , i) ;
-        di = prop.paddingLeft - (i+2)*10 ;
+        di =  - (i+2)*10 ;
         dat =[
             [x , y ],
             [xEnd - di - dif , y ]   ,
@@ -278,12 +278,360 @@ function rightDots(aa ,rightcount, color, text){
         return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " руб.";
     }
 
+function showGist( index ) {
 
+
+    svg = d3.select(".grafTwo");
+    svg.selectAll("*").remove();
+
+    widthSvg = +svg.attr("width");
+    heightSvg = +svg.attr("height");
+    width = +svg.attr("width") - +(prop.paddingLeft)- +(prop.paddingRight);
+    height = +svg.attr("height") - +(prop.paddingBottom) - +prop.paddingTop;
+
+    asisXtop = svg.append("g")
+        .attr("class", "asisXtop")
+        .attr("transform", "translate(" + [ +prop.paddingLeft , 0 ] + ")")
+        .attr("width", width )
+        .attr("height", +prop.paddingTop)
+    ;
+    asisY = svg.append("g")
+        .attr("class", "asisY")
+        .attr("transform", "translate(" + [0, +prop.paddingTop] + ")")
+        .attr("width", +prop.paddingLeft)
+        .attr("height", heightSvg - +prop.paddingBottom - +prop.paddingTop)
+    ;
+    asisYright = svg.append("g")
+        .attr("class", "asisYright")
+        .attr("transform", "translate(" + [widthSvg -+prop.paddingRight , +prop.paddingTop] + ")")
+        .attr("width", +prop.paddingRight )
+        .attr("height", heightSvg - +prop.paddingBottom - +prop.paddingTop)
+    ;
+    gist = svg.append("g")
+        .attr("class", "gist")
+        .attr("transform", "translate(" + [+prop.paddingLeft   , +prop.paddingTop ] + ")")
+        .attr("width", width )
+        .attr("height", heightSvg - +prop.paddingBottom - +prop.paddingTop )
+    ;
+    asisX = svg.append("g")
+        .attr("class", "asisX")
+        .attr("transform", "translate(" + [+prop.paddingLeft , heightSvg - +prop.paddingBottom ] + ")")
+        .attr("width", width  )
+        .attr("height", +prop.paddingBottom)
+    ;
+
+    // showBorders(asisX);
+    // showBorders(gist);
+    // showBorders(asisY);
+    // showBorders(asisXtop);
+    // showBorders(asisYright);
+    diff = 1.2;
+    min = 0;
+    max = +data.vals[index].limit ;
+    y = d3.scaleLinear()
+        .domain([min * diff, max * diff])
+        .range([height, 0])
+    ;
+
+// console.log([max ,  min]);
+    x = d3.scaleLinear()
+        .domain([0, 21])
+        .range([+prop.gistPadding, ( +prop.barSize + +prop.spaceBetween) * 21])
+    ;
+    barSize = +prop.barSize;
+
+
+    function drawLegend(canvas) {
+        te = canvas.append("g")
+            .attr("transform" , "translate("+[ -30,30]+")")
+        ;
+
+        item = te.append("g") .attr("transform" , "translate("+[0,0]+")") ;
+        item.append("rect")
+            .attr("width","20")
+            .attr("height","20")
+            .attr("fill",prop.colorZak)
+        ;
+        item.append("text")
+            .attr("transform","translate("+[25,15]+")")
+            .attr("class","legendX")
+            .text("Предусмотрено законом")
+        ;
+        item.append("text")
+            .attr("transform","translate("+[25,35]+")")
+            .attr("fill","gray")
+            .text(currencySwapWithText(+data.vals[index].limit ))
+        ;
+
+
+        item = te.append("g") .attr("transform" , "translate("+[0,50]+")") ;
+        item.append("rect")
+            .attr("width","20")
+            .attr("height","20")
+            .attr("fill",prop.colorLim)
+        ;
+        item.append("text")
+            .attr("transform","translate("+[25,15]+")")
+            .attr("class","legendX")
+            .text(data.vals[0].name )
+        ;
+        item.append("text")
+            .attr("transform","translate("+[25,35]+")")
+            .attr("fill","gray")
+            .text(currencySwapWithText(data.vals[0].value[0] ))
+
+        if (index!=0){
+            item = te.append("g") .attr("transform" , "translate("+[0,100]+")") ;
+            item.append("rect")
+                .attr("width","20")
+                .attr("height","20")
+                .attr("fill",prop.colorGet)
+            ;
+            item.append("text")
+                .attr("transform","translate("+[25,15]+")")
+                .attr("class","legendX")
+                .text(data.vals[index].name)
+            ;
+            item.append("text")
+                .attr("transform","translate("+[25,35]+")")
+                .attr("fill","gray")
+                .text(currencySwapWithText(data.vals[index].value[0] ))
+        }
+
+
+    }
+
+    function drawGist(canvas){
+        te = canvas.append("g").attr("transform" , "translate(0,0)") ;
+
+        zakTe = te.append("g").attr("transform" , "translate("+[ 40 , y(+data.vals[index].limit)  ]+")" )  ;
+        zakTe.append("rect")
+            .attr("fill" , prop.colorZak)
+            .attr("width" , +prop.barSize)
+            .attr("height" , height - y(+data.vals[index].limit))
+        ;
+        zakTe.append("text")
+            .attr("class" , "legendCaption")
+            .attr("transform" , "translate("+[ 0 , -5 ]+")" )
+            .text(currencySwapNoCut(+data.vals[index].limit ))
+        ;
+
+        zakTe = te.append("g").attr("transform" , "translate("+[ 90 , y(data.vals[index].value[0])  ]+")" )  ;
+        zakTe.append("rect")
+            .attr("fill" , prop.colorLim)
+            .attr("width" , +prop.barSize)
+            .attr("height" , height - y(data.vals[index].value[0]))
+        ;
+        zakTe.append("text")
+            .attr("class" , "legendCaption")
+            .attr("transform" , "translate("+[ +prop.barSize , -5 ]+")" )
+            .text(currencySwapNoCut(data.vals[index].value[0] ))
+        ;
+
+        if (index!=0){
+            per =  Math.floor((data.vals[index].value[0] / +data.vals[index].limit  )*100) ;
+            wi = +prop.barSize * (data.vals[index].value[0] / +data.vals[index].limit) ;
+            heParent =  height - y(data.vals[index].value[0]) ;
+            he = ( height - y(data.vals[index].value[0]))  * per/100 ;
+            // console.log(  height - y(data.vals[index].value[0]) );
+            // wi = +prop.barSize * (70/100) ;
+            zakTe = te.append("g").attr("transform" , "translate("+[
+                90+ +prop.barSize/2 -  wi/2 ,
+                y(data.vals[index].value[0]) + ( height - y(data.vals[index].value[0]) -he )
+            ]+")" )  ;
+
+            zakTe.append("rect")
+                .attr("fill" , prop.colorGet)
+                .attr("stroke" , "white")
+                .attr("stroke-width" , "2px")
+                // .attr("transform" , "translate("+[ 0 , -5 ]+")" )
+                .attr("width" , wi )
+                .attr("height" , he )
+            ;
+            if (per < 90) koi = -10 ;else koi=20;
+            zakTe.append("text")
+                .attr("class" , "legendCaption2")
+                .attr("transform" , "translate("+[ +wi/2 , koi ]+")" )
+                .text( per + "%" )
+            ;
+        }
+
+    }
+
+    function drawAsisX(canvas) {
+
+        line = d3.line().x(function(d) {return d[0];} ).y(function(d) { return d[1]} ) ;
+
+        canvas.append("path")
+            .attr("transform", function (d) {
+                return "translate(" + [0, -height + y(0)] + ")"
+            })
+            .attr("d", line([[0, 0], [getElemWidth(canvas), 0]]))
+            .attr("stroke-width", 4)
+            .attr("stroke", "#CDD5DE")
+        ;
+    }
+
+
+    function drawAsisY(canvas) {
+        // back
+        rects = canvas.append("g").attr("class", "backRects");
+
+        tis = y.ticks();
+        backHei = y(tis[0]) - y(tis[1]);
+        tis.forEach(function (d, i) {
+            // console.log(y.ticks());
+            if (i % 2 == 0 && i!=0) {
+                rectHeight = y(d.planOut);
+                rects.append("rect")
+                    .attr("transform", "translate( " + [ getElemWidth(canvas) ,  y(d)] + ")")
+                    .attr("width", width)
+                    .attr("height", backHei)
+                    .attr("fill", prop.backColor)
+                ;
+            }
+        });
+
+        //
+        canvas.append("text")
+            .attr("transform","translate("+[25,5]+")")
+            .text("тыс. руб.")
+        ;
+        //asis
+        line = d3.line().x(function(d) {return d[0];} ).y(function(d) { return d[1]} ) ;
+
+        canvas.append("path")
+            .attr("transform",  "translate(" + [0, 0] + ")" )
+            .attr("d", line([
+                [getElemWidth(canvas), 0],
+                [getElemWidth(canvas), getElemHeight(canvas)]
+            ]))
+            .attr("stroke-width", 4)
+            .attr("stroke", "#CDD5DE")
+        ;
+
+        legend = canvas.append("g")
+            .attr("transform", "translate(" + [getElemWidth(canvas), 0] + ")")
+            .attr("class", "legend")
+        ;
+
+        y.ticks().forEach(function (dat, i) {
+            if (i != y.ticks().length - 1 && i !=0) {
+                text = legend.append("g")
+                    .attr("transform", function (d) {
+                        return "translate(" + [0, y(dat)] + ")"
+                    })
+                ;
+                text.append("text")
+                    .attr("text-anchor", "end")
+                    .attr("dominant-baseline", "central")
+                    .attr("transform",  "translate(" + [-10, 0] + ")" )
+                    .text( currencySwap(dat) )
+                ;
+                text.append("circle")
+                    .attr("r", 5)
+                    .attr("fill", "#CDD5DE")
+                ;
+
+            }
+        });
+    }
+
+
+
+        function showBorders(canvas ) {
+        g = canvas.append("g");
+        line = d3.line().x(function(d) {return d[0];} ).y(function(d) { return d[1]} ) ;
+        d = [
+            [0,0] ,
+            [0,getElemHeight(canvas)] ,
+            [getElemWidth(canvas),getElemHeight(canvas)] ,
+            [getElemWidth(canvas),0] ,
+            [0,0] ,
+        ]
+
+        g.append("path")
+            .attr("d", line(d))
+            .attr("stroke-width", 4)
+            .attr("stroke", "#CDD5DE")
+        ;
+
+    }
+
+
+    function currencySwap(d) {
+        // d = parseInt(d * 0.001);
+        return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "";
+    }
+
+
+    function cutLongText (str) {
+        str = str[0];
+        if (str.length > 22){
+            return str.substr(0,22) + "..." ;
+        }
+        else
+            return str ;
+    }
+
+    function breakLongText (str , limit) {
+        str = str[0];
+
+        if (str.length > limit){
+            s="";
+            if (str[limit-1]!=" ") for (i=limit;i< limit+10;i++) {
+                if (str[i]==" ") {
+                    limit=i+1;
+                    break;
+                }
+            }
+            s = "<tspan y='-20' x='0' dy='1.2em'>" + str.substr(0,limit) + "</tspan>" ;
+            s += "<tspan x='0' dy='1.2em'>" + str.substr(limit) + "</tspan>" ;
+            return s ;
+        }
+        else
+            return str ;
+    }
+
+
+    function currencySwapWithText(d) {
+        // d= parseInt(parseFloat(d)*0.001 );
+        return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " руб.";
+    }
+
+    function currencySwapNoCut(d) {
+        d= (parseInt(d) );
+        return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "";
+    }
+
+    function cutLongSum(d) {
+        if (+d > 1000)
+            return d.toString().substr(0, 3);
+        else
+            return d;
+    }
+
+    function getElemWidth(el) {
+        return d3.select(el)._groups["0"]["0"]._groups["0"]["0"].getAttribute("width");
+    }
+
+    function getElemHeight(el) {
+        return d3.select(el)._groups["0"]["0"]._groups["0"]["0"].getAttribute("height");
+    }
+
+
+    drawAsisY(asisY);
+    drawAsisX(asisX);
+    drawGist(gist);
+    drawLegend(asisX);
+}
 
 
 drawBase(center);
 
 drawOverBase(center , index);
+showGist( index );
+
 }
 
 
