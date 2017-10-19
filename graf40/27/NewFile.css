@@ -8,7 +8,7 @@ button.accordion27 {
 	outline: none;
 	font-size: 15px;
 	transition: 0.4s;
-	height: 10px;
+	height: 30px;
 }
 
 button.accordion27.active, button.accordion27:hover {
@@ -102,6 +102,7 @@ div.tooltipBud {
 	border-width: 1px;
 	border-color: blue;
 	pointer-events: none;
+	width: 250px;
 }
 
 

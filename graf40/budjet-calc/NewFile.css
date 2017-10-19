@@ -56,8 +56,9 @@
 
 
 
-div.tooltip {
+div.tooltipOlolo {
     position: absolute;
+    top: -9999px;
     text-align: left;
     font: 14px sans-serif;
     line-height: 1.4;

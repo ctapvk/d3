@@ -159,14 +159,14 @@ function gist8(data , prop ) {
     }
 
 
-    div = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
+    div = d3.select("#hide66").append("div").attr("class", "tooltip").style("opacity", 0);
 
     function drawNach(canvas) {
         rects = canvas.append("g");
 
         data.forEach(function (d, i) {
 
-            rectWidth = x(Object.values(d));
+            rectWidth = x(d3.values(d));
 
             rects.append("rect")
                 .attr("transform", function () {
@@ -177,7 +177,7 @@ function gist8(data , prop ) {
                 .attr("fill", prop.colors[i])
                 .on("mousemove", function() {
                     div.transition().duration(200).style("opacity", .9);
-                    div.html(  Object.keys(d) + ' : '+  currencySwapNoCut(Object.values(d)) )
+                    div.html(  d3.keys(d) + ' : '+  currencySwapNoCut(d3.values(d)) )
                         .style("left", (d3.event.pageX) + "px")
                         .style("top", (d3.event.pageY - 30 ) + "px")
                     ;
@@ -206,7 +206,7 @@ function gist8(data , prop ) {
             outLeg.append("text")
                 .attr("transform", "translate(30 , 15)")
                 .attr("class", "legend")
-                .text( (i+1) + '. ' + cutLongText(Object.keys(d)) )
+                .text( (i+1) + '. ' + cutLongText(d3.keys(d)) )
             ;
         });
 
@@ -221,7 +221,7 @@ function gist8(data , prop ) {
     function findMaxVal(d) {
         max = 0;
         for (i in d)
-            if (parseFloat(max) < parseFloat(Object.values(d[i])) ) max = Object.values(d[i]);
+            if (parseFloat(max) < parseFloat(d3.values(d[i])) ) max = d3.values(d[i]);
         return max;
 
     }
@@ -300,10 +300,10 @@ function gist8(data , prop ) {
         s+="<table> ";
             s+="<tr>";
             s+="<td width='400px'>";
-            s+= Object.keys(d[i]) ;
+            s+= d3.keys(d[i]) ;
             s+="</td>";
             s+="<td>";
-            s+= currencySwapNoCut( Object.values(d[i]) );
+            s+= currencySwapNoCut( d3.values(d[i]) );
             s+="</td>";
             s+="</tr>";
             s+="";
@@ -315,10 +315,10 @@ function gist8(data , prop ) {
             s+="<table> ";
             s+="<tr>";
             s+="<td width='400px'>";
-            s+= Object.keys(d[i]) ;
+            s+= d3.keys(d[i]) ;
             s+="</td>";
             s+="<td>";
-            s+= currencySwapNoCut( Object.values(d[i]) );
+            s+= currencySwapNoCut( d3.values(d[i]) );
             s+="</td>";
             s+="</tr>";
             s+="";
