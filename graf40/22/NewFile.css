@@ -1,69 +1,79 @@
-path:hover {
-  fill: #999;
-  stroke: #000;
-  transition-delay: 0;
+.textLegend37{
+    font-family: sans-serif;
+    font-size: 20px;
+    fill: black;
+
 }
 
-#tooltip {
-	position: absolute;
-	width: 200px;
-	height: auto;
-	padding: 10px;
-	background-color: white;
+.textLegendRight37{
+    font-family: sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    fill: black;
+
+
+}
+
+
+
+.textBar {
+    font-family: sans-serif;
+    font-size:16px ;
+    fill :white ;
+    dominant-baseline : central ;
+}
+.textUpBar {
+    font-family: sans-serif;
+    font-size:16px ;
+    fill :black ;
+    text-anchor: middle;
+    font-weight: bold;
+}
+.legendText {
+    font-family: sans-serif;
+    font-size:16px ;
+    fill :black ;
+}
+
+
+
+div.tooltip {
+    position: absolute;
+    text-align: left;
+    font: 14px sans-serif;
+    line-height: 1.4;
+    padding: 5px;
+    background: white;
     border-style: solid;
     border-width: 1px;
-    border-color: blue; 
-	-webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
-	-moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
-	box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
-	pointer-events: none;
+    border-color: blue;
+    pointer-events: none;
 }
 
-#tooltip.hidden {
-	display: none;
+.leftBigDigit{
+    font-family: sans-serif;
+    font-size:40px ;
+    text-anchor: end;
+    font-weight: bold;
+    fill: #DADFE6;
+
 }
 
-#tooltip p {
-	margin: 0;
-	font-family: sans-serif;
-	font-size: 16px;
-	line-height: 20px;
+.mountthTxt{
+    font-family: sans-serif;
+    font-size:14px ;
+    text-anchor: middle;
+    text-transform:uppercase;
+    fill: gray;
+
 }
+.leftTextCap{
+    font-family: sans-serif;
+    font-size:18px ;
+    text-transform:uppercase;
+    fill: gray;
 
-.legendText {
-	text-anchor:left ;
-	dy:0.35em;
-	font-family:sans-serif;
-	font-size:14px ; 
-	fill:#75777D ; 
 }
-.legendTextLeft {
-	text-anchor:end ;
-	dy:0.35em;
-	font-family:sans-serif;
-	font-size:14px ;
-	fill:#75777D ;
-}
-
-.legendTextSum {
-	text-anchor:left;
-	dy:0.35em;
-	font-family:sans-serif;
-	font-size:14px ;
-	fill:black;
-}
-
-.legendTextSumLeft {
-	text-anchor:end;
-	dy:0.35em;
-	font-family:sans-serif;
-	font-size:14px ; 
-	fill:black;
-}
-
-
-
-
 
 
 
