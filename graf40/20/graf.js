@@ -1,4 +1,4 @@
-function drawGraph20(prop, data , index) {
+function drawGraph20(prop, data , index ) {
 // init block
     var svg = d3.select(".graf20");
     svg.selectAll("*").remove();
@@ -11,7 +11,7 @@ function drawGraph20(prop, data , index) {
 
     center = svg.append("g")
         .attr("class", "center")
-        .attr("transform", "translate("+[ width/2,  +prop.radius + 10  ]+")")
+        .attr("transform", "translate("+[ width/2,  +prop.radius + 40  ]+")")
     ;
 
     x = d3.scaleLinear()
@@ -19,11 +19,27 @@ function drawGraph20(prop, data , index) {
         .range([ +prop.radiusOfHole  ,  +prop.radius   ])
     ;
 
-    div = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
+    div = d3.select("#hide888").append("div").attr("class", "tooltip").style("opacity", 0);
 
 // init block
 
+    drawCaption(svg);
+    function drawCaption(canvas) {
+        te = canvas.append("g") ;
 
+        ar=[
+            "Данные на " + prop.dataPar ,
+            "Доведено лимитов к ассионованиям на " + prop.dataPar ,
+            "Доведено обязательств к ассионованиям на " + prop.dataPar ,
+            "Доведено кассовых планов к ассионованиям на " + prop.dataPar ,
+            "Доведено исполнений к ассионованиям на " + prop.dataPar ,
+        ];
+        te.append("text")
+            .attr("class","textAsisXtop")
+            .attr("transform","translate("+[0 , 25]+")")
+            .text(ar[index])
+        ;
+    }
 
     function drawBase(canvas){
         te = canvas.append("g").attr("class" , "basePie");
@@ -86,7 +102,7 @@ function drawGraph20(prop, data , index) {
             te.append("text")
                 .attr("class" , "krugPieTextLegend")
                 .attr("transform", "translate("+  arc.centroid(t)+")")
-                .text(per + '%')
+                .text( Math.ceil(per) + '%')
             ;
             }
 
@@ -95,8 +111,8 @@ function drawGraph20(prop, data , index) {
                 data.baseName.value[i],
 
                 data.vals[index].name + ' <tspan class="leftLegUnderBold"> ' +
-                currencySwapNoCut((data.vals[index].value[i]))  + ' ' +
-                per  + '% </tspan>  '
+                currencySwapNoCut( (data.vals[index].value[i]))  + ' ' +
+                Math.ceil(per)  + '% </tspan>  '
             ];
 
             if ( t.endAngle > 3 ) leftDots(arc.centroid(t) , leftcount++ , i , text );
@@ -341,6 +357,16 @@ function showGist( index ) {
     barSize = +prop.barSize;
 
 
+    function drawCaption(canvas) {
+        te = canvas.append("g") ;
+
+        te.append("text")
+            .attr("class","textAsisXtop")
+            .attr("transform","translate("+[-prop.paddingLeft+10 , 25]+")")
+            .text("Расходы бюджета на " + prop.dataPar)
+        ;
+    }
+
     function drawLegend(canvas) {
         te = canvas.append("g")
             .attr("transform" , "translate("+[ -30,30]+")")
@@ -378,7 +404,7 @@ function showGist( index ) {
         item.append("text")
             .attr("transform","translate("+[25,35]+")")
             .attr("fill","gray")
-            .text(currencySwapWithText(data.vals[0].value[0] ))
+            .text(currencySwapWithText(d3.sum(data.vals[0].value) ))
 
         if (index!=0){
             item = te.append("g") .attr("transform" , "translate("+[0,100]+")") ;
@@ -395,7 +421,7 @@ function showGist( index ) {
             item.append("text")
                 .attr("transform","translate("+[25,35]+")")
                 .attr("fill","gray")
-                .text(currencySwapWithText(data.vals[index].value[0] ))
+                .text(currencySwapWithText(d3.sum(data.vals[index].value) ))
         }
 
 
@@ -416,28 +442,29 @@ function showGist( index ) {
             .text(currencySwapNoCut(+data.vals[index].limit ))
         ;
 
-        zakTe = te.append("g").attr("transform" , "translate("+[ 90 , y(data.vals[index].value[0])  ]+")" )  ;
+        sum = d3.sum(data.vals[index].value) ; 
+        sumAssig = d3.sum(data.vals[0].value) ;
+        zakTe = te.append("g").attr("transform" , "translate("+[ 90 , y(sumAssig)  ]+")" )  ;
         zakTe.append("rect")
             .attr("fill" , prop.colorLim)
             .attr("width" , +prop.barSize)
-            .attr("height" , height - y(data.vals[index].value[0]))
+            .attr("height" , height - y(sumAssig))
         ;
         zakTe.append("text")
             .attr("class" , "legendCaption")
             .attr("transform" , "translate("+[ +prop.barSize , -5 ]+")" )
-            .text(currencySwapNoCut(data.vals[index].value[0] ))
+            .text(currencySwapNoCut(sumAssig ))
         ;
 
         if (index!=0){
-            per =  Math.floor((data.vals[index].value[0] / +data.vals[index].limit  )*100) ;
-            wi = +prop.barSize * (data.vals[index].value[0] / +data.vals[index].limit) ;
-            heParent =  height - y(data.vals[index].value[0]) ;
-            he = ( height - y(data.vals[index].value[0]))  * per/100 ;
-            // console.log(  height - y(data.vals[index].value[0]) );
-            // wi = +prop.barSize * (70/100) ;
+            per =  Math.floor((sum/ sumAssig  )*100) ;
+            wi = +prop.barSize * (sum / +data.vals[index].limit) ;
+            heParent =  height - y(sum) ;
+            he = ( height - y(sum))  * per/100 ;
+            // console.log(d3.sum(data.vals[index].value));
             zakTe = te.append("g").attr("transform" , "translate("+[
                 90+ +prop.barSize/2 -  wi/2 ,
-                y(data.vals[index].value[0]) + ( height - y(data.vals[index].value[0]) -he )
+                y(sum) + ( height - y(sum) -he )
             ]+")" )  ;
 
             zakTe.append("rect")
@@ -481,7 +508,7 @@ function showGist( index ) {
         backHei = y(tis[0]) - y(tis[1]);
         tis.forEach(function (d, i) {
             // console.log(y.ticks());
-            if (i % 2 == 0 && i!=0) {
+            if (i % 2 != 0 && i!=0) {
                 rectHeight = y(d.planOut);
                 rects.append("rect")
                     .attr("transform", "translate( " + [ getElemWidth(canvas) ,  y(d)] + ")")
@@ -495,6 +522,7 @@ function showGist( index ) {
         //
         canvas.append("text")
             .attr("transform","translate("+[25,5]+")")
+            .attr("class", "asisYcapitonRub")
             .text("тыс. руб.")
         ;
         //asis
@@ -523,8 +551,7 @@ function showGist( index ) {
                     })
                 ;
                 text.append("text")
-                    .attr("text-anchor", "end")
-                    .attr("dominant-baseline", "central")
+                    .attr("class", "asisYcapiton")
                     .attr("transform",  "translate(" + [-10, 0] + ")" )
                     .text( currencySwap(dat) )
                 ;
@@ -560,7 +587,7 @@ function showGist( index ) {
 
 
     function currencySwap(d) {
-        // d = parseInt(d * 0.001);
+        d = parseInt(d * 0.001);
         return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "";
     }
 
@@ -624,11 +651,12 @@ function showGist( index ) {
     drawAsisX(asisX);
     drawGist(gist);
     drawLegend(asisX);
+    drawCaption(asisXtop);
+
 }
 
 
 drawBase(center);
-
 drawOverBase(center , index);
 showGist( index );
 
@@ -640,7 +668,7 @@ s ='<div class="control-group">' ;
 data20.vals.forEach(function(d, i) {
     // console.log(d);
     s+= '<label class="control control--radio" >' + d.name ;
-    s+= '<input onclick="drawGraph20(prop20 ,data20 ,'+i +')" type="radio" name="radio" />';
+    s+= '<input onclick="drawGraph20(prop20 ,data20 ,'+i +' )" type="radio" name="radio" />';
     s+= '<div class="control__indicator"></div>';
     s+= '</label>';
 
