@@ -37,8 +37,9 @@ data.forEach(function (t, i ) {
         .on("mouseout", function() { div.transition().duration(500).style("opacity", 0); })
     ;
 
+    if (per> 100) perW=100;  else perW=per;
     propgress.append("rect")
-        .attr("width" , x(per))
+        .attr("width" , x(perW))
         .attr("height" ,  +prop.barHeight)
         .attr("fill" , prop.colorDone )
         .on("mousemove", function() {
@@ -50,7 +51,8 @@ data.forEach(function (t, i ) {
         })
         .on("mouseout", function() { div.transition().duration(500).style("opacity", 0); })
     ;
-    if (per > 15 && per<90)
+
+    if (per !=0 && per<95)
     propgress.append("circle")
         .attr("fill" , prop.colorDone)
         .attr("r", +prop.barHeight/2)
@@ -73,7 +75,7 @@ data.forEach(function (t, i ) {
     ;
 
     propgress.append("text")
-        .attr("transform" , "translate("+[ x(per) ,  -10]+")")
+        .attr("transform" , "translate("+[ x(perW) ,  -10]+")")
         .attr("class" , "textUpBar")
         .text(currencySwapWithText( d3.values(t) [0][1] ))
     ;

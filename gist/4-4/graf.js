@@ -26,7 +26,7 @@
         .attr("width" ,  widthSvg- width)
         .attr("height" , height)
     ;
-    diff = 1.2 ;
+    diff = 1.3 ;
     min = +findMinVal(data) ;
     max = +findMaxVal(data) ;
     y = d3.scaleLinear()
