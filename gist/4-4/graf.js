@@ -1,4 +1,7 @@
-    svg = d3.select(".gist4");
+function draw25(data, prop) {
+
+
+    svg = d3.select(".gist25");
 
 
     data = dataProcc(data);
@@ -113,28 +116,6 @@
             .text("млн. руб." )
         ;
     }
-
-    function showPlanOut(canvas){
-        rects = canvas.append("g");
-
-        data.forEach(function(d , i){
-
-            rectHeight = y(d.planOut);
-            rects.append("rect")
-                .attr("transform" , function() {   return "translate( "+ [ x(i) , -height+y(0)  ] +")" ; })
-                .attr("width" , barSize )
-                .attr("height" , function() { return -(rectHeight- y(0))  })
-                .attr("fill", prop.colorPlanOut)
-            ;
-            rects.append("text")
-                .attr("class" , "planGistLabel")
-                .attr("transform" , "translate( "+ [  x(i)+ barSize/2  , -height + y(0) -rectHeight + y(0)  + 15 ] +")")
-                .text(-cutLongSum(d.planOut))
-            ;
-        });
-    }
-
-
     function drawBack(canvas){
         rects = canvas.append("g").attr("class" , "backRects");
 
@@ -156,6 +137,25 @@
         });
     }
 
+    function showPlanOut(canvas){
+        rects = canvas.append("g");
+
+        data.forEach(function(d , i){
+
+            rectHeight = y(d.planOut);
+            rects.append("rect")
+                .attr("transform" , function() {   return "translate( "+ [ x(i) , -height+y(0)  ] +")" ; })
+                .attr("width" , barSize )
+                .attr("height" , function() { return -(rectHeight- y(0))  })
+                .attr("fill", prop.colorPlanOut)
+            ;
+
+
+        });
+    }
+
+
+
     function showFactOut(canvas){
         rects = canvas.append("g");
 
@@ -168,6 +168,19 @@
                 .attr("height" , function() { return -(rectHeight- y(0))  })
                 .attr("fill", prop.colorFactOut)
             ;
+
+            rectHeight = d.planOut > d.factOut ? y(d.planOut) : y(d.factOut)  ;
+            rects.append("text")
+                .attr("class" , "factGistLabel")
+                .attr("transform" , "translate( "+ [  x(i)+ barSize/2  , -height + y(0) -rectHeight + y(0)  + 10 ] +")")
+                .text(-cutLongSum(d.factOut))
+            ;
+            rects.append("text")
+                .attr("class" , "planGistLabel")
+                .attr("transform" , "translate( "+ [  x(i)+ barSize/2  , -height + y(0) -rectHeight + y(0)  + 30 ] +")")
+                .text(-cutLongSum(d.planOut))
+            ;
+
 
         });
     }
@@ -185,11 +198,6 @@
                 .attr("height" , function() { return -(rectHeight- y(0))  })
                 .attr("fill", prop.colorPlanIn)
             ;
-            rects.append("text")
-                .attr("class" , "planGistLabel")
-                .attr("transform" , "translate( "+ [  x(i)+ barSize/2  , -height+rectHeight - 15 ] +")")
-                .text(cutLongSum(d.planIn))
-            ;
         });
     }
 
@@ -206,6 +214,20 @@
                 .attr("height" , function() { return -(rectHeight- y(0))  })
                 .attr("fill", prop.colorFactIn)
             ;
+
+            rectHeight = +d.planIn> d.factIn ? y(d.planIn): y(d.factIn) ;
+            rects.append("text")
+                .attr("class" , "factGistLabel")
+                .attr("transform" , "translate( "+ [  x(i)+ barSize/2  , -height+rectHeight - 10 ] +")")
+                .text(cutLongSum(d.factIn))
+            ;
+            rects.append("text")
+                .attr("class" , "planGistLabel")
+                .attr("transform" , "translate( "+ [  x(i)+ barSize/2  , -height+rectHeight - 25 ] +")")
+                .text(cutLongSum(d.planIn))
+            ;
+
+
 
         });
     }
@@ -382,8 +404,15 @@
     }
 
     function cutLongSum(d){
-        if ( +d > 1000)
-            return  d.toString().substr(0,3) ;
+        d = d !== '' ? Math.floor(d) : '';
+        if ( Math.abs(d) > 1000)
+            if (+d > 0 )
+                return d.toString().substr(0, -(Math.floor(min)).toString().length + d.toString().length + 5);
+            else
+                return ( d.toString().substr(0, -(Math.floor(max)).toString().length + d.toString().length + 5) );
         else
             return d ;
     }
+
+
+}

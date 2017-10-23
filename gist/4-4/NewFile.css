@@ -21,7 +21,7 @@
 }
 .factGistLabel {
 	text-anchor :middle ; 
-	fill :#fff ; 
+	fill :#333 ;
 	font-weight :bold;
 	font-family: sans-serif;
 	font-size:14px ; 
@@ -53,3 +53,11 @@
 
 
 
+.planGistLabel {
+	text-anchor: middle;
+	fill: #999999;
+	font-weight: bold;
+	font-family: sans-serif;
+	font-size: 14px;
+	dominant-baseline: central;
+}

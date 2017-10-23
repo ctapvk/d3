@@ -206,7 +206,7 @@ function drawGraph26() {
 
     function showRects(barSize){
 
-        var div = d3.select("body").append("div")
+        var div = d3.select("#hide26").append("div")
             .attr("class", "tooltip")
             .style("opacity", 0);
 
