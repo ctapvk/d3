@@ -11,7 +11,7 @@ function drawGraph20(prop, data , index ) {
 
     center = svg.append("g")
         .attr("class", "center")
-        .attr("transform", "translate("+[ width/2,  +prop.radius + 40  ]+")")
+        .attr("transform", "translate("+[ width/2,  +prop.radius + 60  ]+")")
     ;
 
     x = d3.scaleLinear()
@@ -127,7 +127,7 @@ function leftDots(aa , leftcount, color, text){
         .attr("class" , "legLeft")
     ;
 
-    bb = [ -prop.radius-100 ,  +prop.radius + 40 + leftcount*45 ];
+    bb = [ -prop.radius-0 ,  +prop.radius + 100 + leftcount*100 ];
 
     leftSideConn( aa[0] ,aa[1] , bb[0], bb[1] ,  legLeft   , leftcount) ;
 
@@ -173,9 +173,9 @@ function rightDots(aa ,rightcount, color, text){
         .attr("class" , "legRight")
     ;
 
-    bb = [ +prop.radius+100 ,  +prop.radius + 40 + rightcount*45 ];
+    bb = [ +prop.radius+0 ,  +prop.radius + 50 + rightcount*100 ];
 
-    rigthSideConn( aa[0] ,aa[1] , bb[0]+20, bb[1] ,  legRight   , rightcount) ;
+    rigthSideConn( aa[0] ,aa[1] , bb[0], bb[1] ,  legRight   , rightcount) ;
 
     whiteDdd = legRight.append("g")
         .attr("class" , "leftDots")
@@ -196,6 +196,7 @@ function rightDots(aa ,rightcount, color, text){
         .attr("class" , "leftLegend")
     ;
     leftLegend.append("rect")
+        .attr("transform" , "translate(-20 , 0)" )
         .attr("width" , 20)
         .attr("height" , 20)
         .attr("fill" , prop.colorsBase[color] )
@@ -274,6 +275,28 @@ function rightDots(aa ,rightcount, color, text){
             .attr("d",function(d,i){ return line(dat); })
         ;
     }
+
+
+    function breakLongText (str , limit) {
+        str = str[0];
+
+        if (str.length > limit){
+            s="";
+            if (str[limit-1]!=" ") for (i=limit;i< limit+10;i++) {
+                if (str[i]==" ") {
+                    limit=i;
+                    break;
+                }
+            }
+            s = "<tspan y='-20' x='0' dy='1.2em'>" + str.substr(0,limit) + "</tspan>" ;
+            if (str[limit]!=' ') sap=1 ; else sap=0;
+            s += "<tspan x='0' dy='1.2em'>" + str.substr(limit-sap) + "</tspan>" ;
+            return s ;
+        }
+        else
+            return str ;
+    }
+
 
     function cutLongText (str) {
         str = str[0];
