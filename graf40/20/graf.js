@@ -465,7 +465,7 @@ function showGist( index ) {
             .text(currencySwapNoCut(+data.vals[index].limit ))
         ;
 
-        sum = d3.sum(data.vals[index].value) ; 
+        sum = d3.sum(data.vals[index].value) ;
         sumAssig = d3.sum(data.vals[0].value) ;
         zakTe = te.append("g").attr("transform" , "translate("+[ 90 , y(sumAssig)  ]+")" )  ;
         zakTe.append("rect")
@@ -504,6 +504,13 @@ function showGist( index ) {
                 .attr("transform" , "translate("+[ +wi/2 , koi ]+")" )
                 .text( per + "%" )
             ;
+
+            zakTe.append("text")
+                .attr("class" , "legendCaption3")
+                .attr("transform" , "translate("+[ wi+10, -10 + he ]+")" )
+                .text( currencySwapNoCut(sum ) )
+            ;
+
         }
 
     }
