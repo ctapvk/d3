@@ -501,6 +501,11 @@ function drawGraph27() {
             str1+=( rect5 +'<div class="g18TextLegHeader">'+data27[i].name + '' );
             str1+=('<p class="g18TextLegHeaderSum"> ' + currencySwap(data27[i].sum) +  '</p> </div> </button> ' );
             str1+=('<div class="panel">');
+
+            data27[i].value.sort(function(x, y){
+                return d3.descending( parseFloat(d3.values(x)), parseFloat(d3.values(y)) );
+            })
+
             for (dat in data27[i].value) {
                 // console.log( red(dat) );
                 rect5 = '<svg style="  top: 20px; position: relative; " width="30" height="30"   > '+
