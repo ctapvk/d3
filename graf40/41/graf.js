@@ -50,7 +50,7 @@ div = d3.select("#hid41").append("div").attr("class", "tooltip").style("opacity"
                             .duration(200)
                             .style("opacity", .9);
                         div.html(
-                            Object.keys(data[i]) +" : " + t.data + '%' )
+                            Object.keys(data[i]) +" : " + ((t.data / d3.sum(dat)).toFixed(3) * 100).toFixed(1) + '%'  )
                             .style("left", (d3.event.pageX) + "px")
                             .style("top", (d3.event.pageY - 28) + "px");
                     })
@@ -77,7 +77,7 @@ div = d3.select("#hid41").append("div").attr("class", "tooltip").style("opacity"
 
         function drawLegend(canvas) {
             te = canvas.append("g")
-                .attr("transform" , "translate("+[ 50 ,  +prop.radius*2 + 100 ]+")")
+                .attr("transform" , "translate("+[ 50 ,  +prop.radius*2 + 80 ]+")")
             ;
             caps = ["Поступления в ФБ","Поступления в бюджет Волгоградской области"];
             data.forEach(function (d , i ) {
@@ -99,20 +99,6 @@ div = d3.select("#hid41").append("div").attr("class", "tooltip").style("opacity"
         }
 
 
-        function drawCap(canvas) {
-            te = canvas.append("g")
-                .attr("transform" , "translate("+[ width/2 , 50 ]+")")
-            ;
-            txt = ["Объем поступлений в консолидированный бюджет" ] ;
-            te.append("text")
-                .attr("class" , "midCapText")
-                .attr("transform" , "translate("+[ -35,-18 ]+")")
-                .html(breakLongText(txt , 22))
-                // .text(txt )
-            ;
-
-        }
-
         function breakLongText (str , limit) {
             str = str[0];
 
@@ -133,8 +119,6 @@ div = d3.select("#hid41").append("div").attr("class", "tooltip").style("opacity"
         }
 
 
-
-        // drawCap(svg);
         drawLegend(svg);
         drawBase(center);
 }
