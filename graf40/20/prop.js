@@ -8,7 +8,7 @@ prop20 = {
     "paddingLeft" : "100" ,
     "paddingBottom" : "200"  ,
     "paddingTop" : "50"  ,
-    "paddingRight" : "0"  ,
+    "paddingRight" : "50"  ,
     "barSize" : "70"  ,
     "dataPar" : "01.07.2017"  ,
     "backColor" : "#F8F9FA"  ,
