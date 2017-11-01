@@ -193,12 +193,6 @@ function gist8() {
                 .on("click", function() { drawGraph20(d.dat);  })
 
             ;
-            rects.append("text")
-                .attr("class", "planGistLabel")
-                .attr("transform", "translate( " + [x(i) + barSize / 2, -height + rectHeight - 15] + ")")
-                .text(cutLongSum(d.nach))
-
-            ;
         });
     }
 
@@ -229,11 +223,40 @@ function gist8() {
 
 
             ;
-            rects.append("text")
-                .attr("class", "factGistLabel")
-                .attr("transform", "translate( " + [x(i) + barSize / 2, -height + rectHeight + 15] + ")")
-                .text(cutLongSum(d.postup))
-            ;
+            if (Math.floor(d.postup) < Math.floor(d.nach)) {
+
+                rectHeight = y(d.nach);
+
+                rects.append("text")
+                    .attr("class", "factGistLabel")
+                    .attr("transform", "translate( " + [x(i) + barSize / 2, -height + rectHeight -15] + ")")
+                    .text(cutLongSum(d.postup))
+                ;
+                 rects.append("text")
+                    .attr("class", "planGistLabel")
+                    .attr("transform", "translate( " + [x(i) + barSize / 2, -height + rectHeight -  30] + ")")
+                    .text(cutLongSum(d.nach))
+
+                ;
+
+            } else {
+                rectHeight = y(d.postup);
+
+                rects.append("text")
+                    .attr("class", "factGistLabel")
+                    .attr("transform", "translate( " + [x(i) + barSize / 2, -height + rectHeight -15] + ")")
+                    .text(cutLongSum(d.postup))
+                ;
+                 rects.append("text")
+                    .attr("class", "planGistLabel")
+                    .attr("transform", "translate( " + [x(i) + barSize / 2, -height + rectHeight -30] + ")")
+                    .text(cutLongSum(d.nach))
+
+                ;
+
+            }
+
+
         });
     }
 
