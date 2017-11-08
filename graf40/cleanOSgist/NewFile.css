@@ -2,5 +2,13 @@ path {
     fill:none;
 }
 svg text {
-    font-family: sans-serif;
+    font-family: Proxima Nova;
+}
+
+
+.asisYcapiton {
+    font-size: 18px;
+    fill: #aDa5aE;
+    dominant-baseline: central;
+    text-anchor: end;
 }

@@ -1,8 +1,8 @@
-prop34 = {
+propGraph36 = {
 "ads":123
 }
 
-var data34 = [
+var dataGraph36 = [
 
 
 ]

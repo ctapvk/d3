@@ -1,11 +1,6 @@
-
-
-
-div = d3.select("#hid42").append("div").attr("class", "tooltip").style("opacity", 0);
-
-
     function drawGraph41(data , prop  , idgraf) {
-// init block
+        // init block
+        div = d3.select("#hid42").append("div").attr("class", "tooltip").style("opacity", 0);
         var svg = d3.select("#"+idgraf);
         svg.selectAll("*").remove();
 

@@ -1,0 +1,29 @@
+path{
+	/*fill:none;*/
+}
+text{
+	font-family: sans-serif; 
+}
+
+.rectBar36{
+	stroke:#E8F5FF;
+	stroke-width:4px;
+}
+
+.center36{
+	background: #E8F5FF;
+	 fill: black; 
+}
+
+
+.textLegend{
+	/*fill:black;*/
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.curveLine {
+	fill:none ; 
+	stroke : #aDa5aE ; 
+	stroke-width : 3px;
+}

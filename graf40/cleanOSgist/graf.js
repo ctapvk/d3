@@ -1,4 +1,4 @@
-function drawGist(data , prop , id) {
+function drawGraph36(data , prop , id) {
 
     prop.paddingLeft = 100 ;
     prop.paddingBottom = 150 ;
@@ -8,7 +8,7 @@ function drawGist(data , prop , id) {
 
     // console.log(prop);
 
-    svg = d3.select("#graf34");
+    svg = d3.select("#"+id);
     svg.selectAll("*").remove();
 
     widthSvg = +svg.attr("width");
@@ -69,10 +69,7 @@ function drawGist(data , prop , id) {
     function drawAsisX(canvas) {
 
         line = d3.line().x(function(d) {return d[0];} ).y(function(d) { return d[1]} ) ;
-        canvas.append("path")
-            .attr("transform", function (d) {
-                return "translate(" + [0, -height + y(0)] + ")"
-            })
+        canvas.append("path") 
             .attr("d", line([[0, 0], [getElemWidth(canvas), 0]]))
             .attr("stroke-width", 4)
             .attr("stroke", "#CDD5DE")
@@ -124,8 +121,7 @@ function drawGist(data , prop , id) {
                     })
                 ;
                 text.append("text")
-                    .attr("text-anchor", "end")
-                    .attr("dominant-baseline", "central")
+                    .attr("class","asisYcapiton")
                     .attr("transform",  "translate(" + [-10, 0] + ")" )
                     .text( currencySwap(dat) )
                 ;
