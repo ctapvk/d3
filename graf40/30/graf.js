@@ -70,7 +70,7 @@ y2 = d3.scaleLinear()
 
 
 x = d3.scaleLinear()
-        .domain([0  , 7] )
+        .domain([0  , data.length] )
         .range([ 0 ,  width   ])
 ;
     barSize = +prop.barSize;

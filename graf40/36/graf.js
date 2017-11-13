@@ -1,6 +1,6 @@
 function drawGraph36(data , prop  , idgraf) {
 // init block
-div = d3.select("#hid42").append("div").attr("class", "tooltip").style("opacity", 0);
+div = d3.select("#hideGraph36").append("div").attr("class", "tooltipGraph36").style("opacity", 0);
 var svg = d3.select("#"+idgraf);
 svg.selectAll("*").remove();
 
@@ -49,16 +49,30 @@ data.forEach(function(d,i){
     ; step += +x(d.plan );
 
     //console.log(step ,  sum  );
+    let per = ((d.plan/sum).toFixed(2)*100).toFixed(0)   ; 
     te.append("rect")
             .attr("width", x(d.plan ) )
             .attr("class","rectBar36")
             .attr("height",getElemHeight(centerIn)  )
             .attr("fill", prop.colors[i] )
+            .on("mousemove", function() { 
+                div.transition().duration(200).style("opacity", .9);
+                div.html(   d.name +  " : " +  per + "%" )
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 30 ) + "px")
+                ;
+            })
+            .on("mouseout", function() { div.transition().duration(500).style("opacity", 0); })
     ;
+
+    sizeText = 1 + (per/100)*3; 
     te.append("text")
             .attr("fill","gray")
-            .text(123 + "%")
+            .attr("font-size",20*sizeText + "px")
+            .attr("transform","translate(15,-20)")
+            .text( per + "%" )
     ;
+
     // ======
 
     if (i%2==0){
@@ -69,7 +83,7 @@ data.forEach(function(d,i){
             .attr("transform", "translate("+coord+")") 
         ;
         showLegend(topLeg ,  data[i].name , prop.colors[i] , data[i].plan ,  data[i].fact  );
-        upConn( coord[0], coord[1] , step - x(d.plan)+3 ,3, centerIn , 1  , prop.colors[i] );
+        upConn( coord[0], coord[1] , step - x(d.plan)+3 ,3, centerIn , 1  , prop.colors[i]  , d.pic);
         // ========
 
             if (d.vals[0]!=undefined){ 
@@ -80,6 +94,16 @@ data.forEach(function(d,i){
                     .attr("width", reWi )
                     .attr("height",11  )
                     .attr("fill", prop.colors[i] )
+                        .on("mousemove", function() { 
+                            div.transition().duration(200).style("opacity", .9);
+                            div.html(  d.vals[0].name +  " : " + ( (+data[i].vals[0].plan  / +data[i].vals[0].fact).toFixed(2) *100)  + "%"  )
+                                .style("left", (d3.event.pageX) + "px")
+                                .style("top", (d3.event.pageY - 30 ) + "px")
+                            ;
+                        })
+                        .on("mouseout", function() { div.transition().duration(500).style("opacity", 0); })
+
+
                 ;
                 // legenda sub strip
                 coord = [ holderUp++ * 270 , -150] ; 
@@ -88,12 +112,13 @@ data.forEach(function(d,i){
                     .attr("transform", "translate("+coord+")") 
                 ;
                 showLegend(topLeg ,  data[i].vals[0].name , prop.colors[i] , data[i].vals[0].plan ,  data[i].vals[0].fact  );
-                upConn( coord[0], coord[1] , step -3-1.5 ,-14, centerIn , 1  , prop.colors[i] );
+                upConn( coord[0], coord[1] , step -3-1.5 ,-14, centerIn , 1  , prop.colors[i]   ,   data[i].vals[0].pic);
                 // =======
             } 
     } else {
 
-            if (d.vals[0]!=undefined){ 
+            if (d.vals[0]!=undefined){
+                // console.log(data[i].vals[0].plan);
                 cx = d3.scaleLinear().domain([0  , d.plan  ] ).range([ 0 ,  x(d.plan )  ]);
                 reWi=cx( d.vals[0].plan );
                  w=(getElemHeight(centerIn));
@@ -102,6 +127,15 @@ data.forEach(function(d,i){
                     .attr("width", reWi )
                     .attr("height",11  )
                     .attr("fill", prop.colors[i] )
+                        .on("mousemove", function() { 
+                            div.transition().duration(200).style("opacity", .9);
+                            div.html(  d.vals[0].name +  " : " + ( (+data[i].vals[0].plan  / +data[i].vals[0].fact).toFixed(2) *100)  + "%"  )
+                                .style("left", (d3.event.pageX) + "px")
+                                .style("top", (d3.event.pageY - 30 ) + "px")
+                            ;
+                        })
+                        .on("mouseout", function() { div.transition().duration(500).style("opacity", 0); })
+
                 ;
                 // legenda sub strip
                 coord = [ holderDown++ * 270 , 180] ; 
@@ -110,7 +144,7 @@ data.forEach(function(d,i){
                     .attr("transform", "translate("+coord+")") 
                 ;
                 showLegend(topLeg , data[i].vals[0].name , prop.colors[i] , data[i].vals[0].plan ,  data[i].vals[0].fact  );
-                upConn( coord[0], coord[1] , step - x(d.plan) +3+1.5 , 11+1.5 +50, centerIn , 1  , prop.colors[i] );
+                upConn( coord[0], coord[1] , step - x(d.plan) +3+1.5 , 11+1.5 +50, centerIn , 1  , prop.colors[i] ,   data[i].vals[0].pic) ;
                 // =======
             }         
         // legenda main strip
@@ -121,7 +155,7 @@ data.forEach(function(d,i){
         ;
         w=(getElemHeight(centerIn));
         showLegend(topLeg ,  data[i].name , prop.colors[i] , data[i].plan ,  data[i].fact  );
-        upConn( coord[0], coord[1] , step-3    , w -3, centerIn , 1  , prop.colors[i] );
+        upConn( coord[0], coord[1] , step-3    , w -3, centerIn , 1  , prop.colors[i],   data[i].pic );
         // ========
 
     }
@@ -153,10 +187,10 @@ function summ(d){
 
 
 
-function upConn(x,y, xEnd , yEnd ,  canvas , i , color) {
+function upConn(x,y, xEnd , yEnd ,  canvas , i , color ,  picName) {
 
     if (y < yEnd)
-    dif = 70+holderUp*5 ;  else dif = -70+ holderDown*5 ; 
+    dif = 60+holderUp*7 ;  else dif = -80+ holderDown*7 ; 
 // console.log(x,y, xEnd , yEnd  , i) ;  
     dat =[ 
         [x , y ], 
@@ -181,6 +215,14 @@ function upConn(x,y, xEnd , yEnd ,  canvas , i , color) {
             .attr("r",30)
             .attr("transform","translate("+[ x,y ]+")")
             .attr("fill",color)
+    ;
+
+    canvas.append("svg:image") 
+            .attr("transform","translate("+[ x-20,y-20 ]+")") 
+            .attr('width', 40)
+            .attr('height', 40)
+            .attr("xlink:href", "Icons/" + picName)
+    ;
 
 }
 
@@ -263,6 +305,6 @@ function upConn(x,y, xEnd , yEnd ,  canvas , i , color) {
     }
 
 max = holderDown > holderUp ? holderDown : holderUp ;
-if (270*max > widthSvg) svg.attr("width" , 270*max +100  );
+if (  (270*max + 100) > widthSvg) svg.attr("width" , 270*max +100  );
 
 }

@@ -6,12 +6,12 @@ propGraph36 = {
 }
 
 var dataGraph36 = [
-{name:"Здаровоохранение", plan:"1", fact:"2" , vals:[] } ,
-{name:"Образование", plan:"3", fact:"2" , vals:[] } ,
-{name:"Социальная политика", plan:"1", fact:"1" , vals:[ {name:"Подгруппа верх", plan:"0.5", fact:"1"} ]  } ,
-{name:"Культура, кинематограф ", plan:"1", fact:"2" , vals:[ {name:"Подгруппа низ", plan:"0.5", fact:"1"} ]   },
-{name:"Физра и спорт", plan:"1", fact:"2" , vals:[] },
-{name:"Средства массовой информации ", plan:"1", fact:"2" , vals:[] },
+{name:"Здаровоохранение", pic:"health.png" , plan:"1", fact:"2" , vals:[] } ,
+{name:"Социальная политика", pic:"social.png" , plan:"1", fact:"1" , vals:[ {name:"Подгруппа верх", pic:"oms.png", plan:"0.5", fact:"1"} ]  } ,
+{name:"Образование", pic:"education.png" , plan:"3", fact:"2" , vals:[] } ,
+{name:"Физра и спорт", pic:"sport.png" , plan:"1", fact:"2" , vals:[] },
+{name:"Культура, кинематограф ", pic:"sport.png" , plan:"1", fact:"2" , vals:[ {name:"Подгруппа низ", pic:"sport.png" ,  plan:"0.5", fact:"1"} ]   },
+{name:"Средства массовой информации ", pic:"smi.png" , plan:"1", fact:"2" , vals:[] },
 ]
 
 

@@ -8,7 +8,12 @@ var dataGraph30 = [
 {"name":"Волгордаская область", "dohodPlan":3000000 , "rashodPlan":1000000,  "deficitPlan":-123 },  
 {"name":"Волгордаская область", "dohodPlan":-1000000 , "rashodPlan":1000000,  "deficitPlan":123 },  
 {"name":"Волгордаская область", "dohodPlan":2000000 , "rashodPlan":1000000,  "deficitPlan":-123123 },  
+{"name":"Волгордаская область", "dohodPlan":2000000 , "rashodPlan":1000000,  "deficitPlan":-123123 },  
+{"name":"Волгордаская область", "dohodPlan":2000000 , "rashodPlan":1000000,  "deficitPlan":-123123 },  
 {"name":"Волгордаская область", "dohodPlan":2000000, "rashodPlan":1000000,  "deficitPlan":-1123123 },  
+{"name":"Волгордаская область", "dohodPlan":2000000 , "rashodPlan":1000000,  "deficitPlan":2000000 },  
+{"name":"Волгордаская область", "dohodPlan":2000000 , "rashodPlan":1000000,  "deficitPlan":2000000 },  
+{"name":"Волгордаская область", "dohodPlan":2000000 , "rashodPlan":1000000,  "deficitPlan":2000000 },  
 {"name":"Волгордаская область", "dohodPlan":2000000 , "rashodPlan":1000000,  "deficitPlan":2000000 },  
 
 ]
