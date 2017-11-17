@@ -1,10 +1,11 @@
 function drawGraph36(data , prop , id) {
 
     prop.paddingLeft = 100 ;
-    prop.paddingBottom = 150 ;
-    prop.paddingTop = 50 ;
-    prop.paddingRight = 30 ;
+    prop.paddingBottom = 75 ;
+    prop.paddingTop = 10 ;
+    prop.paddingRight = 0 ;
     prop.backColor = "#acc" ;
+    prop.backColor = "#F8F9FA" ;
 
     // console.log(prop);
 
@@ -29,17 +30,17 @@ function drawGraph36(data , prop , id) {
         .attr("width", width )
         .attr("height", +prop.paddingTop)
     ;
-    gist = svg.append("g")
-        .attr("class", "gist")
-        .attr("transform", "translate(" + [+prop.paddingLeft   , +prop.paddingTop ] + ")")
-        .attr("width", width )
-        .attr("height", heightSvg - +prop.paddingBottom - +prop.paddingTop )
-    ;
     asisY = svg.append("g")
         .attr("class", "asisY")
         .attr("transform", "translate(" + [0, +prop.paddingTop] + ")")
         .attr("width", +prop.paddingLeft)
         .attr("height", heightSvg - +prop.paddingBottom - +prop.paddingTop)
+    ;
+    gist = svg.append("g")
+        .attr("class", "gist")
+        .attr("transform", "translate(" + [+prop.paddingLeft   , +prop.paddingTop ] + ")")
+        .attr("width", width )
+        .attr("height", heightSvg - +prop.paddingBottom - +prop.paddingTop )
     ;
     asisYright = svg.append("g")
         .attr("class", "asisYright")
@@ -47,11 +48,11 @@ function drawGraph36(data , prop , id) {
         .attr("width", +prop.paddingRight )
         .attr("height", heightSvg - +prop.paddingBottom - +prop.paddingTop)
     ;
-    showBorders(asisX);
-    showBorders(gist);
-    showBorders(asisY);
-    showBorders(asisXtop);
-    showBorders(asisYright);
+    // showBorders(asisX);
+    // showBorders(gist);
+    // showBorders(asisY);
+    // showBorders(asisXtop);
+    // showBorders(asisYright);
     diff = 1.2;
     min = 0;
     len = min.toString().length;
@@ -62,7 +63,7 @@ function drawGraph36(data , prop , id) {
     if (len <16 && len >12) { de=0.000000000001 ; deText = "трлн. руб."; }
     if (len >15)  { de=0.000000000000001 ; deText = "квинт. руб."; }
 
-    max = 500;
+    max = findMax(data);
     y = d3.scaleLinear()
         .domain([min * diff, max * diff])
         .range([height, 0])
@@ -87,6 +88,87 @@ function drawGraph36(data , prop , id) {
     }
 
 
+    function drawGist(canvas) {
+        te = canvas.append("g");
+
+        data.forEach(function (d,i ) {
+
+            reHe = getElemHeight(canvas)  - y(d.val);
+            reMove =   y(d.val);
+            bar  = te.append("g")
+                .attr("transform", "translate("+[100 + x(i),  reMove]+")")
+            ;
+
+            color = prop.colorFact ;
+            if (d.type == 1) color = prop.colorEval ;
+            if (d.type == 2 ) color = prop.colorPlan ;
+
+            tyt = ["Факт" , "Оценка" , "План"];
+            bar.append("rect")
+                .attr("width",barSize)
+                .attr("height",reHe)
+                .attr("fill",color)
+                .on("mousemove", function() {
+                    div.transition().duration(200).style("opacity", .9);
+                    div.html(   tyt[d.type] + " :  " + currencySwapNoCut(d.val) )
+                        .style("left", (d3.event.pageX) + "px")
+                        .style("top", (d3.event.pageY - 30 ) + "px")
+                    ;
+                })
+                .on("mouseout", function() { div.transition().duration(500).style("opacity", 0); })
+            ;
+
+            bar.append("text")
+                .attr("transform", "translate("+[ barSize/2, -5]+")")
+                .attr("class" , "legCaption")
+                .text(currencySwap(d.val ))
+            ;
+        })
+    }
+
+
+    function drawLegend(canvas) {
+        te = canvas.append("g") .attr("transform","translate("+[50,40]+")")   ;
+
+
+        leg = te.append("g") .attr("transform","translate("+[0,0]+")")   ;
+        leg.append("text")
+            .attr("transform", "translate( 30,7)")
+            .attr("class" , "legendSub")
+            .text( "Факт" )
+        ;
+        leg.append("rect")
+            .attr("transform",   "translate( 0,-10)" )
+            .attr("fill" , prop.colorFact )
+            .attr("width" , 20)
+            .attr("height"  , 20)
+        ;
+        leg = te.append("g").attr("transform","translate("+[150,0]+")")   ;
+        leg.append("text")
+            .attr("transform", "translate( 30,7)")
+            .attr("class" , "legendSub")
+            .text( "Оценка" )
+        ;
+        leg.append("rect")
+            .attr("transform",   "translate( 0,-10)" )
+            .attr("fill" , prop.colorEval  )
+            .attr("width" , 20)
+            .attr("height"  , 20)
+        ;
+
+        leg = te.append("g") .attr("transform","translate("+[320,0]+")")   ;
+        leg.append("text")
+            .attr("transform", "translate( 30,7)")
+            .attr("class" , "legendSub")
+            .text( "План" )
+        ;
+        leg.append("rect")
+            .attr("transform",   "translate( 0,-10)" )
+            .attr("fill" , prop.colorPlan )
+            .attr("width" , 20)
+            .attr("height"  , 20)
+        ;
+    }
     function drawAsisY(canvas) {
         // back
         rects = canvas.append("g").attr("class", "backRects");
@@ -234,7 +316,18 @@ function drawGraph36(data , prop , id) {
         return d3.select(el)._groups["0"]["0"]._groups["0"]["0"].getAttribute("height");
     }
 
+    function findMax(d){
+        max = 0;
+        d.forEach(function (t, number) {
+            if (parseFloat(t.val)> max) max =parseFloat(t.val) ;
+        })
+        return max ;
+    }
+
 
     drawAsisY(asisY);
     drawAsisX(asisX);
+    drawGist(gist);
+
+    drawLegend(asisX);
 }

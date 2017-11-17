@@ -26,3 +26,15 @@ div.tooltipGraph36 {
     border-color: blue;
     pointer-events: none;
 }
+
+
+.legCaption{
+    text-anchor:middle;
+    font-size: 16px;
+    fill : gray;
+}
+
+.legendSub{
+    font-size: 18px;
+    fill:gray;
+}
