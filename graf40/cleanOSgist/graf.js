@@ -7,6 +7,11 @@ function drawGraph36(data , prop , id) {
     prop.backColor = "#acc" ;
 
     // console.log(prop);
+    /*
+    wiAll = (prop.barSize*2 + prop.spaceBetween )*(data.length-1) +  30 + prop.paddingLeft + prop.paddingRight ;
+    if ( wiAll > +svg.attr("width"))
+        svg.attr("width" ,wiAll -(30 + prop.paddingLeft + prop.paddingRight) );
+*/
 
     svg = d3.select("#"+id);
     svg.selectAll("*").remove();
@@ -29,17 +34,17 @@ function drawGraph36(data , prop , id) {
         .attr("width", width )
         .attr("height", +prop.paddingTop)
     ;
-    gist = svg.append("g")
-        .attr("class", "gist")
-        .attr("transform", "translate(" + [+prop.paddingLeft   , +prop.paddingTop ] + ")")
-        .attr("width", width )
-        .attr("height", heightSvg - +prop.paddingBottom - +prop.paddingTop )
-    ;
     asisY = svg.append("g")
         .attr("class", "asisY")
         .attr("transform", "translate(" + [0, +prop.paddingTop] + ")")
         .attr("width", +prop.paddingLeft)
         .attr("height", heightSvg - +prop.paddingBottom - +prop.paddingTop)
+    ;
+    gist = svg.append("g")
+        .attr("class", "gist")
+        .attr("transform", "translate(" + [+prop.paddingLeft   , +prop.paddingTop ] + ")")
+        .attr("width", width )
+        .attr("height", heightSvg - +prop.paddingBottom - +prop.paddingTop )
     ;
     asisYright = svg.append("g")
         .attr("class", "asisYright")
@@ -54,7 +59,8 @@ function drawGraph36(data , prop , id) {
     showBorders(asisYright);
     diff = 1.2;
     min = 0;
-    len = min.toString().length;
+    max = 500;
+    len = max.toString().length;
     if (len <4) { de=1; deText = "руб."; }
     if (len <7 && len>3) {de = 0.001; deText = "тыс. руб."; }
     if (len <10 && len >6) { de=0.000001 ; deText = "млн. руб."; }
@@ -62,7 +68,6 @@ function drawGraph36(data , prop , id) {
     if (len <16 && len >12) { de=0.000000000001 ; deText = "трлн. руб."; }
     if (len >15)  { de=0.000000000000001 ; deText = "квинт. руб."; }
 
-    max = 500;
     y = d3.scaleLinear()
         .domain([min * diff, max * diff])
         .range([height, 0])
@@ -145,7 +150,7 @@ function drawGraph36(data , prop , id) {
 
         canvas.append("text")
             .attr("class","asisYcapiton")
-            .attr("transform",  "translate(" + [getElemWidth(canvas), 0] + ")" )
+            .attr("transform",  "translate(" + [getElemWidth(canvas)-15, 0] + ")" )
             .text(deText)
         ;
     }
@@ -173,7 +178,7 @@ function drawGraph36(data , prop , id) {
 
 
     function currencySwap(d) {
-        // d = parseInt(d * 0.001);
+        d = parseInt(d * de) ;
         return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "";
     }
 
