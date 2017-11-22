@@ -1,4 +1,15 @@
-function gist8(data , prop ) {
+function gist8mun(  prop   , ndfl , carTax , flTax , eathTax ,  localTax ,   regionalTax) {
+
+    data =  getData8(ndfl , carTax , flTax , eathTax); 
+    sum = 0; 
+
+    function retz(d) {
+    if (!isNaN(parseFloat(d))  )
+        return parseFloat(d)  ;
+    else
+        return 0 ;
+    }
+    sum = retz(ndfl) + retz(flTax) + retz(eathTax)+ retz(eathTax) ;
 
     // console.log(data);
     svg = d3.select(".gist8");
@@ -31,7 +42,7 @@ function gist8(data , prop ) {
     // showBorders(gist);
     // showBorders(asisY);
 
-    diff = 1.3;
+    diff = 1.1;
     min = 0;
     max = +findMaxVal(data);
 // console.log([max ,  min]);
@@ -289,51 +300,61 @@ function gist8(data , prop ) {
     }
 
 
-    // printTable(data);
-    function printTable(d){
-        console.log(d);
+function getData8(ndfl , carTax , flTax , eathTax) {
+    data =[
+        {"Земельный налог": 30} ,
+        {"Налог на имущество": 10} ,
+        {"Транспортный налог": 1} ,
+        {"НДФЛ": 11} ,
+    ]  ;
 
-        s="<table> " ;
-        s+="<tr>";
-        s+="<td valign='top'>";
-        for (i=0; i <11 ; i++){
-        s+="<table> ";
-            s+="<tr>";
-            s+="<td width='400px'>";
-            s+= d3.keys(d[i]) ;
-            s+="</td>";
-            s+="<td>";
-            s+= currencySwapNoCut( d3.values(d[i]) );
-            s+="</td>";
-            s+="</tr>";
-            s+="";
-        s+="</table>";
-        }
-        s+="</td>";
-        s+="<td valign='top'>";
-        for (i=11; i <d.length ; i++){
-            s+="<table> ";
-            s+="<tr>";
-            s+="<td width='400px'>";
-            s+= d3.keys(d[i]) ;
-            s+="</td>";
-            s+="<td>";
-            s+= currencySwapNoCut( d3.values(d[i]) );
-            s+="</td>";
-            s+="</tr>";
-            s+="";
-            s+="</table>";
-        }
-        s+="";
-        s+="</td>";
-        s+="</tr>";
-        s+="";
-        s+="</table>";
-
-
-        d3.select("#tableTxtRez").html(s);
+    function retz(d) {
+        if (!isNaN(parseFloat(d))  )
+            return parseFloat(d)  ;
+        else
+            return 0 ;
     }
 
+    summ = retz(ndfl) + retz(flTax) + retz(eathTax) ;
+    sum = retz(ndfl) + retz(flTax) + retz(eathTax)+ retz(eathTax) ;
+    data.forEach(function (t, number) {
+        t[Object.keys(t)] *=  0.01 *  summ ;
+        if ( Object.keys(t) == "Транспортный налог" ) t[Object.keys(t)]  = carTax ;
+    })
+    data["Транспортный налог"] = carTax;
+    // console.log(data);
+    return data;
+
+}
+
+
+
+    printTable(data);
+    function printTable(d){
+        // console.log(d);
+
+        s="<table class='table-bughet-calc'> " ;
+        s+="<tr>";
+            s+="<td valign='top'>"; 
+            s+="Общая сумма внесенных платежей:" + currencySwap( sum  ) ; 
+            s+="</td>"; 
+            s+="<td valign='top'>"; 
+            s+="Поступления в региональный бюджет:" + currencySwap( (sum *regionalTax *0.01).toFixed(2) ); 
+            s+="</td>"; 
+        s+="</tr>"; 
+        s+="<tr>";
+            s+="<td valign='top'>"; 
+            s+="Поступления в местный бюджет:" +currencySwap( (sum *localTax *0.01).toFixed(2) );
+            s+="</td>"; 
+            s+="<td valign='top'>"; 
+            s+=""; 
+            s+="</td>"; 
+        s+="</tr>"; 
+        s+="</table>";
+
+
+        d3.select("#tableMun").html(s);
+    }
 
 
 
