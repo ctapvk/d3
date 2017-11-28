@@ -1,0 +1,48 @@
+
+svg text {
+    font-family: Proxima Nova;
+}
+
+
+.asisYcapiton {
+    font-size: 18px;
+    fill: #aDa5aE;
+    dominant-baseline: central;
+    text-anchor: end;
+}
+
+
+div.tooltipGraph40 {
+    position: absolute;
+    text-align: left;
+    font: 14px sans-serif;
+    line-height: 1.4;
+    padding: 5px;
+    background: white;
+    border-style: solid;
+    border-width: 1px;
+    border-color: blue;
+    pointer-events: none;
+}
+
+
+.legCaption{
+    text-anchor:middle;
+    font-size: 16px;
+    fill : gray;
+}
+
+.legendSub{
+    font-size: 18px;
+    fill:gray;
+}
+
+.barUp{
+    text-anchor: middle;
+    fill: '#555';
+
+}
+.mounthText{
+    fill:gray;
+}
+
