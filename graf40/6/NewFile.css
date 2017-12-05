@@ -1,0 +1,94 @@
+.gist {
+	fill:none;
+}
+
+.asisXmounthText {
+	text-anchor :middle ; 
+	font-family: sans-serif;
+	fill : gray ; 
+	/*font-weight :bold;*/
+	font-size:14 ; 
+	dominant-baseline : central ; 
+}
+
+.asisYcapiton {
+	font-size:18px ; 
+	fill :#aDa5aE ; 
+	dominant-baseline : central ; 
+	text-anchor :end ;
+}
+
+.rectsg6{
+	stroke-width: 2px;
+	stroke:white;
+}
+
+.legendText {
+	text-anchor:middle  ;
+	dy:0.35em;
+	font-family:sans-serif;
+	font-size:14px ; 
+	fill:#75777D ; 
+}
+.legendTextRigth {
+	text-anchor:end ;
+	dy:0.35em;
+	font-family:sans-serif;
+	font-size:14px ; 
+	fill:#75777D ; 
+}
+
+
+
+.percentsInGist {
+	text-anchor :middle ;
+	fill :white ;
+	/*font-weight :bold;*/
+	font-size:14px ;
+	font-family: sans-serif;
+	dominant-baseline : central ;
+}
+
+
+
+
+
+
+
+.gist6{
+	position: relative;
+}
+
+rect:hover {
+	fill: orange;
+}
+
+#tooltipg6 {
+	position: absolute;
+	width: 200px;
+	z-index: 9999;
+	padding: 10px;
+	background-color: white;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	-webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+	-moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+	box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+	pointer-events: none;
+}
+
+#tooltipg6.hidden {
+	display: none;
+}
+
+#tooltipg6 p {
+	margin: 0;
+	font-family: sans-serif;
+	font-size: 16px;
+	line-height: 20px;
+}
+
+
+
+

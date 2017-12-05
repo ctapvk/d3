@@ -1,0 +1,73 @@
+.pieCaption{
+    text-anchor:end;
+    fill: #278ED9 ;
+    font-weight: bold;
+}
+
+
+
+.inner39textVal{
+    font-size:24px;
+    text-anchor:middle;
+    fill: #278ED9 ;
+    font-weight: bold;
+}
+.inner39textCapiton{
+    font-size:14px;
+    text-anchor:middle;
+    text-transform: uppercase;
+    fill: #278ED9 ;
+}
+
+.arrTextUpperCase{
+    font-Size:18px;
+    text-anchor:middle;
+    text-transform: uppercase;
+    fill: #4097DC;
+    font-weight: bold;
+}
+.arrTextUpperCaseHead{
+    font-Size:22px;
+    font-weight: bold;
+    text-anchor:middle;
+    text-transform: uppercase;
+    fill: #4097DC;
+    line-height: 160%;
+}
+
+.arrTextUpperCaseShadow{
+    font-Size:18px;
+    text-anchor:middle;
+    text-transform: uppercase;
+    fill: #B0B4B7;
+}
+
+
+.italicWhite{
+    fill: white ;
+    font-size: 30px;
+    text-anchor: middle;
+    dominant-baseline : central;
+    font-style: italic;
+    font-weight: bold;
+}
+
+
+.cericleHover:hover{
+    fill:#278ED9;
+}
+
+
+div.tooltipGraph39 {
+    position: absolute;
+    text-align: left;
+    font: 14px sans-serif;
+    line-height: 1.4;
+    padding: 5px;
+    background: white;
+    border-style: solid;
+    border-width: 1px;
+    border-color: blue;
+    pointer-events: none;
+}
+

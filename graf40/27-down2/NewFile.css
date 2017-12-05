@@ -1,0 +1,67 @@
+div.tooltip {
+	position: absolute;
+	text-align: left;
+	font: 14px sans-serif;
+	line-height: 1.4;
+	padding: 5px;
+	background: white;
+	border-style: solid;
+	border-width: 1px;
+	border-color: blue;
+	pointer-events: none;
+}
+
+
+.krugLegText {
+	font-family: sans-serif;
+	font-size: 17px;
+}
+.krugLegTextBold {
+	font-family: sans-serif;
+	font-size: 17px;
+	font-weight: bold;
+}
+
+.krugRectLeg{
+	width: 25px;
+	height: 25px;
+}
+
+
+.midCapText{
+	font-family: sans-serif;
+	font-size: 17px;
+	text-anchor: middle;
+}
+
+#textCap{
+	font-family: sans-serif;
+	font-size: 17px;
+	font-weight: bold;
+	width: 250px;
+	margin: auto;
+	text-align: center;
+
+}
+
+
+.krugPieTextLegend42{
+	text-anchor : middle ;
+	dy : 0.35em ;
+	font-family : sans-serif ;
+	font-size : 20px ;
+	fill : #111 ;
+	font-weight : bold ;
+}
+
+
+.captionTop{
+	font-family : sans-serif ;
+	font-size : 16px ;
+	font-weight : bold ;
+
+}
+
+
+
+

@@ -1,0 +1,44 @@
+path{
+	/*fill:none;*/
+}
+text{
+	font-family: sans-serif; 
+}
+
+.rectBar36{
+	stroke:#E8F5FF;
+	stroke-width:4px;
+}
+
+.center36{
+	background: #E8F5FF;
+	 fill: black; 
+}
+
+
+.textLegend{
+	/*fill:black;*/
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.curveLine {
+	fill:none ; 
+	stroke : #aDa5aE ; 
+	stroke-width : 3px;
+}
+
+
+
+div.tooltipGraph36 {
+    position: absolute;
+    text-align: left;
+    font: 14px sans-serif;
+    line-height: 1.4;
+    padding: 5px;
+    background: white;
+    border-style: solid;
+    border-width: 1px;
+    border-color: blue;
+    pointer-events: none;
+}
