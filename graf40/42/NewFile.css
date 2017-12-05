@@ -1,4 +1,4 @@
-div.tooltip {
+div.tooltip42 {
     position: absolute;
     text-align: left;
     font: 14px sans-serif;
@@ -20,11 +20,11 @@ div.tooltip {
 }
 .krugLegText {
     font-family: sans-serif;
-    font-size: 17px;
+    font-size: 14px;
 }
 .krugLegTextBold {
     font-family: sans-serif;
-    font-size: 17px;
+    font-size: 14px;
     font-weight: bold;
 }
 

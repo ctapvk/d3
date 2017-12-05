@@ -1,4 +1,4 @@
-function drawGraph36(data , prop , id) {
+function drawGraph35(data , prop , id) {
 
     prop.paddingLeft = 100 ;
     prop.paddingBottom = 75 ;
@@ -11,7 +11,7 @@ function drawGraph36(data , prop , id) {
 
     svg = d3.select("#"+id);
     svg.selectAll("*").remove();
-    div = d3.select("#hideGraph36").append("div").attr("class", "tooltipGraph36").style("opacity", 0);
+    div = d3.select("#hideGraph35").append("div").attr("class", "tooltipGraph35").style("opacity", 0);
 
     widthSvg = +svg.attr("width");
     heightSvg = +svg.attr("height");
@@ -93,25 +93,60 @@ function drawGraph36(data , prop , id) {
         te = canvas.append("g");
 
         data.forEach(function (d,i ) {
+            per = parseInt(d.fact /d.plan *100)  + " %";
+            let html = "<strong>" + capitonOfGraph35[1] + "</strong> :  " + currencySwapNoCut(d.plan)  + "<br>"+
+                "<strong>" +capitonOfGraph35[0] + "</strong>  :  " + currencySwapNoCut(d.fact)  +"<br>"+
+                "<strong>" + "Доля в общих расходах</strong>  :  " + per
+            ;
 
-            reHe = getElemHeight(canvas)  - y(d.val);
-            reMove =   y(d.val);
+            // ====================================
+            reHe = getElemHeight(canvas)  - y(d.plan);
+            reMove =   y(d.plan);
+            bar  = te.append("g")
+                .attr("transform", "translate("+[100 + x(i),  reMove]+")")
+            ;
+            bar.append("rect")
+                .attr("width",barSize)
+                .attr("height",reHe)
+                .attr("fill",prop.colorPlan)
+                .on("mousemove", function() {
+                    div.transition().duration(200).style("opacity", .9);
+                    div.html(  html )
+                        .style("left", (d3.event.pageX) + "px")
+                        .style("top", (d3.event.pageY - 30 ) + "px")
+                    ;
+                })
+                .on("mouseout", function() { div.transition().duration(500).style("opacity", 0); })
+            ;
+            bar.append("text")
+                .attr("transform", "translate("+[ barSize/2, -5]+")")
+                .attr("class" , "legCaption")
+                .text(currencySwap(d.plan ))
+                .on("mousemove", function() {
+                    div.transition().duration(200).style("opacity", .9);
+                    div.html(  html )
+                        .style("left", (d3.event.pageX) + "px")
+                        .style("top", (d3.event.pageY - 30 ) + "px")
+                    ;
+                })
+                .on("mouseout", function() { div.transition().duration(500).style("opacity", 0); })
+
+            ;
+
+            // ====================================
+            reHe = getElemHeight(canvas)  - y(d.fact);
+            reMove =   y(d.fact);
             bar  = te.append("g")
                 .attr("transform", "translate("+[100 + x(i),  reMove]+")")
             ;
 
-            color = prop.colorFact ;
-            if (d.type == 1) color = prop.colorEval ;
-            if (d.type == 2 ) color = prop.colorPlan ;
-
-            tyt = ["Факт" , "Оценка" , "План"];
             bar.append("rect")
                 .attr("width",barSize)
                 .attr("height",reHe)
-                .attr("fill",color)
+                .attr("fill",prop.colorFact)
                 .on("mousemove", function() {
                     div.transition().duration(200).style("opacity", .9);
-                    div.html(   tyt[d.type] + " :  " + currencySwapNoCut(d.val) )
+                    div.html(   html  )
                         .style("left", (d3.event.pageX) + "px")
                         .style("top", (d3.event.pageY - 30 ) + "px")
                     ;
@@ -120,10 +155,36 @@ function drawGraph36(data , prop , id) {
             ;
 
             bar.append("text")
-                .attr("transform", "translate("+[ barSize/2, -5]+")")
-                .attr("class" , "legCaption")
-                .text(currencySwap(d.val ))
+                .attr("transform", "translate("+[ barSize/2,reHe/2 ]+")")
+                .attr("class" , "captionPer")
+                .text(per)
+                .on("mousemove", function() {
+                    div.transition().duration(200).style("opacity", .9);
+                    div.html(  html )
+                        .style("left", (d3.event.pageX) + "px")
+                        .style("top", (d3.event.pageY - 30 ) + "px")
+                    ;
+                })
+                .on("mouseout", function() { div.transition().duration(500).style("opacity", 0); })
+
             ;
+
+            bar.append("text")
+                .attr("transform", "translate("+[ barSize/2, -5]+")")
+                .attr("class" , "legCaptionWhite")
+                .text(currencySwap(d.fact ))
+                .on("mousemove", function() {
+                    div.transition().duration(200).style("opacity", .9);
+                    div.html(  html )
+                        .style("left", (d3.event.pageX) + "px")
+                        .style("top", (d3.event.pageY - 30 ) + "px")
+                    ;
+                })
+                .on("mouseout", function() { div.transition().duration(500).style("opacity", 0); })
+
+            ;
+
+            // ====================================
             bar.append("text")
                 .attr("transform", "translate("+[ barSize/2, reHe + 25]+")")
                 .attr("class" , "legCaption")
@@ -141,7 +202,7 @@ function drawGraph36(data , prop , id) {
         leg.append("text")
             .attr("transform", "translate( 30,7)")
             .attr("class" , "legendSub")
-            .text( "Факт" )
+            .text(capitonOfGraph35[0] )
         ;
         leg.append("rect")
             .attr("transform",   "translate( 0,-10)" )
@@ -149,24 +210,13 @@ function drawGraph36(data , prop , id) {
             .attr("width" , 20)
             .attr("height"  , 20)
         ;
-        leg = te.append("g").attr("transform","translate("+[150,0]+")")   ;
-        leg.append("text")
-            .attr("transform", "translate( 30,7)")
-            .attr("class" , "legendSub")
-            .text( "Оценка" )
-        ;
-        leg.append("rect")
-            .attr("transform",   "translate( 0,-10)" )
-            .attr("fill" , prop.colorEval  )
-            .attr("width" , 20)
-            .attr("height"  , 20)
-        ;
+
 
         leg = te.append("g") .attr("transform","translate("+[320,0]+")")   ;
         leg.append("text")
             .attr("transform", "translate( 30,7)")
             .attr("class" , "legendSub")
-            .text( "План" )
+            .text( capitonOfGraph35[1] )
         ;
         leg.append("rect")
             .attr("transform",   "translate( 0,-10)" )
@@ -325,7 +375,10 @@ function drawGraph36(data , prop , id) {
     function findMax(d){
         max = 0;
         d.forEach(function (t, number) {
-            if (parseFloat(t.val)> max) max =parseFloat(t.val) ;
+            if (parseFloat(t.fact)> max) max =parseFloat(t.fact) ;
+        })
+        d.forEach(function (t, number) {
+            if (parseFloat(t.plan)> max) max =parseFloat(t.plan) ;
         })
         return max ;
     }

@@ -36,8 +36,11 @@ function drawGraph41(data , prop  , idgraf) {
 
 
         pie( dat ).forEach( function (t, i ) {
+
+            let html  =     " <strong> " + d3.keys(data[i]) + ' </strong><br>' +
+                        nameLegend + " : " + currencySwapWithText(d3.values(data[i])) + ' '  ; 
+                        // " Доля в общем объеме долга : " + ((t.data / d3.sum(dat)).toFixed(3) * 100).toFixed(1) + '%'
             t.outerRadius = prop.radius ;  t.innerRadius = 55;
-            console.log(data[i]);
             te.append("path")
                 .attr("fill" ,  prop.colorsKrug[i] )
                 .attr("d", arc(t))
@@ -45,13 +48,7 @@ function drawGraph41(data , prop  , idgraf) {
                     div.transition()
                         .duration(200)
                         .style("opacity", .9);
-                    div.html(
-                        " Наименование : " + d3.keys(data[i]) + ' <br>' +
-                        " Объем показателя : " + currencySwapWithText(d3.values(data[i])) + ' <br>' +
-                        " Доля в общем объеме долга : " + ((t.data / d3.sum(dat)).toFixed(3) * 100).toFixed(1) + '%'
-
-
-                    )
+                    div.html(html)
                         .style("left", (d3.event.pageX) + "px")
                         .style("top", (d3.event.pageY - 28) + "px");
                 })
@@ -68,6 +65,20 @@ function drawGraph41(data , prop  , idgraf) {
             te.append("text")
                 .attr("class" , "krugPieTextLegend42")
                 .attr("transform" , "translate(" + d3.arc().centroid(t) + ")")
+                                .on("mousemove", function(d) {
+                    div.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    div.html(html)
+                        .style("left", (d3.event.pageX) + "px")
+                        .style("top", (d3.event.pageY - 28) + "px");
+                })
+                .on("mouseout", function(d) {
+                    div.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                })
+
                 .text( txt )
             ;
         });
@@ -123,10 +134,9 @@ function drawGraph41(data , prop  , idgraf) {
             return str ;
     }
 
-
-    function showTableLeg(d , pageStart ) {
-
-
+    function currencySwapNoCut(d) {
+        d= parseInt(parseFloat(d) );
+        return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")  ;
     }
 
     summ = 0;
@@ -136,17 +146,68 @@ function drawGraph41(data , prop  , idgraf) {
     svg.append("text")
         .attr('transform','translate('+[25,15]+')' )
         .attr("class","captionTop")
-        .text("Всего доходов на текущую дату : " + ( summ )  + " млн. руб.")
+        .text("Всего доходов на текущую дату : " +currencySwapNoCut ( summ )  + " млн. руб.")
     ;
 
 
     le = d3.select("#grafLegend") ;
     legend = le.append("g").attr("transform" , "translate("+[50 , 50]+")");
-    drawLegend(legend   );
+    // drawLegend(legend   );
     drawBase(center);
 }
 
 
+
+
+function showTableLeg(data , prop , path) {
+
+    if (path == 1 )
+        d3.select('#pageStart').attr("value", (parseInt(d3.select('#pageStart')._groups["0"]["0"].value ) - 1 )) ;
+    if (path == 2 )
+        d3.select('#pageStart').attr("value", (parseInt(d3.select('#pageStart')._groups["0"]["0"].value ) +1 )) ;
+
+    pageStart = parseInt(d3.select('#pageStart')._groups["0"]["0"].value ) ;
+    pageSize = +prop.pageSize ;
+
+    s="";
+    len  = pageStart * pageSize  ;
+    lenStart  = (pageStart-1) * pageSize ;
+    pageCount  = Math.ceil(data.length/pageSize) ;
+    if (pageStart >= pageCount ) len  = (pageStart-1) * pageSize + (data.length%pageSize) ;
+
+    s+='<table class="pagerTable">';
+    for (i=lenStart ; i<len ; i++){
+        t= data[i];
+        s+='<tr>';
+        s+='<td>';
+        s+='<svg width="25" height="25" >\n'+
+            '<rect width="25" height="25" fill="'+ prop.colorsKrug[i] +'"></rect>\n'+
+            '</svg>\n' ;
+        s+='</td>';
+        s+='<td style="text-align: left; ">';
+        s+=d3.keys(t) ;
+        s+='</td>';
+        s+='</tr>';
+    }
+    s+='</table>';
+    s+='<br>';
+    if (pageStart==1)
+        s+='<a"> <i class="arrow up"></i>  </a> ';
+    else
+        s+='<a onclick="showTableLeg(data42,prop42  , 1 ); "> <i class="arrow up"></i>  </a> ';
+    s+=pageStart+ '/' + pageCount;
+
+    if (pageStart<pageCount)
+        s+=' <a onclick="showTableLeg(data42,prop42  , 2 ); ">   <i class="arrow down"></i> <a> ';
+    else
+        s+=' <a onclick="">  <i class="arrow down"></i> <a> ';
+    s+='';
+    s+='';
+    d3.select("#str").html(s);
+
+
+
+}
 
 
 

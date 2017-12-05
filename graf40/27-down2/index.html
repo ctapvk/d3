@@ -10,7 +10,7 @@
 <table>
 	<tr>
 		<td>
-			<svg id="graf42" width="400" height="380"></svg>
+			<svg id="graf42" width="480" height="380"></svg>
 			<div id="hid42"></div>
 		</td>
 		<td>
@@ -20,7 +20,11 @@
 	</tr>
 	<tr>
 
-		<td valign="top" style="text-align: left;"> <div id="str"></div>  </td>
+		<td valign="top" style="text-align: left;">
+			<div id="str"></div>
+			<div id="navPager"></div>
+			<input type="hidden" value="1" id="pageStart">
+		</td>
 	</tr>
 </table>
 <div id="hide27"></div>
@@ -31,6 +35,7 @@
 <script src="graf.js"></script>
 <script>
     drawGraph41(data42 , prop42 , "graf42") ;
+    showTableLeg(data42,prop42  );
 </script>
 
 <br>

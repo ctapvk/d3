@@ -1,20 +1,16 @@
 propGraph30 = {
-"colorDoh" : "#4783AF" ,
-"colorRash" : "#DFBBA4"  ,
-"colorDef" : "#CF748D" ,
+"colorFact" : "#4783AF" ,
+"colorPlan" : "#DFBBA4"  ,
+"barSize" : "80" ,
+"spaceBetween" : "100" ,
 }
 
+legendaVals = ["План" , "Факт"] ;
+
 var dataGraph30 = [
-{"name":"Волгордаская область", "dohodPlan":3000000 , "rashodPlan":1000000,  "deficitPlan":-123 },  
-{"name":"Волгордаская область", "dohodPlan":-1000000 , "rashodPlan":1000000,  "deficitPlan":123 },  
-{"name":"Волгордаская область", "dohodPlan":2000000 , "rashodPlan":1000000,  "deficitPlan":-123123 },  
-{"name":"Волгордаская область", "dohodPlan":2000000 , "rashodPlan":1000000,  "deficitPlan":-123123 },  
-{"name":"Волгордаская область", "dohodPlan":2000000 , "rashodPlan":1000000,  "deficitPlan":-123123 },  
-{"name":"Волгордаская область", "dohodPlan":2000000, "rashodPlan":1000000,  "deficitPlan":-1123123 },  
-{"name":"Волгордаская область", "dohodPlan":2000000 , "rashodPlan":1000000,  "deficitPlan":2000000 },  
-{"name":"Волгордаская область", "dohodPlan":2000000 , "rashodPlan":1000000,  "deficitPlan":2000000 },  
-{"name":"Волгордаская область", "dohodPlan":2000000 , "rashodPlan":1000000,  "deficitPlan":2000000 },  
-{"name":"Волгордаская область", "dohodPlan":2000000 , "rashodPlan":1000000,  "deficitPlan":2000000 },  
+{"name":"10.12.2017", "fact":3000000 , "plan":1000000 },
+{"name":"10.12.2017", "fact":1000000 , "plan":-3000000},
+{"name":"10.12.2017", "fact":2000000 , "plan":1000000 },
 
 ]
 

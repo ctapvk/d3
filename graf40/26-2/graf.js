@@ -55,7 +55,9 @@ function drawGraph36(data , prop , id) {
     // showBorders(asisYright);
     diff = 1.2;
     min = 0;
-    len = min.toString().length;
+    max = findMax(data);
+
+    len = max.toString().length -3 ;
     if (len <4) { de=1; deText = "руб."; }
     if (len <7 && len>3) {de = 0.001; deText = "тыс. руб."; }
     if (len <10 && len >6) { de=0.000001 ; deText = "млн. руб."; }
@@ -63,7 +65,6 @@ function drawGraph36(data , prop , id) {
     if (len <16 && len >12) { de=0.000000000001 ; deText = "трлн. руб."; }
     if (len >15)  { de=0.000000000000001 ; deText = "квинт. руб."; }
 
-    max = findMax(data);
     y = d3.scaleLinear()
         .domain([min * diff, max * diff])
         .range([height, 0])
@@ -80,7 +81,7 @@ function drawGraph36(data , prop , id) {
     function drawAsisX(canvas) {
 
         line = d3.line().x(function(d) {return d[0];} ).y(function(d) { return d[1]} ) ;
-        canvas.append("path") 
+        canvas.append("path")
             .attr("d", line([[0, 0], [getElemWidth(canvas), 0]]))
             .attr("stroke-width", 4)
             .attr("stroke", "#CDD5DE")
@@ -123,12 +124,17 @@ function drawGraph36(data , prop , id) {
                 .attr("class" , "legCaption")
                 .text(currencySwap(d.val ))
             ;
+            bar.append("text")
+                .attr("transform", "translate("+[ barSize/2, reHe + 25]+")")
+                .attr("class" , "legCaption")
+                .text((d.name ))
+            ;
         })
     }
 
 
     function drawLegend(canvas) {
-        te = canvas.append("g") .attr("transform","translate("+[50,40]+")")   ;
+        te = canvas.append("g") .attr("transform","translate("+[50,50]+")")   ;
 
 
         leg = te.append("g") .attr("transform","translate("+[0,0]+")")   ;
@@ -169,8 +175,6 @@ function drawGraph36(data , prop , id) {
             .attr("height"  , 20)
         ;
     }
-
-
     function drawAsisY(canvas) {
         // back
         rects = canvas.append("g").attr("class", "backRects");
@@ -229,7 +233,7 @@ function drawGraph36(data , prop , id) {
 
         canvas.append("text")
             .attr("class","asisYcapiton")
-            .attr("transform",  "translate(" + [getElemWidth(canvas), 0] + ")" )
+            .attr("transform",  "translate(" + [getElemWidth(canvas) -15, 0] + ")" )
             .text(deText)
         ;
     }
@@ -257,7 +261,7 @@ function drawGraph36(data , prop , id) {
 
 
     function currencySwap(d) {
-        // d = parseInt(d * 0.001);
+        d = parseInt(d * de);
         return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "";
     }
 

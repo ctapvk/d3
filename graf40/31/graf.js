@@ -3,7 +3,7 @@ function drawGraph31(data , prop , id) {
 
     prop.paddingLeft = 100 ;
     prop.paddingBottom = 60 ;
-    prop.paddingTop = 50 ;
+    prop.paddingTop = 70 ;
     prop.paddingRight = 30 ;
     prop.backColor = "#acc" ;
     prop.backColor = "#F8F9FA" ;
@@ -51,18 +51,31 @@ function drawGraph31(data , prop , id) {
         .attr("height", heightSvg - +prop.paddingBottom - +prop.paddingTop)
     ;
     // showBorders(asisX);
-    // showBorders(gist)
-;    // showBorders(asisY);
+    // showBorders(gist);
+    // showBorders(asisY);
     // showBorders(asisXtop);
     // showBorders(asisYright);
-diff = 1.3 ; 
-min = parseInt( findMaxVal2(data) ); 
-max = parseInt( findMinVal2(data) );
+diff = 1.3 ;
+min = findMaxVal2(data) ; 
+max = findMinVal2(data) ;
+
+min = parseFloat(min);
+max = parseFloat(max);
+    len = min.toString().length;
+    len = Math.round(min).toString().length;
+    if (len <4) { de=1; deText = "руб."; }
+    if (len <7 && len>3) {de = 0.001; deText = "тыс. руб."; }
+    if (len <10 && len >6) { de=0.000001 ; deText = "млн. руб."; }
+    if (len <13 && len >9) { de=0.000000001 ; deText = "млрд. руб."; }
+    if (len <16 && len >12) { de=0.000000000001 ; deText = "трлн. руб."; }
+    if (len >15)  { de=0.000000000000001 ; deText = "квинт. руб."; }
+
+
 y = d3.scaleLinear()
         .domain([max * diff, min * diff])
         .range([height, 0]);
 
-console.log([max ,  min]);
+// console.log([max ,  min]);
 // console.log( [ findMaxVal2(data) , findMinVal2(data) ] );
 
 
@@ -128,6 +141,7 @@ x = d3.scaleLinear()
                 ;
                 text.append("text")
                     .attr("text-anchor", "end")
+                    .attr("class", "asisYcapiton")
                     .attr("dominant-baseline", "central")
                     .attr("transform",  "translate(" + [-10, 0] + ")" )
                     .text( currencySwap(dat) )
@@ -142,8 +156,8 @@ x = d3.scaleLinear()
 
         canvas.append("text")
                 .attr("transform", "translate(" + [getElemWidth(canvas)/2, 10] + ")")
-                .attr("text-anchor", "middle")
-                .text("тыс. руб.")
+                .attr("class", "lebelgrag31")
+                .text(deText)
         ;
     }
 
@@ -159,12 +173,12 @@ function showFactIn(canvas){
 
         bar.append("text")
             .attr("class","middleTextLegend")
-            .attr("transform","translate("+[gistSize, -30]+")")
+            .attr("transform","translate("+[gistSize, -50]+")")
             .html(breakLongText( d.vol.name, 6) )
         ;
         line = d3.line().x(function(d) {return d[0];} ).y(function(d) { return d[1]} ) ;
         bar.append("path") 
-            .attr("d", line([[gistSize,  -10], [gistSize, 30]]))
+            .attr("d", line([[gistSize,  -30], [gistSize, 10]]))
             .attr("stroke-width", 2)
             .attr("stroke", "#999")
         ;       
@@ -181,12 +195,12 @@ function showFactIn(canvas){
         gsi =gistSize*2.2;
         bar.append("text")
             .attr("class","middleTextLegend")
-            .attr("transform","translate("+[gistSize+gsi, -30]+")")
+            .attr("transform","translate("+[gistSize+gsi, -50]+")")
             .html(breakLongText( d.obl.name, 6) )
         ;
         line = d3.line().x(function(d) {return d[0];} ).y(function(d) { return d[1]} ) ;
         bar.append("path") 
-            .attr("d", line([[gistSize +gsi,  -10], [gistSize +gsi, 30]]))
+            .attr("d", line([[gistSize +gsi,  -30], [gistSize +gsi, 10]]))
             .attr("stroke-width", 2)
             .attr("stroke", "#999")
         ;       
@@ -234,7 +248,7 @@ function showBarObl(canvas, index ,d ,color ){
 function showFactIntext(canvas){
     rects = canvas.append("g").attr("transform","translate("+[50,0]+")")
     data.forEach(function(d , i){
-        bar = rects.append("g").attr("transform","translate("+[x(i),0]+")")
+        bar = rects.append("g").attr("transform","translate("+[x(i),-5]+")")
                                 .attr("width",x(1)-x(0))
                                 .attr("height",getElemHeight(canvas))
         ;
@@ -251,10 +265,14 @@ function showFactIntext(canvas){
 }
 
 function showBartext(canvas, index ,d ,color ){
+    var koef = 1.5;
+    if (index === 0) {
+        koef = 0.55;
+    }
         rectHe =  y(0)-y(d)   ;  
         bar1 = canvas.append("g").attr("transform","translate("+[gistSize/2*index, parseFloat(d) > 0  ? y(0) -rectHe : y(0)   ]+")") ;
         bar1.append("text")
-                .attr("transform","translate("+[gistSize/2, -5]+")")
+                .attr("transform","translate("+[gistSize/2 * koef, -5]+")")
                 .attr("class","planGistLabel")
                 .text(currencySwap(d) )
         ;
@@ -262,10 +280,14 @@ function showBartext(canvas, index ,d ,color ){
 }
 
 function showBarObltext(canvas, index ,d ,color ){
+    var koef = 1.5;
+    if (index === 0) {
+        koef = 0.55;
+    }
         rectHe =  y(0)-y(d)   ;  
         bar1 = canvas.append("g").attr("transform","translate("+[gistSize*2.2+  gistSize/2*index, parseFloat(d) > 0  ? y(0) -rectHe : y(0)   ]+")") ;
         bar1.append("text")
-                .attr("transform","translate("+[gistSize/2, -5]+")")
+                .attr("transform","translate("+[gistSize/2 * koef, -5]+")")
                 .attr("class","planGistLabel")
                 .text(currencySwap(d) )
         ;
@@ -329,11 +351,19 @@ function showLegend(canvas){
 function findMinVal2(d){
     mm1 = d[0].vol.dohodPlan ; 
     for (i in d)
-        for (key in d[i])
-            if (key!="name" && mm1 >  d[i].vol[key]) mm1 =d[i].vol[key] ; 
+        for (key in d[i].vol){
+
+            di = parseFloat(d[i].vol[key] ) ; 
+
+            if (isNaN(di)) di =0 ;
+            if (key!="name" && mm1 > di ) mm1 =di ; 
+        }
     for (i in d)
-        for (key in d[i].obl)
-            if (key!="name" && mm1 >  d[i].obl[key]) mm1 =d[i].obl[key] ; 
+        for (key in d[i].obl){
+            di = parseFloat(d[i].obl[key]) ; 
+            if (isNaN(di)) di =0 ;
+            if (key!="name" && mm1 > di ) mm1 =di 
+        }
     return mm1 ; 
 
 }
@@ -341,11 +371,17 @@ function findMinVal2(d){
 function findMaxVal2(d){
     ma1 = d[0].vol.dohodPlan ; 
     for (i in d)
-        for (key in d[i])
-            if (key!="name" && ma1 <  d[i].vol[key]) ma1 =d[i].vol[key] ; 
+        for (key in d[i].vol){
+            di = parseFloat(d[i].vol[key] ) ; 
+            if (isNaN(di)) di =0 ;
+            if (key!="name" && ma1 < di ) ma1 =di ; 
+        }
     for (i in d)
-        for (key in d[i].obl)
-            if (key!="name" && ma1 <  d[i].obl[key]) ma1 =d[i].obl[key] ; 
+        for (key in d[i].obl){
+            di = parseFloat(d[i].obl[key]) ; 
+            if (isNaN(di)) di =0 ;
+            if (key!="name" && ma1 <  di ) ma1 =di ; 
+        }
     return ma1 ; 
 
 }
@@ -360,6 +396,16 @@ function getElemHeight (el){
 
 
 
+function cutLongSum(d){ 
+    d =parseInt(Math.abs(d) );
+    if ( d > 100)
+        if (+d > 0 )
+            return  d.toString().substr(0, d.toString().length-max.toString().length   +3) ; 
+        else
+            return  ( d.toString().substr(0, d.toString().length-min.toString().length   +4  ) ) ; 
+    else 
+        return d ; 
+}
 
     function showBorders(canvas ) {
         g = canvas.append("g");
@@ -380,13 +426,6 @@ function getElemHeight (el){
 
     }
 
-    len = min.toString().length; 
-    if (len <4) de=1;
-    if (len <7 && len>3) de = 0.001;
-    if (len <10 && len >6) de=0.000001 ;
-    if (len <13 && len >9) de=0.000000001 ;
-    if (len <16 && len >12) de=0.000000000001 ;
-    if (len <19 && len >15) de=0.000000000000001 ;
     function currencySwap(d) {
         /*
         len = min.toString().length; 
@@ -399,6 +438,8 @@ function getElemHeight (el){
         d = parseInt(d *de );
         return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "";
     }
+
+
 
 
     function cutLongText (str) {
@@ -440,18 +481,6 @@ function getElemHeight (el){
         return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " руб.";
     }
 
-function cutLongSum(d){ 
-    d =parseInt(Math.abs(d) );
-    if ( d > 100)
-        if (+d > 0 )
-            return  d.toString().substr(0, d.toString().length-max.toString().length   +3) ; 
-        else
-            return  ( d.toString().substr(0, d.toString().length-min.toString().length   +4  ) ) ; 
-    else 
-        return d ; 
-}
-
-
     function getElemWidth(el) {
         return d3.select(el)._groups["0"]["0"]._groups["0"]["0"].getAttribute("width");
     }
@@ -464,7 +493,7 @@ function cutLongSum(d){
     drawAsisY(asisY);
  
 gistSize = barSize / 3 ; 
-gistSize = 60 ; 
+gistSize = 50 ; 
 
 showLegend(asisX) ; 
 showFactIn(gist);

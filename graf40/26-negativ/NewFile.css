@@ -30,3 +30,8 @@ div.tooltipGraph30 {
     pointer-events: none;
 }
 
+
+.mountText{
+    text-anchor: middle;
+    fill : gray;
+}

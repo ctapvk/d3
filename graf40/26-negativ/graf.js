@@ -2,8 +2,8 @@ function drawGraph30(data , prop , id) {
 
 
     prop.paddingLeft = 100 ;
-    prop.paddingBottom = 40 ;
-    prop.paddingTop = 50 ;
+    prop.paddingBottom = 90 ;
+    prop.paddingTop = 15 ;
     prop.paddingRight = 30 ;
     prop.backColor = "#acc" ;
     prop.backColor = "#F8F9FA" ;
@@ -68,9 +68,10 @@ y2 = d3.scaleLinear()
 // console.log([max ,  min]);
 // console.log( [ findMaxVal2(data) , findMinVal2(data) ] );
 
-
+    countBars =Math.floor(width / (+prop.barSize + +prop.spaceBetween )) ;
+    console.log( countBars)
 x = d3.scaleLinear()
-        .domain([0  , data.length] )
+        .domain([0  , countBars ] )
         .range([ 0 ,  width   ])
 ;
     barSize = +prop.barSize;
@@ -152,6 +153,7 @@ x = d3.scaleLinear()
 
 
 
+
 function showFactIn(canvas){
     rects = canvas.append("g").attr("transform","translate("+[50,0]+")")
     data.forEach(function(d , i){
@@ -161,20 +163,13 @@ function showFactIn(canvas){
         ;
 
         bar.append("text")
-            .attr("class","middleTextLegend")
-            .attr("transform","translate("+[gistSize, -30]+")")
-            .html(breakLongText( d.name, 6) )
-        ;
-        line = d3.line().x(function(d) {return d[0];} ).y(function(d) { return d[1]} ) ;
-        bar.append("path") 
-            .attr("d", line([[gistSize,  -10], [gistSize, 30]]))
-            .attr("stroke-width", 2)
-            .attr("stroke", "#999")
-        ;       
-        // showBorders(bar); 
-        showBar(bar, 0 ,d.dohodPlan , prop.colorDoh );
-        showBar(bar, 1 ,d.rashodPlan , prop.colorRash);
-        showBar(bar, 2 ,d.deficitPlan , prop.colorDef);
+            .attr("transform","translate("+[gistSize*0.75 , ( +getElemHeight(canvas) +25 ) ]+")")
+            .attr("class","mountText")
+            .text(d.name);
+
+
+        showBar(bar, 0 ,d.fact , prop.colorFact );
+        showBar(bar, 1 ,d.plan , prop.colorPlan);
 
     });
 }
@@ -182,13 +177,14 @@ function showFactIn(canvas){
 function showBar(canvas, index ,d ,color ){
         rectHe =  y(0)-y(d)   ;  
         bar1 = canvas.append("g").attr("transform","translate("+[gistSize/2*index, parseFloat(d) > 0  ? y(0) -rectHe : y(0)   ]+")") ;
+
         bar1.append("rect")
             .attr("width" , gistSize )
             .attr("height" ,Math.abs( y(0)-y(d) ))
             .attr("fill", color)
             .on("mousemove", function() { 
                             div.transition().duration(200).style("opacity", .9);
-                            div.html(   "  " + currencySwapNoCut(d) )
+                            div.html(  legendaVals[index] + " : " + currencySwapNoCut(d) )
                                 .style("left", (d3.event.pageX) + "px")
                                 .style("top", (d3.event.pageY - 30 ) + "px")
                                 ;
@@ -208,93 +204,69 @@ function showBar(canvas, index ,d ,color ){
 
 function showFactIntext(canvas){
     rects = canvas.append("g").attr("transform","translate("+[50,0]+")")
-    data.forEach(function(d , i){
+    data.forEach(function(d , i) {
         bar = rects.append("g").attr("transform","translate("+[x(i),0]+")")
                                 .attr("width",x(1)-x(0))
                                 .attr("height",getElemHeight(canvas))
         ;
-        showBartext(bar, 0 ,d.dohodPlan , prop.colorDoh );
-        showBartext(bar, 1 ,d.rashodPlan , prop.colorRash);
-        showBartext(bar, 2 ,d.deficitPlan , prop.colorDef);
+        showBartext(bar, 0 ,d.fact , prop.colorFact  , d.plan);
+        showBartext(bar, 1 ,d.plan , prop.colorPlan ,d.fact );
 
     });
 }
 
-function showBartext(canvas, index ,d ,color ){
+function showBartext(canvas, index ,d ,color , d2){
         rectHe =  y(0)-y(d)   ;  
         bar1 = canvas.append("g").attr("transform","translate("+[gistSize/2*index, parseFloat(d) > 0  ? y(0) -rectHe : y(0)   ]+")") ;
+
+        xpad = gistSize/2;
+        if (d < d2 && index==0) xpad = 0 ;
+        if (d < d2 && index==1) xpad = gistSize ;
         bar1.append("text")
-                .attr("transform","translate("+[gistSize/2, -5]+")")
+                .attr("transform","translate("+[ xpad , -5]+")")
                 .attr("class","planGistLabel")
                 .text(currencySwap(d) )
         ;
 
 }
 
-function showLegend(canvas){
-    te = canvas.append("g").attr("transform","translate("+[0, 0]+")") ; 
+function showLegend(canvas) {
+    te = canvas.append("g").attr("transform","translate("+[0, 45]+")") ;
 
     inLeg = te.append("g").attr("transform" , "translate(20,10)");
     inLeg.append("rect")
                 .attr("width" , 20)
                 .attr("height" , 20)
-                .attr("fill" , prop.colorDoh)
+                .attr("fill" , prop.colorFact)
     ;
     inLeg.append("text")
                 .attr("transform" , "translate(30 , 15)")
                 .attr("class" , "legend")
-                .text("Доходы")
+                .text(legendaVals[0])
     ;
 
     inLeg = te.append("g").attr("transform" , "translate(150,10)");
     inLeg.append("rect")
                 .attr("width" , 20)
                 .attr("height" , 20)
-                .attr("fill" , prop.colorRash)
+                .attr("fill" , prop.colorPlan)
     ;
     inLeg.append("text")
                 .attr("transform" , "translate(30 , 15)")
                 .attr("class" , "legend")
-                .text("Расходы")
+                .text(legendaVals[1])
     ;
-
-    inLeg = te.append("g").attr("transform" , "translate(270,10)");
-    inLeg.append("rect")
-                .attr("width" , 20)
-                .attr("height" , 20)
-                .attr("fill" , prop.colorDef)
-    ;
-    inLeg.append("text")
-                .attr("transform" , "translate(30 , 15)")
-                .attr("class" , "legend")
-                .text("Дефицит/профцит")
-    ;
+    
 
 }
 
-function findMaxVal(d){
-    max = d[0].factIn ; 
-    for (i in d)
-        if (max < d[i].factIn)  max = d[i].factIn ; 
-    for (i in d)
-        if (max < d[i].planIn)  max = d[i].planIn ; 
-    return max; 
 
-}
 
-function findMinVal(d){
-    max = d[0].factOut ; 
-    for (i in d)
-        if (max < d[i].factOut)  max = d[i].factOut ;   
-    for (i in d)
-        if (max < d[i].planOut)  max = d[i].planOut ;   
-    return -max; 
 
-}
 
 
 function findMinVal2(d){
-    mm1 = d[0].dohodPlan ; 
+    mm1 = 0 ;
     for (i in d)
         for (key in d[i])
             if (key!="name" && mm1 >  d[i][key]) mm1 =d[i][key] ; 
@@ -302,7 +274,7 @@ function findMinVal2(d){
 
 }
 function findMaxVal2(d){
-    ma1 = d[0].dohodPlan ; 
+    ma1 = 0 ;
     for (i in d)
         for (key in d[i])
             if (key!="name" && ma1 <  d[i][key]) ma1 =d[i][key] ; 
@@ -412,8 +384,8 @@ function cutLongSum(d){
 
     drawAsisY(asisY);
  
-gistSize = barSize / 3 ; 
-gistSize = 50 ; 
+
+gistSize = +prop.barSize ;
 
 showLegend(asisX) ; 
 showFactIn(gist);

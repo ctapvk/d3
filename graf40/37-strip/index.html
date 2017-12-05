@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+    .textBar {
+        font-family: sans-serif;
+        font-size:16px ;
+        fill :white ;
+        dominant-baseline : central ;
+    }
+    div.tooltip {
+        position: absolute;
+        text-align: left;
+        font: 14px sans-serif;
+        line-height: 1.4;
+        padding: 5px;
+        background: white;
+        border-style: solid;
+        border-width: 1px;
+        border-color: blue;
+        pointer-events: none;
+    }
+</style>
+</head>
+<body>
+
+<div id="svgID"></div>
+<div id="svgID2"></div>
+<div id="poipup"></div>
+
+
+</body>
+<script src="http://d3js.org/d3.v4.min.js"> </script>
+<script>
+
+
+    function drawGraph37strip(data , prop ,id) {
+
+        var svg = d3.select( "#" + id )
+            .append("svg")
+            .attr('width', +prop.barSize +50)
+            .attr('height' , +prop.barHeight +10)
+        ;
+
+        barSize = +prop.barSize;
+        main = svg.append("g").attr("class" , "main").attr("transform" , "translate("+[ 0 , 0 ]+")") ;
+
+        x = d3.scaleLinear()
+            .domain([0,100])
+            .range([0 , barSize ])
+        ;
+        div = d3.select("#poipup").append("div").attr("class", "tooltip").style("opacity", 0);
+
+        t =data ;
+        gist = main.append("g").attr("transform" , "translate("+[ 0 , 0 ]+")").attr("class" , "gist") ;
+
+        propgress = gist.append("g").attr("transform" , "translate("+[ 30 ,0]+")").attr("class" , "propgress") ;
+
+        dat = d3.values(t)[0];
+        per = ((dat[0] / dat[1]) *100).toFixed(1) ;
+        // console.log(dat) ;
+
+        let htmlPlan =  "План :  " + currencySwapNoCut(d3.values(t)[0][1] )  ;
+        propgress.append("rect")
+            .attr("width" , barSize)
+            .attr("height" , +prop.barHeight)
+            .attr("fill" , prop.colorPlan )
+            .on("mousemove", function() {
+                div.transition().duration(200).style("opacity", .9);
+                div.html(  htmlPlan )
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 30 ) + "px")
+                ;
+            })
+            .on("mouseout", function() { div.transition().duration(500).style("opacity", 0); })
+        ;
+        propgress.append("circle")
+            .attr("fill" , prop.colorPlan)
+            .attr("r", +prop.barHeight/2)
+            .attr("transform" , "translate("+[ +prop.barSize ,+prop.barHeight/2]+")")
+            .on("mousemove", function() {
+                div.transition().duration(200).style("opacity", .9);
+                div.html(  htmlPlan )
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 30 ) + "px")
+                ;
+            })
+            .on("mouseout", function() { div.transition().duration(500).style("opacity", 0); })
+
+        ;
+
+        let htmlDone =  "Исполнено :  " + currencySwapNoCut(d3.values(t)[0][0] ) ;
+        if (per> 100) perW=100;  else perW=per;
+        propgress.append("rect")
+            .attr("width" , x(perW))
+            .attr("height" ,  +prop.barHeight)
+            .attr("fill" , prop.colorDone )
+            .on("mousemove", function() {
+                div.transition().duration(200).style("opacity", .9);
+                div.html( htmlDone  )
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 30 ) + "px")
+                ;
+            })
+            .on("mouseout", function() { div.transition().duration(500).style("opacity", 0); })
+        ;
+
+        propgress.append("circle")
+            .attr("fill" , prop.colorDone)
+            .attr("r", +prop.barHeight/2)
+            .attr("transform" , "translate("+[ x(per) ,+prop.barHeight/2]+")")
+            .on("mousemove", function() {
+                div.transition().duration(200).style("opacity", .9);
+                div.html(  htmlDone )
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 30 ) + "px")
+                ;
+            })
+            .on("mouseout", function() { div.transition().duration(500).style("opacity", 0); })
+
+        ;
+        propgress.append("circle")
+            .attr("fill" , prop.colorDone)
+            .attr("r", +prop.barHeight/2)
+            .attr("transform" , "translate("+[ 0 ,+prop.barHeight/2]+")")
+            .on("mousemove", function() {
+                div.transition().duration(200).style("opacity", .9);
+                div.html(  htmlDone )
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 30 ) + "px")
+                ;
+            })
+            .on("mouseout", function() { div.transition().duration(500).style("opacity", 0); })
+
+        ;
+
+        propgress.append("text")
+            .attr("transform" , "translate("+[ 10 ,+prop.barHeight/2]+")")
+            .attr("class" , "textBar")
+            .text(per + '%')
+        ;
+
+        function currencySwapNoCut(d) {
+            d= parseInt(parseFloat(d) );
+            d = d.toString().replace(".", ",")
+            return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " руб.";
+        }
+
+    }
+
+
+    propGraph37strip = {
+        "barSize": "300" ,
+        "barHeight":"25" ,
+
+        "colorDone":"#206DB1" ,
+        "colorPlan":"#DADFE6" ,
+    }
+
+    document.addEventListener("DOMContentLoaded", function(e) {
+
+    data = {"12 вода первая  запись":[ 97, 100 ]} ;
+    drawGraph37strip(data , propGraph37strip , "svgID") ;
+    data = {"12 вода первая  запись":[ 0, 100 ]} ;
+    drawGraph37strip(data , propGraph37strip , "svgID2") ;
+    });
+</script>
+
+<br>
+
+<img src='1.png'>
+</html>
