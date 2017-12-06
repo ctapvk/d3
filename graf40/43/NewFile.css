@@ -1,0 +1,17 @@
+.borders {
+    fill:none;
+}
+
+
+.yearTextCap{
+    text-anchor:end;
+    fill:gray ;
+    dominant-baseline:central;
+}
+
+.barTextCap{
+    fill:gray ;
+    dominant-baseline:central;
+}
+
+
