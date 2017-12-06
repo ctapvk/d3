@@ -1,23 +1,25 @@
-path {
-    fill:none;
-}
 svg text {
     font-family: sans-serif;
 }
 
-
-.middleTextLegend{
-	text-anchor:middle;
+.tickY{
+    font-family: sans-serif;
+    font-size: 17px;
+    fill:#75777D ;
 }
 
-.planGistLabel{
+.middleTextLegend{
+    text-anchor:middle;
+}
+
+.planGistLabel26neg {
     text-anchor: middle;
     fill: #999999;
     font-weight: bold;
     font-size: 14px;
 }
 
-div.tooltipGraph30 {
+.tooltipGraph26neg {
     position: absolute;
     text-align: left;
     font: 14px sans-serif;
@@ -35,3 +37,14 @@ div.tooltipGraph30 {
     text-anchor: middle;
     fill : gray;
 }
+
+
+.asisYcapiton {
+    font-size: 18px;
+    fill: #aDa5aE;
+    dominant-baseline: central;
+    text-anchor: end;
+    font-family: Proxima Nova;
+}
+
+
