@@ -305,6 +305,10 @@ function upConn(x,y, xEnd , yEnd ,  canvas , i , color ,  picName) {
     }
 
 max = holderDown > holderUp ? holderDown : holderUp ;
-if (  (270*max + 100) > widthSvg) svg.attr("width" , 270*max +100  );
+if (  (270*max + 100) > widthSvg) {
+    val =270*max +100  ; 
+    svg.attr("width" , val  );
+    d3.select('#someId').attr('viewBox' , "0 0 "+ val+ " 500") ; 
+} 
 
 }
