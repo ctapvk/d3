@@ -1,18 +1,29 @@
-function drawGraph37(data , prop , id ) {
+function drawGraph43(data , prop , id ) {
 
 var svg = d3.select("#" + id );
 svg.selectAll("*").remove();
-
+div = d3.select("#hideGraph43").append("div").attr("class", "tooltipGraph43").style("opacity", 0);
 
 svgWi = +svg.attr("width");
 
 barSize = prop.stripSize ;
 barHeight = prop.stripHeight ;
 max = findMax(data);
+
+    de=1; deText = "руб.";
+    min1 = parseFloat(max);
+    len = Math.round(min1).toString().length;
+    if (len <4) { de=1; deText = "руб."; }
+    if (len <7 && len>3) {de = 1; deText = "руб."; }
+    if (len <10 && len >6) { de=0.001 ; deText = "тыс. руб."; }
+    if (len <13 && len >9) { de=0.000001 ; deText = "млн. руб."; }
+    if (len <16 && len >12) { de=0.000000001 ; deText = "млрд. руб."; }
+    if (len >15)  { de=0.000000000001 ; deText = "трлн. руб."; }
+
     // console.log(max)
 x = d3.scaleLinear()
     .domain([0,max])
-    .range([0 , barSize -40])
+    .range([0 , barSize - 100 ])
 ;
 
 
@@ -60,11 +71,19 @@ data.forEach(function(d,i){
             .attr('width', reWi)
             .attr('height',barHeight-5)
             .attr('fill', prop["colors"+(ivals+1)] )
+            .on("mousemove", function() {
+                div.transition().duration(200).style("opacity", .9);
+                div.html(   " " + currencySwapNoCut(d3.values(dvals) ) )
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 30 ) + "px")
+                ;
+            })
+            .on("mouseout", function() { div.transition().duration(500).style("opacity", 0); })
         ;
         grafBar.append('text')
             .attr('transform','translate('+[reWi + 8,10 ]+')')
             .attr('class','barTextCap')
-            .text(d3.values(dvals))
+            .text(currencySwap(d3.values(dvals)  ) )
         ;
 
         // showBorders(grafBar);
@@ -83,7 +102,7 @@ data.forEach(function(d,i){
     max = ( (maxRows * barHeight + 50)*(data.length) )  +20  ;
     if (  max > +svg.attr("height") ) {
         svg.attr("height" , max  );
-        // d3.select('#someId').attr('viewBox' , "0 0 "+ val+ " 500") ;
+        d3.select('#someId43').attr('viewBox' , "0 0  1000 "+ max+ " ") ;
     }
 
     g = svg.append("g");
@@ -106,6 +125,19 @@ data.forEach(function(d,i){
     function getElemHeight (el){
         return d3.select(el)._groups["0"]["0"]._groups["0"]["0"].getAttribute("height");
     }
+
+    function currencySwap(d) {
+        d= (parseFloat(d) * de ).toFixed(2);
+        d = d.toString().replace(".", ",")
+        return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " " + deText;
+    }
+
+    function currencySwapNoCut(d) {
+        d= (parseFloat(d) ).toFixed(2);
+        d = d.toString().replace(".", ",")
+        return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " руб.";
+    }
+
 
     function showBorders(canvas ) {
         g = canvas.append("g");

@@ -49,7 +49,7 @@ div.tooltipGraph36 {
 }
 .svg-content {
     display: inline-block;
-    position: absolute;
+    /*position: absolute;*/
     top: 0;
     left: 0;
 }
