@@ -7,11 +7,13 @@
     text-anchor:end;
     fill:gray ;
     dominant-baseline:central;
+    font-size: 12px;
 }
 
 .barTextCap{
     fill:gray ;
     dominant-baseline:central;
+    font-size: 12px;
 }
 
 
@@ -42,6 +44,9 @@ div.tooltipGraph43 {
     left: 0;
 }
 
-
+.text43{
+    fill:gray;
+    
+}
 
 

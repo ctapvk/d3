@@ -43,7 +43,7 @@ data.forEach(function(d,i){
         .attr('class','bar')
         .attr("width",leftSideWidth)
         .attr("height",maxRows * barHeight)
-        .attr('transform','translate('+[0, (maxRows * barHeight + 50)*i +20 ]+')')
+        .attr('transform','translate('+[0, (maxRows * barHeight + 10)*i +20 ]+')')
     ;
 
     graf = bar.append('g')
@@ -95,6 +95,7 @@ data.forEach(function(d,i){
 
     bar.append('text')
         .attr('transform','translate('+[0,30 ]+')')
+        .attr("class","text43")
         .html(breakLongText(d.name,23) )
 })
 
