@@ -53,16 +53,22 @@ div.tooltip42 {
 
 
 
-.inieOverflow{
-
-    width: 100px;
+.inieParent{
+    background-color: #eee;
+    /*width: 300px;*/
     height: 70px;
-    overflow: auto;
+    border: 1px dotted black;
+    display:inline-block;
+    overflow-y: hidden; /* Hide horizontal scrollbar */
+    overflow-x: scroll; /* Add vertical scrollbar */
 }
 
-.drawInie{
-
+.innerDiv {
+    /*display:inline-block*/
+    width: 300px;
+    overflow-x: scroll;
 }
+
 
 
 

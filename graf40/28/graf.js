@@ -126,15 +126,16 @@ div = d3.select("#hid42").append("div").attr("class", "tooltip42").style("opacit
 			.attr('class','drawInie')
 			.attr('transform', 'translate('+[0,0]+')')
 
-		inSvg = te.append('svg') ;
+		inSvg = te.append('svg').attr('width',300) ;
 		// showBorders(inSvg) ;
 
 		html = ' ' +
-			'        <foreignobject width="320" height="200">\n' +
-            '<div class="inieOverflow" style="border:1px green solid">I\m a div ' +
-				'inside inside inside inside inside inside inside ' +
-				'inside inside inside inside inside inside inside inside inside a SVG.' +
-			'</div> '  +
+			'        <foreignobject width="1" height="1">\n' +
+            '<div class="inieParent">\n' +
+            '\n' +
+            '<div class="innerDiv">You can use the overflow property when you want to have better control of the layout. The overflow proe overflow property when you want to have better control of the layout. The overflow proe overflow property when you want to have better control of the layout. The overflow proe overflow property when you want to have better control of the layout. The overflow property specifies what happens if content overflows an element\'s box.</div>\n' +
+            '\n' +
+            '</div>'  +
             '        </foreignobject>'
 		;
 
