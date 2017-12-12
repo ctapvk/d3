@@ -170,6 +170,7 @@ function drawGraph36(data , prop , id) {
 
         g.append("path")
             .attr("d", line(d))
+            .attr('class','border')
             .attr("stroke-width", 4)
             .attr("stroke", "#CDD5DE")
         ;

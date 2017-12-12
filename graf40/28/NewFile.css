@@ -49,3 +49,23 @@ div.tooltip42 {
     text-align: center;
 
 }
+
+
+
+
+.inieOverflow{
+
+    width: 100px;
+    height: 70px;
+    overflow: auto;
+}
+
+.drawInie{
+
+}
+
+
+
+.border {
+    fill:none;
+}

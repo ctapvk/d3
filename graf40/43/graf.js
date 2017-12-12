@@ -4,26 +4,25 @@ var svg = d3.select("#" + id );
 svg.selectAll("*").remove();
 div = d3.select("#hideGraph43").append("div").attr("class", "tooltipGraph43").style("opacity", 0);
 
+
+    data.sort(function(x, y) {
+        // console.log(x , y) ;
+        return d3.ascending(x.name, y.name) ;
+    }) ;
+    // console.log(data)
+
 svgWi = +svg.attr("width");
 
 barSize = prop.stripSize ;
 barHeight = prop.stripHeight ;
 max = findMax(data);
 
-    de=1; deText = "руб.";
-    min1 = parseFloat(max);
-    len = Math.round(min1).toString().length;
-    if (len <4) { de=1; deText = "руб."; }
-    if (len <7 && len>3) {de = 1; deText = "руб."; }
-    if (len <10 && len >6) { de=0.001 ; deText = "тыс. руб."; }
-    if (len <13 && len >9) { de=0.000001 ; deText = "млн. руб."; }
-    if (len <16 && len >12) { de=0.000000001 ; deText = "млрд. руб."; }
-    if (len >15)  { de=0.000000000001 ; deText = "трлн. руб."; }
+    de=1; deText = "тыс. руб.";
 
     // console.log(max)
 x = d3.scaleLinear()
     .domain([0,max])
-    .range([0 , barSize - 100 ])
+    .range([0 , barSize - 160 ])
 ;
 
 
@@ -33,7 +32,7 @@ main = svg.append('g')
 
 maxRows = 0 ;
 data.forEach(function(d1,i1){
-    if (maxRows < d1.vals.length ) maxRows = val ;
+    if (maxRows < d1.vals.length ) maxRows =  d1.vals.length ;
 })
 maxRows++;
 
@@ -100,7 +99,7 @@ data.forEach(function(d,i){
 })
 
 
-    max = ( (maxRows * barHeight + 50)*(data.length) )  +20  ;
+    max = ( (maxRows * barHeight +10)*(data.length) )  +20  ;
     if (  max > +svg.attr("height") ) {
         svg.attr("height" , max  );
         d3.select('#someId43').attr('viewBox' , "0 0  1000 "+ max+ " ") ;
@@ -136,7 +135,7 @@ data.forEach(function(d,i){
     function currencySwapNoCut(d) {
         d= (parseFloat(d) ).toFixed(2);
         d = d.toString().replace(".", ",")
-        return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " руб.";
+        return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " " + deText;
     }
 
 

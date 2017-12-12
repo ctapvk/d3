@@ -68,12 +68,6 @@ div = d3.select("#hid42").append("div").attr("class", "tooltip42").style("opacit
 						.duration(500)
 						.style("opacity", 0);
 				})
-				.on('click',function (d) {
-					rot = t.startAngle   ;
-					console.log(rot) ;
-                    drawGraph41(data , prop  , idgraf , rot );
-                    d3.select("#hid42").transition() .duration(500)  .style("opacity", 0);
-                })
 			;
 
 			if ( +(t.data / d3.sum(dat))*100 >11)
@@ -127,6 +121,32 @@ div = d3.select("#hid42").append("div").attr("class", "tooltip42").style("opacit
 		return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " " + deText ;
 	}
 
+	function drawInie(canvas) {
+		te = canvas.append('g')
+			.attr('class','drawInie')
+			.attr('transform', 'translate('+[0,0]+')')
+
+		inSvg = te.append('svg') ;
+		// showBorders(inSvg) ;
+
+		html = ' ' +
+			'        <foreignobject width="320" height="200">\n' +
+            '<div class="inieOverflow" style="border:1px green solid">I\m a div ' +
+				'inside inside inside inside inside inside inside ' +
+				'inside inside inside inside inside inside inside inside inside a SVG.' +
+			'</div> '  +
+            '        </foreignobject>'
+		;
+
+
+        inSvg.append('g')
+			// .attr('class','inieOverflow')
+            // .attr('transform', 'translate('+[0,30]+')')
+            .html(html)
+
+
+    }
+
 
 	function procData(d) {
 
@@ -164,7 +184,41 @@ div = d3.select("#hid42").append("div").attr("class", "tooltip42").style("opacit
 			return str ;
 	}
 
-	min = 200 ; 
+    function showBorders(canvas ) {
+        g = canvas.append("g");
+        line = d3.line().x(function(d) {return d[0];} ).y(function(d) { return d[1]} ) ;
+        d = [
+            [0,0] ,
+            [0,getElemHeight(canvas)] ,
+            [getElemWidth(canvas),getElemHeight(canvas)] ,
+            [getElemWidth(canvas),0] ,
+            [0,0] ,
+        ]
+
+        g.append("path")
+            .attr("d", line(d))
+            .attr('class','border')
+            .attr("stroke-width", 4)
+            .attr("stroke", "#CDD5DE")
+        ;
+
+    }
+
+    function getElemWidth(el) {
+        return d3.select(el)._groups["0"]["0"]._groups["0"]["0"].getAttribute("width");
+    }
+
+    function getElemHeight(el) {
+        return d3.select(el)._groups["0"]["0"]._groups["0"]["0"].getAttribute("height");
+    }
+
+
+
+
+
+
+
+    min = 200 ;
 	data.forEach(function(d,i){
 		val = parseFloat(d3.values(d)) ; 
 		if (val > min) min = val  ; 
@@ -188,7 +242,17 @@ div = d3.select("#hid42").append("div").attr("class", "tooltip42").style("opacit
 	legend = svg.append("g").attr("transform" , "translate("+[width/2 +150 , 50]+")");
 	drawLegend(legend   );
 	drawBase(center);
+
+
+    inie = svg.append("g")
+        .attr("class", "inie")
+        .attr("transform", "translate("+[50 , 450  ]+")")
+    ;
+    drawInie(inie) ;
 }
+
+
+
 
 
 
