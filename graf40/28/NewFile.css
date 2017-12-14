@@ -50,27 +50,25 @@ div.tooltip42 {
 
 }
 
-
-
+foreignObject { overflow: visible; }
 
 .inieParent{
     background-color: #eee;
-    /*width: 300px;*/
+    width: 300px;
     height: 70px;
     border: 1px dotted black;
-    display:inline-block;
-    overflow-y: hidden; /* Hide horizontal scrollbar */
-    overflow-x: scroll; /* Add vertical scrollbar */
+    overflow-y: hidden;
+    overflow-x: scroll;
+    /*overflow: auto;*/
 }
 
 .innerDiv {
     /*display:inline-block*/
-    width: 300px;
-    overflow-x: scroll;
+    width: 500px;
 }
 
 
-
+p { position: absolute; top: 50%; left: 50%; width: 100px; }
 
 .border {
     fill:none;

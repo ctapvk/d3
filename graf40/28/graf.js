@@ -122,28 +122,64 @@ div = d3.select("#hid42").append("div").attr("class", "tooltip42").style("opacit
 	}
 
 	function drawInie(canvas) {
-		te = canvas.append('g')
+		te = canvas.append('g').attr('width',50).attr('height',50)
 			.attr('class','drawInie')
-			.attr('transform', 'translate('+[0,0]+')')
+			.attr('transform', 'translate('+[0,20]+')')
 
-		inSvg = te.append('svg').attr('width',300) ;
-		// showBorders(inSvg) ;
 
-		html = ' ' +
-			'        <foreignobject width="1" height="1">\n' +
+
+        te.append("svg:image")
+            .attr("transform","translate("+[ 0,-100 ]+")")
+            .attr('width', 330)
+            .attr('height', 150)
+            .attr("xlink:href", "tr.png")
+        ;
+
+		scroll = te.append('g')
+			.attr('transform','translate('+[0,150]+')')
+			.attr('class','scroll')
+		;
+        scroll.append("rect")
+			.attr('width', 30)
+			.attr('height',15)
+			.on('click',function (d) {
+				console.log(123)
+            })
+        scroll.append("rect")
+			.attr('width', 30)
+			.attr('height',15)
+			.attr('transform','translate('+[300,0]+')')
+			.on('click',function (d) {
+				console.log(12333)
+            })
+
+
+
+
+        inSvg = te.append('svg').attr('width',330).attr('height',150) ;
+        showBorders(inSvg) ;
+        inSvg.append('g')
+            .attr('class','scrollG')
+			.attr('transform','translate('+[-30,30]+')')
+			.append("text").text("AS45555555555555555556DA");
+
+
+
+
+/*
+
+        html = ' ' +
+            '        <foreignobject width="1" height="1">\n' +
             '<div class="inieParent">\n' +
             '\n' +
             '<div class="innerDiv">You can use the overflow property when you want to have better control of the layout. The overflow proe overflow property when you want to have better control of the layout. The overflow proe overflow property when you want to have better control of the layout. The overflow proe overflow property when you want to have better control of the layout. The overflow property specifies what happens if content overflows an element\'s box.</div>\n' +
             '\n' +
             '</div>'  +
             '        </foreignobject>'
-		;
+        ;
 
-
-        inSvg.append('g')
-			// .attr('class','inieOverflow')
-            // .attr('transform', 'translate('+[0,30]+')')
-            .html(html)
+		// d3.select("#iniee").html(html);
+*/
 
 
     }
@@ -247,7 +283,7 @@ div = d3.select("#hid42").append("div").attr("class", "tooltip42").style("opacit
 
     inie = svg.append("g")
         .attr("class", "inie")
-        .attr("transform", "translate("+[50 , 450  ]+")")
+        .attr("transform", "translate("+[20 , 350  ]+")")
     ;
     drawInie(inie) ;
 }
