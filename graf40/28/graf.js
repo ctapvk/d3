@@ -139,6 +139,12 @@ div = d3.select("#hid42").append("div").attr("class", "tooltip42").style("opacit
 			.attr('transform','translate('+[0,150]+')')
 			.attr('class','scroll')
 		;
+
+		scrollBar = te.append('g')
+			.attr('transform','translate('+[0,150]+')')
+			.attr('class','scrollBar')
+		;
+
         scroll.append("rect")
 			.attr('width', 30)
 			.attr('height',15)
@@ -153,33 +159,68 @@ div = d3.select("#hid42").append("div").attr("class", "tooltip42").style("opacit
 				console.log(12333)
             })
 
+        scrollBar.append('circle')
+			.attr('id','circleScroll')
+			.attr('r',15 )
+            .attr("cx", 50 )
+            .attr("cy", 7 )
+            .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
 
+        function dragstarted(d) {
+            d3.select(this).raise().classed("active", true);
+        }
+        function dragended(d) {
+            d3.select(this).classed("active", false);
+        }
+
+        maxDrag = 0 ; minDrag = 0 ; flag = 1 ;
+        function dragged(d) {
+        	if (flag) {
+        		flag =0 ;
+                maxDrag = d3.event.x + 230;
+                minDrag = d3.event.x ;
+			}
+
+        	if (d3.event.x < maxDrag  && d3.event.x > minDrag) {
+
+            d3.select("#circleScroll")
+				.attr("cx",  d3.event.x)
+				// .attr( "cy" , d3.event.y)
+			;
+            d3.select(".scrollG")
+                .attr('transform','translate('+[ d3.event.x,30]+')')
+				// .attr( "cy" , d3.event.y)
+			;
+            // d3.select(this).attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
+			}
+        }
 
 
         inSvg = te.append('svg').attr('width',330).attr('height',150) ;
         showBorders(inSvg) ;
-        inSvg.append('g')
+        scrollClaa  =inSvg.append('g')
             .attr('class','scrollG')
-			.attr('transform','translate('+[-30,30]+')')
-			.append("text").text("AS45555555555555555556DA");
+            .attr('transform','translate('+[0,0]+')')
+        // .append("text").text("AS45555555555555555556DA");
 
+        count =0 ;
+        for (i=9; i<data.length ; i++){
+        	let d = data[i] ;
+        	console.log(d3.keys(d)[0])
+            bar = scrollClaa.append('g')
+				.attr('width', 100)
+				.attr('height',150)
+                .attr('transform','translate('+[ 10+ 105*count++,0]+')')
 
+			showBorders(bar ) ;
 
-
-/*
-
-        html = ' ' +
-            '        <foreignobject width="1" height="1">\n' +
-            '<div class="inieParent">\n' +
-            '\n' +
-            '<div class="innerDiv">You can use the overflow property when you want to have better control of the layout. The overflow proe overflow property when you want to have better control of the layout. The overflow proe overflow property when you want to have better control of the layout. The overflow proe overflow property when you want to have better control of the layout. The overflow property specifies what happens if content overflows an element\'s box.</div>\n' +
-            '\n' +
-            '</div>'  +
-            '        </foreignobject>'
-        ;
-
-		// d3.select("#iniee").html(html);
-*/
+        	bar.append('text')
+				.attr('transform','translate('+[ 0,50]+')')
+				.text(d3.keys(d)[0])
+        }
 
 
     }
