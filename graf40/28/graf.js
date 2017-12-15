@@ -14,7 +14,7 @@ div = d3.select("#hid42").append("div").attr("class", "tooltip42").style("opacit
 
 	center = svg.append("g")
 		.attr("class", "center")
-		.attr("transform", "translate("+[ +prop.radius+30 , +prop.radius+30  ]+")")
+		.attr("transform", "translate("+[  prop.inieTr, +prop.radius+30  ]+")")
 	;
 
 	x = d3.scaleLinear()
@@ -85,31 +85,32 @@ div = d3.select("#hid42").append("div").attr("class", "tooltip42").style("opacit
 
 
 	function drawLegend(canvas) {
-		te = canvas.append("g")
-			.attr("transform" , "translate("+[ 50 ,  0]+")")
-		;
-		caps = ["Поступления в ФБ","Поступления в бюджет Волгоградской области"];
-		data.forEach(function (d , i ) {
-			leg = te.append("g").attr("transform" , "translate("+[ 0, i*55  ]+")");
+        te = canvas.append("g")
+            .attr("transform" , "translate("+[ 50 ,  0]+")")
+        ;
 
-			leg.append("text")
-				.attr("class", "krugLegText").html( breakLongText(Object.keys(data[i]) , 60) )
-			// .attr("class", "krugLegText").text( Object.keys(data[i])  )
-			;
-			leg.append("text")
-				.attr("transform" , "translate("+[ 0, -15  ]+")")
-				.attr("class", "krugLegTextBold").text( currencySwap(Object.values(data[i]) ) )
-			// .attr("class", "krugLegText").text( Object.keys(data[i])  )
-			;
+        dat1 = procData(data) ;
 
+        dat1.forEach(function (d , i ) {
+            leg = te.append("g").attr("transform" , "translate("+[ 0, i*55  ]+")");
 
-			leg.append("rect")
-				.attr("class" , "krugRectLeg")
-				.attr("transform" , "translate("+[ -35,-33 ]+")")
-				.attr("fill", prop.colorsKrug[i])
-			;
+            leg.append("text")
+                .attr("class", "krugLegText")
+				.html( breakLongText(Object.keys(d)[0] , 25) )
+            ;
+            leg.append("text")
+                .attr("transform" , "translate("+[ 0, -15  ]+")")
+                .attr("class", "krugLegTextBold")
+				.text( currencySwap(Object.values(d) ) )
+            ;
 
-		})
+            leg.append("rect")
+                .attr("class" , "krugRectLeg")
+                .attr("transform" , "translate("+[ -35,-33 ]+")")
+                .attr("fill", prop.colorsKrug[i])
+            ;
+
+        })
 	}
 
 	function currencySwapWithText(d) {
@@ -121,49 +122,86 @@ div = d3.select("#hid42").append("div").attr("class", "tooltip42").style("opacit
 		return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " " + deText ;
 	}
 
+
+
 	function drawInie(canvas) {
 		te = canvas.append('g').attr('width',50).attr('height',50)
 			.attr('class','drawInie')
 			.attr('transform', 'translate('+[0,20]+')')
-
-
-
         te.append("svg:image")
-            .attr("transform","translate("+[ 0,-100 ]+")")
-            .attr('width', 330)
-            .attr('height', 150)
+            .attr("transform","translate("+[ 0,-80 ]+")")
+            .attr('width', prop.inieTr * 2)
+            .attr('height', 80)
             .attr("xlink:href", "tr.png")
         ;
 
-		scroll = te.append('g')
-			.attr('transform','translate('+[0,150]+')')
-			.attr('class','scroll')
-		;
 
-		scrollBar = te.append('g')
-			.attr('transform','translate('+[0,150]+')')
-			.attr('class','scrollBar')
-		;
+        scrollBar = te.append('g')
+            .attr('class','scrollBar')
+            .attr('transform','translate('+[0,150 + 5 ]+')')
+        ;
+        scrollBar.append('rect')
+            .attr('width', prop.inieTr * 2)
+            .attr('height',15)
+            .attr('fill','gray')
 
-        scroll.append("rect")
+        valDef = -1 ;
+        scrollBar.append("rect")
+            .attr('class','back')
 			.attr('width', 30)
 			.attr('height',15)
 			.on('click',function (d) {
-				console.log(123)
-            })
-        scroll.append("rect")
+                el = d3.select("#circleScroll");
+                val = el.attr('x');
+                moveVal = parseFloat(val)-20;
+                if (valDef ==-1) valDef=val ;
+
+                if (moveVal > 20 ){
+                    el.attr('x' , moveVal );
+                    diffCount = data.length - 9 ;
+                    xScroll = d3.scaleLinear()
+                        .domain([valDef, prop.inieTr * 2-90])
+                        .range([0 ,  prop.legendWindth * diffCount - prop.inieTr * 2])
+                    ;
+                    d3.select(".scrollG")
+                        .attr('transform','translate('+[ 10+ -xScroll(moveVal) ,0]+')')
+                }
+			})
+        valDef = -1 ;
+        scrollBar.append("rect")
+			.attr('class','forward')
 			.attr('width', 30)
 			.attr('height',15)
-			.attr('transform','translate('+[300,0]+')')
+			.attr('transform','translate('+[ prop.inieTr * 2 - 30,0]+')')
 			.on('click',function (d) {
-				console.log(12333)
+				el = d3.select("#circleScroll");
+				val = el.attr('x');
+				moveVal = parseFloat(val)+20;
+                if (valDef ==-1) valDef=val ;
+
+                if (moveVal< prop.inieTr * 2-90 ){
+                	el.attr('x' , moveVal );
+					diffCount = data.length - 9 ;
+					xScroll = d3.scaleLinear()
+						.domain([valDef, prop.inieTr * 2-90])
+						.range([-10 ,  prop.legendWindth * diffCount - prop.inieTr * 2])
+					;
+					d3.select(".scrollG")
+						.attr('transform','translate('+[  -xScroll(moveVal) ,0]+')')
+                }
             })
 
-        scrollBar.append('circle')
+
+
+
+
+        scrollBar.append('rect')
+            .attr('width', 60)
+            .attr('height',15)
 			.attr('id','circleScroll')
-			.attr('r',15 )
-            .attr("cx", 50 )
-            .attr("cy", 7 )
+            .attr("x", 35 )
+            .attr("y", 0 )
+			.attr('fill','#C3C1C1')
             .call(d3.drag()
                 .on("start", dragstarted)
                 .on("drag", dragged)
@@ -172,95 +210,131 @@ div = d3.select("#hid42").append("div").attr("class", "tooltip42").style("opacit
         function dragstarted(d) {
             d3.select(this).raise().classed("active", true);
         }
+
+        valDef = -1 ; prefVal = 0  ; flag =1 ;
+        function dragged(d) {
+            el = d3.select("#circleScroll");
+            val = parseFloat(el.attr('x')) ;
+  			diffCount = data.length - 9 ;
+            if (valDef ==-1) {
+            	valDef=val ;
+                prefVal = d3.event.x ;
+            }
+
+            xScroll = d3.scaleLinear()
+                .domain([valDef, prop.inieTr * 2-90])
+                .range([-20 ,  prop.legendWindth * diffCount - prop.inieTr * 2])
+            ;
+            diff = d3.event.x - prefVal ;
+            cond = val < prop.inieTr * 2-90  && val > 40
+				|| (diff<0 && val >= prop.inieTr * 2-90 )
+				|| (diff>0 && val <= 40 )
+
+			;
+            // console.log(diff ,  cond) ;
+
+            if (cond) {
+                moveVal  = val + diff ;
+                el.attr("x",  moveVal ) ;
+				d3.select(".scrollG")
+					.attr('transform','translate('+[ -xScroll(moveVal)  ,0]+')')
+				;
+                prefVal = d3.event.x ;
+			}
+        }
+
         function dragended(d) {
             d3.select(this).classed("active", false);
         }
 
-        maxDrag = 0 ; minDrag = 0 ; flag = 1 ;
-        function dragged(d) {
-        	if (flag) {
-        		flag =0 ;
-                maxDrag = d3.event.x + 230;
-                minDrag = d3.event.x ;
-			}
 
-        	if (d3.event.x < maxDrag  && d3.event.x > minDrag) {
-
-            d3.select("#circleScroll")
-				.attr("cx",  d3.event.x)
-				// .attr( "cy" , d3.event.y)
-			;
-            d3.select(".scrollG")
-                .attr('transform','translate('+[ d3.event.x,30]+')')
-				// .attr( "cy" , d3.event.y)
-			;
-            // d3.select(this).attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
-			}
-        }
-
-
-        inSvg = te.append('svg').attr('width',330).attr('height',150) ;
-        showBorders(inSvg) ;
+        inSvg = te.append('svg').attr('width',prop.inieTr * 2).attr('height',150) ;
+        // showBorders(inSvg) ;
         scrollClaa  =inSvg.append('g')
             .attr('class','scrollG')
             .attr('transform','translate('+[0,0]+')')
-        // .append("text").text("AS45555555555555555556DA");
 
-        count =0 ;
-        for (i=9; i<data.length ; i++){
-        	let d = data[i] ;
-        	console.log(d3.keys(d)[0])
+        let count =0 ;
+        for (let i=9; i<data.length ; i++){
             bar = scrollClaa.append('g')
-				.attr('width', 100)
+				.attr('width', prop.legendWindth - 5)
 				.attr('height',150)
-                .attr('transform','translate('+[ 10+ 105*count++,0]+')')
+                .attr('transform','translate('+[ prop.legendWindth *count++,0]+')')
 
-			showBorders(bar ) ;
+			// showBorders(bar ) ;
 
+			let text =d3.keys(data[i])[0] ;
+			bar.append('rect')
+				.attr('width',prop.legendWindth - 5)
+				.attr('height',150)
+				.attr('fill','#E2EDF0')
         	bar.append('text')
-				.attr('transform','translate('+[ 0,50]+')')
-				.text(d3.keys(d)[0])
+				.attr('transform','translate('+[ prop.legendWindth / 2 ,20]+')')
+				.attr('class','lablesText')
+				.html(breakLongText(text , 15 ) )
+				// .text(d3.keys(d)[0]  )
+
+			sum = 0 ;
+			data.forEach(function (t, number) {
+				sum+= d3.values(t)[0];
+			})
+			curVal = d3.values(data[i])[0] ;
+			per =  (curVal /sum *100  ).toFixed(1) + ' %' ;
+        	bar.append('text')
+				.attr('transform','translate('+[ prop.legendWindth / 2 ,150 -15]+')')
+				.attr('class','lablesPer')
+				.text(per  )
         }
 
-
     }
 
 
-	function procData(d) {
+    function breakLongText (str , limit) {
+        limBack =limit ;
+        if (str.length > limit){
+            s=""; count=0  ; limitStart=0;
+            while (limit < str.length && count < 10 ){
+                if (str[limit]!=" ") {
+                    for ( i = limitStart; i < str.length  ; i++) {
+                        limit = i + 1;
+                        if (str[i] == " " && (limit - limitStart) > limBack )  break;
+                    }
+                } else {
+                    for ( i = limitStart; i < str.length  ; i++) {
+                        limit = i + 1;
+                        if (str[i] == " " && (limit - limitStart) > limBack )  break;
+                    }
+                }
 
-		arr = [] ;
+                s1= str.substr(limitStart, limit - limitStart) ;
+                // console.log(count , limitStart , limit ,s1);
+                s += "<tspan y='" + (-20 + 20 * count ) + "' x='0' dy='1.2em'>" +s1+ "</tspan>";
+                limitStart = limit ;
 
-		for (i=0 ; i<d.length; i++) {
-			ob = {} ;
-			if (i<10){
-				ob[d3.keys(d[i])[0]] = d3.values(d[i])[0];
-				arr[i] = ob  ;
-			} else{
+                count++ ;
+            }
+            return s ;
+
+        } else  return str ;
+    }
+
+    function procData(d) {
+
+        arr = [] ;
+
+        for (i=0 ; i<d.length; i++) {
+            ob = {} ;
+            if (i<10){
+                ob[d3.keys(d[i])[0]] = d3.values(d[i])[0];
+                arr[i] = ob  ;
+            } else{
                 ob['Иные'] = d3.values(d[i])[0] + parseFloat(d3.values(arr[9]) ) ;
                 arr[9] = ob  ;
-			}
-		}
-		return arr ;
+            }
+        }
+        return arr ;
     }
 
-	function breakLongText (str , limit) {
-		str = str[0];
-
-		if (str.length > limit){
-			s="";
-			if (str[limit-1]!=" ") for (i=limit;i< limit+10;i++) {
-				if (str[i]==" ") {
-					limit=i+1;
-					break;
-				}
-			}
-			s = "<tspan y='-20' x='0' dy='1.2em'>" + str.substr(0,limit) + "</tspan>" ;
-			s += "<tspan x='0' dy='1.2em'>" + str.substr(limit) + "</tspan>" ;
-			return s ;
-		}
-		else
-			return str ;
-	}
 
     function showBorders(canvas ) {
         g = canvas.append("g");
@@ -317,7 +391,7 @@ div = d3.select("#hid42").append("div").attr("class", "tooltip42").style("opacit
 
 
 	
-	legend = svg.append("g").attr("transform" , "translate("+[width/2 +150 , 50]+")");
+	legend = svg.append("g").attr("transform" , "translate("+[prop.inieTr*2 +100 , 50]+")");
 	drawLegend(legend   );
 	drawBase(center);
 
@@ -326,6 +400,7 @@ div = d3.select("#hid42").append("div").attr("class", "tooltip42").style("opacit
         .attr("class", "inie")
         .attr("transform", "translate("+[20 , 350  ]+")")
     ;
+    if (data.length>9)
     drawInie(inie) ;
 }
 
