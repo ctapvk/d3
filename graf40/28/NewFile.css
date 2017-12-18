@@ -1,4 +1,4 @@
-div.tooltip42 {
+div.tooltipGraph28my {
     position: absolute;
     text-align: left;
     font: 14px sans-serif;
@@ -12,7 +12,7 @@ div.tooltip42 {
 }
 
 
-.krugPieTextLegend42 {
+.krugPieTextLegendGraph28my {
     text-anchor: middle ;
     font-family: sans-serif;
     font-size: 17px;
@@ -63,6 +63,20 @@ div.tooltip42 {
     text-anchor: middle;
     font-weight: bold;
 }
+
+.forward{
+    background: url('icons28/right.png');
+}
+
+
+.active {
+    stroke: #000;
+    stroke-width: 2px;
+}
+
+
+
+
 
 
 

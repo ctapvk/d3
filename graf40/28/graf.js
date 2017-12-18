@@ -1,6 +1,6 @@
 
-function drawGraph41(data , prop  , idgraf , angle) {
-div = d3.select("#hid42").append("div").attr("class", "tooltip42").style("opacity", 0);
+function drawGraph28my(data , prop  , idgraf , angle) {
+div = d3.select("#hidGraph28my").append("div").attr("class", "tooltipGraph28my").style("opacity", 0);
 // init block
 
 
@@ -74,7 +74,7 @@ div = d3.select("#hid42").append("div").attr("class", "tooltip42").style("opacit
 				txt=( (t.data / d3.sum(dat)).toFixed(3) * 100).toFixed(1) + '%' ;   else txt="";
 
 			te.append("text")
-				.attr("class" , "krugPieTextLegend42")
+				.attr("class" , "krugPieTextLegendGraph28my")
 				.attr("transform" , "translate(" + d3.arc().centroid(t) + ")")
 				.text( txt )
 			;
@@ -106,6 +106,8 @@ div = d3.select("#hid42").append("div").attr("class", "tooltip42").style("opacit
 
             leg.append("rect")
                 .attr("class" , "krugRectLeg")
+                .attr('width',25)
+                .attr('height',25)
                 .attr("transform" , "translate("+[ -35,-33 ]+")")
                 .attr("fill", prop.colorsKrug[i])
             ;
@@ -132,7 +134,7 @@ div = d3.select("#hid42").append("div").attr("class", "tooltip42").style("opacit
             .attr("transform","translate("+[ 0,-80 ]+")")
             .attr('width', prop.inieTr * 2)
             .attr('height', 80)
-            .attr("xlink:href", "tr.png")
+            .attr("xlink:href", "icons28/tr.png")
         ;
 
 
@@ -143,48 +145,50 @@ div = d3.select("#hid42").append("div").attr("class", "tooltip42").style("opacit
         scrollBar.append('rect')
             .attr('width', prop.inieTr * 2)
             .attr('height',15)
-            .attr('fill','gray')
+            .attr('fill','#F1F2F4')
 
         valDef = -1 ;
-        scrollBar.append("rect")
+        scrollBar.append("svg:image")
             .attr('class','back')
 			.attr('width', 30)
 			.attr('height',15)
+            .attr("xlink:href", "icons28/left.png" )
 			.on('click',function (d) {
                 el = d3.select("#circleScroll");
                 val = el.attr('x');
                 moveVal = parseFloat(val)-20;
-                if (valDef ==-1) valDef=val ;
+                // if (valDef ==-1) valDef=val ;
 
                 if (moveVal > 20 ){
                     el.attr('x' , moveVal );
                     diffCount = data.length - 9 ;
                     xScroll = d3.scaleLinear()
                         .domain([valDef, prop.inieTr * 2-90])
-                        .range([0 ,  prop.legendWindth * diffCount - prop.inieTr * 2])
+                        .range([-90 ,  prop.legendWindth * diffCount - prop.inieTr * 2])
                     ;
                     d3.select(".scrollG")
                         .attr('transform','translate('+[ 10+ -xScroll(moveVal) ,0]+')')
                 }
 			})
         valDef = -1 ;
-        scrollBar.append("rect")
+        scrollBar.append("svg:image")
 			.attr('class','forward')
 			.attr('width', 30)
 			.attr('height',15)
+            .attr("xlink:href", "icons28/right.png" )
 			.attr('transform','translate('+[ prop.inieTr * 2 - 30,0]+')')
 			.on('click',function (d) {
 				el = d3.select("#circleScroll");
 				val = el.attr('x');
 				moveVal = parseFloat(val)+20;
-                if (valDef ==-1) valDef=val ;
+                // if (valDef ==-1) valDef=val ;
 
                 if (moveVal< prop.inieTr * 2-90 ){
                 	el.attr('x' , moveVal );
 					diffCount = data.length - 9 ;
 					xScroll = d3.scaleLinear()
 						.domain([valDef, prop.inieTr * 2-90])
-						.range([-10 ,  prop.legendWindth * diffCount - prop.inieTr * 2])
+						.range([-90 ,  prop.legendWindth * diffCount - prop.inieTr * 2])
 					;
 					d3.select(".scrollG")
 						.attr('transform','translate('+[  -xScroll(moveVal) ,0]+')')
@@ -215,15 +219,17 @@ div = d3.select("#hid42").append("div").attr("class", "tooltip42").style("opacit
         function dragged(d) {
             el = d3.select("#circleScroll");
             val = parseFloat(el.attr('x')) ;
-  			diffCount = data.length - 9 ;
-            if (valDef ==-1) {
-            	valDef=val ;
+
+            if (flag ==1) {
+                flag= 0  ;
                 prefVal = d3.event.x ;
             }
+            // console.log( d3.event.x  ,  prefVal   )
 
+  			diffCount = data.length - 9 ;
             xScroll = d3.scaleLinear()
                 .domain([valDef, prop.inieTr * 2-90])
-                .range([-20 ,  prop.legendWindth * diffCount - prop.inieTr * 2])
+                .range([ -90 ,  prop.legendWindth * diffCount - prop.inieTr * 2])
             ;
             diff = d3.event.x - prefVal ;
             cond = val < prop.inieTr * 2-90  && val > 40
@@ -244,6 +250,8 @@ div = d3.select("#hid42").append("div").attr("class", "tooltip42").style("opacit
         }
 
         function dragended(d) {
+            flag =1 ;
+            // console.log(flag)
             d3.select(this).classed("active", false);
         }
 
