@@ -2,7 +2,6 @@ function drawGraph40(data , prop , id) {
 
     prop.paddingLeft = 100 ;
     prop.paddingBottom = 50 ;
-    prop.paddingTop = 50 ;
     prop.paddingRight = 30 ;
     prop.backColor = "#acc" ;
     prop.backColor = "#F8F9FA" ;
@@ -62,7 +61,7 @@ function drawGraph40(data , prop , id) {
     diff = 1.2;
     min = 0;
     max = findMax(data);
-    len = max.toString().length  -3;
+    len = Math.round(max).toString().length  -3;
     if (len <4) { de=1; deText = "руб."; }
     if (len <7 && len>3) {de = 0.001; deText = "тыс. руб."; }
     if (len <10 && len >6) { de=0.000001 ; deText = "млн. руб."; }
@@ -86,8 +85,8 @@ function drawGraph40(data , prop , id) {
     function drawAsisX(canvas) {
 
         line = d3.line().x(function(d) {return d[0];} ).y(function(d) { return d[1]} ) ;
-        canvas.append("path") 
-            .attr("d", line([[0, 0], [getElemWidth(canvas), 0]]))
+        canvas.append("path")
+            .attr("d", line([[0, 0], [getElemWidth(canvas)+30, 0]]))
             .attr("stroke-width", 4)
             .attr("stroke", "#CDD5DE")
         ;
@@ -130,8 +129,9 @@ function drawGraph40(data , prop , id) {
 
             bar.append("text")
                 .attr('class','barUp')
+                .attr('fill','#111')
                 .attr("transform", "translate("+[ barSize,  20-getElemHeight(asisXtop)]+")")
-                .html(breakLongText(t.name , 20))
+                .html(breakLongText(t.name , 15))
             ;
 
             line = d3.line().x(function(d){ return d[0]}).y(function(d){ return d[1] });
@@ -167,7 +167,7 @@ function drawGraph40(data , prop , id) {
                 barRe.append("text")
                     .attr("transform", "translate("+[ barSize/2, -5]+")")
                     .attr("class" , "legCaption")
-                    .text(currencySwap(d3.values(t2) ))
+                    .text(currencySwapWithComma(d3.values(t2) ))
                 ;
             })
 
@@ -260,8 +260,14 @@ function drawGraph40(data , prop , id) {
     }
 
 
+    function currencySwapWithComma(d) {
+        d = (d * de ).toFixed(1);
+        d=d.toString().replace(".",",");
+        return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "";
+    }
+
     function currencySwap(d) {
-        d = parseInt(d * de);
+        d = parseInt(d * de ); 
         return d.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "";
     }
 
@@ -276,23 +282,33 @@ function drawGraph40(data , prop , id) {
     }
 
     function breakLongText (str , limit) {
-
+        limBack =limit ;
         if (str.length > limit){
-            s="";
-            if (str[limit-1]!=" ") for (i=limit;i< limit+10;i++) {
-                if (str[i]==" ") {
-                    limit=i+1;
-                    break;
+            s=""; count=0  ; limitStart=0;
+            while (limit < str.length && count < 10 ){
+                if (str[limit]!=" ") {
+                    for ( i = limitStart; i < str.length  ; i++) {
+                        limit = i + 1;
+                        if (str[i] == " " && (limit - limitStart) > limBack )  break;
+                    }
+                } else {
+                    for ( i = limitStart; i < str.length  ; i++) {
+                        limit = i + 1;
+                        if (str[i] == " " && (limit - limitStart) > limBack )  break;
+                    }
                 }
-            }
-            s = "<tspan y='-20' x='0' dy='1.2em'>" + str.substr(0,limit) + "</tspan>" ;
-            s += "<tspan x='0' dy='1.2em'>" + str.substr(limit) + "</tspan>" ;
-            return s ;
-        }
-        else
-            return str ;
-    }
 
+                s1= str.substr(limitStart, limit - limitStart) ;
+                // console.log(count , limitStart , limit ,s1);
+                s += "<tspan y='" + (-20 + 20 * count ) + "' x='0' dy='1.2em'>" +s1+ "</tspan>";
+                limitStart = limit ;
+
+                count++ ;
+            }
+            return s ;
+
+        } else  return str ;
+    }
 
     function currencySwapWithText(d) {
         d= parseInt(parseFloat(d)*de );
@@ -337,6 +353,14 @@ function drawGraph40(data , prop , id) {
     drawAsisX(asisX);
     drawGist(gist);
     drawLegend(asisX);
+
+
+    val = (data.length-1) * (barSize*2 +prop.spaceBetween ) + 50  ;
+    console.log(val ,  data.length , barSize);
+    if (  val  > width) {
+        svg.attr("width" , val  );
+        d3.select('#someId').attr('viewBox' , "0 0 "+ val+ " 500") ;
+    }
 
 
 

@@ -16,7 +16,7 @@ div.tooltipGraph28my {
     text-anchor: middle ;
     font-family: sans-serif;
     font-size: 17px;
-    fill: #333 ;
+    fill: #fff ;
 }
 .krugLegText {
     font-family: sans-serif;
@@ -75,9 +75,13 @@ div.tooltipGraph28my {
 }
 
 
+.leg28Name{
+    fill:gray ;
+}
 
-
-
+.boldClass {
+    font-weight: bold;
+}
 
 
 
