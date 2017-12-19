@@ -1,0 +1,34 @@
+body {
+	margin: 0;
+	background: #e3e3e3;
+}
+
+main {
+	width: 1030px;
+	background: #fff;
+	padding: 50px 30px;
+	margin: 0 auto;
+}
+
+.tooltip,
+.chart-area {
+	font-family: Lucida Sans Unicode;
+}
+
+.bar-pie,
+.arc,
+.legend__item {
+	transition: opacity .3s ease-out;
+}
+
+.legend__item:last-child {
+	padding-bottom: 0 !important;
+}
+
+.opacity {
+	opacity: 0.35;
+}
+
+.program .events {
+	transition: height .3s ease-out;
+}

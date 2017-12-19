@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<link rel="stylesheet" href="css/style.css">
+
+	<script src="js/d3.min.js"></script>
+	<script src="js/chart14.js"></script>
+</head>
+
+<body>
+
+<main>
+	<div class="title" style="font-family: Lucida Sans Unicode; font-size: 20px; margin-bottom: 30px;">Диаграмма 14</div>
+	<div id="chart14" style="margin-bottom: 50px;"></div>
+</main>
+
+
+<script>
+	var prop14 = {
+		blockHeight: 100,
+		width: 1000,
+		fontSize: 14,
+		segmentColors: [
+			'#79a1c5',
+			'#aadef6',
+			'#8f96c4',
+			'#98c3d4'
+		]
+	};
+
+	var data14 = [
+		{
+			title: 'Госпрограмма 1',
+			start: '02.08.2015',
+			finish: '01.09.2018',
+			planBudget: {
+				regionalSource: 500,
+				federalSource: 1000,
+				localSource: 1500,
+				extraSource: 3000
+			},
+			exBudget: {
+				regionalSource: 1000,
+				federalSource: 800,
+				localSource: 2500,
+				extraSource: 3000
+			}
+		},
+		{
+			title: 'Госпрограмма 2',
+			start: '02.08.2015',
+			finish: '01.09.2018',
+			planBudget: {
+				regionalSource: 3000,
+				federalSource: 2000,
+				localSource: 500,
+				extraSource: 4000
+			},
+			exBudget: {
+				regionalSource: 1000,
+				federalSource: 500,
+				localSource: 2000,
+				extraSource: 3000
+			}
+		},
+		{
+			title: 'Госпрограмма 3',
+			start: '02.08.2015',
+			finish: '01.09.2018',
+			planBudget: {
+				regionalSource: 6000,
+				federalSource: 3000,
+				localSource: 2500,
+				extraSource: 4000
+			},
+			exBudget: {
+				regionalSource: 1000,
+				federalSource: 500,
+				localSource: 2000,
+				extraSource: 3000
+			}
+		},
+		{
+			title: 'Госпрограмма 4',
+			start: '02.08.2015',
+			finish: '01.09.2018',
+			planBudget: {
+				regionalSource: 3000,
+				federalSource: 2000,
+				localSource: 1500,
+				extraSource: 4000
+			},
+			exBudget: {
+				regionalSource: 1000,
+				federalSource: 1000,
+				localSource: 1500,
+				extraSource: 3500
+			}
+		},
+		{
+			title: 'Госпрограмма 5',
+			start: '02.08.2015',
+			finish: '01.09.2018',
+			planBudget: {
+				regionalSource: 4000,
+				federalSource: 2000,
+				localSource: 1000,
+				extraSource: 4000
+			},
+			exBudget: {
+				regionalSource: 1000,
+				federalSource: 500,
+				localSource: 2000,
+				extraSource: 3000
+			}
+		}
+	];
+
+	drawChart14(data14,prop14);
+</script>
+
+</body>
+
+</html>

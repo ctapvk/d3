@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<link rel="stylesheet" href="css/style.css">
+
+	<script src="js/d3.min.js"></script>
+	<script src="js/chart15.js"></script>
+</head>
+
+<body>
+
+<main>
+	<div class="title" style="font-family: Lucida Sans Unicode; font-size: 20px; margin-bottom: 30px;">Диаграмма 15</div>
+	<div id="chart15" style="margin-bottom: 50px;"></div>
+</main>
+
+
+<script>
+	var prop15 = {
+		'height': '150',
+		'width': '1000',
+		'fontSize': '14',
+		'colorPlan': '#a2cdde',
+		'colorEx': '#67a1c9',
+		'selected': 3
+	};
+
+	var data15 = [
+		{
+			title: 'Госпрограмма 1',
+			planBudget: 4500,
+			exBudget: 3000
+		},
+		{
+			title: 'Госпрограмма 2',
+			planBudget: 4000,
+			exBudget: 2500
+		},
+		{
+			title: 'Госпрограмма 3',
+			planBudget: 3000,
+			exBudget: 370
+		},
+		{
+			title: 'Госпрограмма 4',
+			planBudget: 3700,
+			exBudget: 2500
+		},
+		{
+			title: 'Госпрограмма 5',
+			planBudget: 600,
+			exBudget: 300
+		},
+		{
+			title: 'Госпрограмма 6',
+			planBudget: 1000,
+			exBudget: 700
+		},
+		{
+			title: 'Госпрограмма 7',
+			planBudget: 2500,
+			exBudget: 2000
+		},
+		{
+			title: 'Госпрограмма 8',
+			planBudget: 2000,
+			exBudget: 1520
+		},
+		{
+			title: 'Госпрограмма 9',
+			planBudget: 5000,
+			exBudget: 1300
+		},
+		{
+			title: 'Госпрограмма 10',
+			planBudget: 4500,
+			exBudget: 2000
+		}
+	];
+
+	drawChart15(data15,prop15);
+</script>
+
+</body>
+
+</html>

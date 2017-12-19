@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<link rel="stylesheet" href="css/style.css">
+
+	<script src="js/d3.min.js"></script>
+	<script src="js/chart32.js"></script>
+</head>
+
+<body>
+
+<main>
+	<div class="title" style="font-family: Lucida Sans Unicode; font-size: 20px; margin-bottom: 30px;">Диаграмма 32<br>Государственная программа</div>
+	<div id="chart32" style="margin-bottom: 50px;"></div>
+</main>
+
+
+<script>
+	var prop32 = {
+		'height': '1000',
+		'width': '1000',
+		'fontSize': '14',
+		'segmentColors': [
+			'#c2bec3',
+			'#77b43d',
+			'#5eb4d7',
+			'#f69d32',
+			'#854b95',
+			'#a8d555',
+			'#2d3b4c',
+			'#a8d555',
+			'#5eb4d7',
+			'#037cd3'
+		]
+	};
+
+	var data32 = [
+		{
+			title: 'Развитие системы профилактики немедицинского потребления наркотиков, алкоголя и других психоактивных веществ',
+			planBudget: 4500000,
+			exBudget: 750000,
+			icon: 'icon/health.svg'
+		},
+		{
+			title: 'Укрепление единства российской нации и развитие казачества на территории Волгоградской области',
+			planBudget: 4000000,
+			exBudget: 2500000,
+			icon: 'icon/people.svg'
+		},
+		{
+			title: 'Развитие образования на 2014-2020 годы',
+			planBudget: 300000,
+			exBudget: 370000,
+			icon: 'icon/education.svg'
+		},
+		{
+			title: 'Управление государственным имуществом Волгоградской области',
+			planBudget: 2700000,
+			exBudget: 2500000,
+			icon: 'icon/cityhall.svg'
+		},
+		{
+			title: 'Энергосбережение и повышение энергетической эффективности Волгоградской области',
+			planBudget: 2700000,
+			exBudget: 2500000,
+			icon: 'icon/nature.svg'
+		},
+		{
+			title: 'Защита населения и территории от чрезвычайных ситуаций, обеспечение пожарной безопасности',
+			planBudget: 2700000,
+			exBudget: 2500000,
+			icon: 'icon/shield.svg'
+		},
+		{
+			title: 'Охрана окружающей среды на территории Волгоградской области',
+			planBudget: 2700000,
+			exBudget: 2500000,
+			icon: 'icon/nature.svg'
+		},
+		{
+			title: 'Региональная молодёжная политика Волгоградской области',
+			planBudget: 2200000,
+			exBudget: 2000000,
+			icon: 'icon/people.svg'
+		},
+		{
+			title: 'Развитие здравоохранения Волгоградской области на 2014-2016 годы и на период до 2020 года',
+			planBudget: 2700000,
+			exBudget: 2500000,
+			icon: 'icon/health.svg'
+		},
+		{
+			title: 'Госпрограмма 10',
+			planBudget: 2000000,
+			exBudget: 2000000,
+			icon: 'icon/cityhall.svg'
+		},
+		{
+			title: 'Госпрограмма 11',
+			planBudget: 2700000,
+			exBudget: 2500000,
+			icon: 'icon/cityhall.svg'
+		},
+		{
+			title: 'Госпрограмма 12',
+			planBudget: 5000000,
+			exBudget: 2500000,
+			icon: 'icon/cityhall.svg'
+		},
+		{
+			title: 'Госпрограмма 13',
+			planBudget: 6000000,
+			exBudget: 2500000,
+			icon: 'icon/cityhall.svg'
+		},
+		{
+			title: 'Госпрограмма 14',
+			planBudget: 8000000,
+			exBudget: 2500000,
+			icon: 'icon/cityhall.svg'
+		},
+		{
+			title: 'Госпрограмма 15',
+			planBudget: 100000,
+			exBudget: 50000,
+			icon: 'icon/cityhall.svg'
+		}
+	];
+
+	drawChart32(data32,prop32);
+</script>
+
+</body>
+
+</html>

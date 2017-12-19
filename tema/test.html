@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<link rel="stylesheet" href="css/style.css">
+
+	<script src="js/d3.min.js"></script>
+	<script src="js/chart10.js"></script>
+	<script src="js/chart12.js"></script>
+</head>
+
+<body>
+
+<main>
+	<div class="title" style="font-family: Lucida Sans Unicode; font-size: 20px; margin-bottom: 30px;">Диаграмма 10<br>(Объём финансирования государственных программ)</div>
+	<div id="chart10" style="margin-bottom: 50px;"></div>
+	<div class="title" style="font-family: Lucida Sans Unicode; font-size: 20px; margin-bottom: 30px;">Диаграмма 12</div>
+	<div id="chart12"></div>
+</main>
+
+
+<script>
+	var prop10 = {
+		'height': '360',
+		'columnWidth': '90',
+		'fontSize': '14'
+	};
+
+	var data10 = [
+		{
+			source: 'Областные средства',
+			planBudget: 4500000,
+			exBudget: 7500000,
+			bg: '#a2cdde'
+		},
+		{
+			source: 'Федеральные средства',
+			planBudget: 4000000,
+			exBudget: 2500000,
+			bg: '#99a0cf'
+		},
+		{
+			source: 'Местный бюджет',
+			planBudget: 300000,
+			exBudget: 370000,
+			bg: '#aadcf3'
+		},
+		{
+			source: 'Внебюджетные источники',
+			planBudget: 2700000,
+			exBudget: 2500000,
+			bg: '#6d95b9'
+		}
+	];
+
+	var prop12 = {
+		'height': '100',
+		'fontSize': '14',
+		'segmentColors': [
+			'#8dc2d7',
+			'#84abd2',
+			'#529acb',
+			'#2d7bb0',
+			'#828bc4',
+			'#c2bec3'
+		]
+	};
+
+	var data12 = [
+		{
+			name: 'Госпрограмма 1',
+			planBudget: 400000,
+			exBudget: 100000
+		},
+		{
+			name: 'Госпрограмма 2',
+			planBudget: 50000,
+			exBudget: 65000
+		},
+		{
+			name: 'Госпрограмма 3',
+			planBudget: 300000,
+			exBudget: 150000
+		},
+		{
+			name: 'Госпрограмма 4',
+			planBudget: 600000,
+			exBudget: 200000
+		},
+		{
+			name: 'Госпрограмма 5',
+			planBudget: 10000,
+			exBudget: 3800
+		},
+		{
+			name: 'Госпрограмма 6',
+			planBudget: 25000,
+			exBudget: 5000
+		},
+		{
+			name: 'Госпрограмма 7',
+			planBudget: 1000000,
+			exBudget: 705000
+		},
+		{
+			name: 'Госпрограмма 8',
+			planBudget: 105000,
+			exBudget: 100000
+		},
+		{
+			name: 'Госпрограмма 9',
+			planBudget: 305000,
+			exBudget: 304000
+		}
+	];
+
+	drawChart10(data10,prop10);
+	drawChart12(data12,prop12);
+</script>
+
+</body>
+
+</html>
