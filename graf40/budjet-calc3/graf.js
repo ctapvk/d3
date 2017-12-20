@@ -36,10 +36,19 @@ function gist8(data , prop ) {
     ;
 
 // console.log([max ,  min]);
+    len =data.length ;
+    size = ( +prop.barSize + +prop.spaceBetween) * len ;
     x = d3.scaleLinear()
-        .domain([0, 21])
-        .range([+prop.gistPadding, ( +prop.barSize + +prop.spaceBetween) * 21])
+        .domain([0, len])
+        .range([+prop.gistPadding , size ])
     ;
+
+    if (  size > widthSvg ) {
+        sizeSvg = +prop.paddingLeft + size  +30;
+        svg.attr("width" , sizeSvg  );
+        d3.select('#someId').attr('viewBox' , "0 0 "+ sizeSvg + " 400") ;
+    }
+
     rotText = "";
     barSize = +prop.barSize;
 
@@ -62,7 +71,7 @@ function gist8(data , prop ) {
             .attr("transform", function (d) {
                 return "translate(" + [0, -height + y(0)] + ")"
             })
-            .attr("d", line([[0, 0], [getElemWidth(canvas), 0]]))
+            .attr("d", line([[0, 0], [size, 0]]))
             .attr("stroke-width", 4)
             .attr("stroke", "#CDD5DE")
         ;
@@ -199,31 +208,6 @@ function gist8(data , prop ) {
             ;
         });
 
-
-        pos = 0 ;
-        data.forEach(function (d, i) {
-            if (i %7 ==0){
-            legend = canvas.append("g").attr("transform", "translate("+(20+ 250*pos++) +",0)");
-            itemPos = 0;
-            }
-
-
-            outLeg = legend.append("g").attr("transform", "translate(0,"+(60 + itemPos++*30)+")");
-            outLeg.append("rect")
-                .attr("width", 20)
-                .attr("height", 20)
-                .attr("fill", prop.colors[i])
-            ;
-            outLeg.append("text")
-                .attr("transform", "translate(30 , 15)")
-                .attr("class", "legend")
-                .text( (i+1) + '. ' + cutLongText(d3.keys(d)) )
-            ;
-        });
-
-
-
-
     }
 
 
@@ -302,33 +286,46 @@ function gist8(data , prop ) {
 
     printTable(data);
     function printTable(d){
-        console.log(d);
 
         s="<table class='table-bughet-calc'> " ;
         s+="<tr>";
         s+="<td valign='top'>";
         for (i=0; i <11 ; i++){
-        s+="<table> ";
+            s+="<table> ";
             s+="<tr>";
-            s+="<td width='400px'>";
+            rect = '<svg width="20" height="20" ><rect width="20" height="20" fill="'+prop.colors[i]+'"></rect></svg>';
+            s+="<td width='40px'>";
+            s+= rect ;
+            s+="</td>";
+            s+="<td width='20px'>";
+            s+= (i+1)  ;
+            s+="</td>";
+            s+="<td width='300px'>";
             s+= d3.keys(d[i]) ;
             s+="</td>";
-            s+="<td>";
+            s+="<td width='90px'>";
             s+= currencySwapNoCut( d3.values(d[i]) );
             s+="</td>";
             s+="</tr>";
             s+="";
-        s+="</table>";
+            s+="</table>";
         }
         s+="</td>";
         s+="<td valign='top'>";
         for (i=11; i <d.length ; i++){
             s+="<table> ";
             s+="<tr>";
-            s+="<td width='400px'>";
+            rect = '<svg width="20" height="20" ><rect width="20" height="20" fill="'+prop.colors[i]+'"></rect></svg>';
+            s+="<td width='40px'>";
+            s+= rect ;
+            s+="</td>";
+            s+="<td width='20px'>";
+            s+= (i+1)  ;
+            s+="</td>";
+            s+="<td width='300px'>";
             s+= d3.keys(d[i]) ;
             s+="</td>";
-            s+="<td>";
+            s+="<td width='90px'>";
             s+= currencySwapNoCut( d3.values(d[i]) );
             s+="</td>";
             s+="</tr>";
@@ -344,6 +341,9 @@ function gist8(data , prop ) {
 
         d3.select("#tableTxtRez").html(s);
     }
+
+
+
 
 
 

@@ -2,11 +2,11 @@ prop8 = {
 
     "backColor": "#F8F9FA" ,
     "paddingLeft" : "120" ,
-    "paddingBottom" : "350"  ,
+    "paddingBottom" : "50"  ,
     "moveMounth":"25" ,
     "gistPadding": "30" ,
-    "spaceBetween" : "20" ,
-    "barSize":"17" ,
+    "spaceBetween" : "15" ,
+    "barSize":"30" ,
 
     "colors": [
         "#FDCA8B", "#568a67", "#8BC33C", "#65746b",
