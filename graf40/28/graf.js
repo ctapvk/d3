@@ -1,5 +1,5 @@
 
-function drawGraph28my(data , prop  , idgraf , angle) {
+function drawGraph28my(data , prop  , idgraf ,  showAll) {
     div = d3.select("#hidGraph28my").append("div").attr("class", "tooltipGraph28my").style("opacity", 0);
 // init block
 
@@ -33,7 +33,7 @@ function drawGraph28my(data , prop  , idgraf , angle) {
         pie = d3.pie().padAngle(.0).sort(null);
         arc = d3.arc();
 
-        dat1 = procData(data) ;
+if (showAll !=1)  dat1 = procData(data) ; else dat1 = data ; 
         dat = [];
         dat1.forEach(function (t) {
             dat.push((Object.values(t))[0])
@@ -95,7 +95,7 @@ function drawGraph28my(data , prop  , idgraf , angle) {
             .attr("transform" , "translate("+[ 50 ,  0]+")")
         ;
 
-        dat1 = procData(data) ;
+if (showAll !=1)  dat1 = procData(data) ; else dat1 = data ; 
         yLegend = 0 ;
         dat1.forEach(function (d , i ) {
 
@@ -106,10 +106,10 @@ function drawGraph28my(data , prop  , idgraf , angle) {
             diffY = 55-55* strSize ;
             yLegend += 55* strSize ;
 
-
-            if (i > 5  ) xCoord = 350 ; else xCoord = 0 ;  ;
+if (showAll != 1)  ch2 = 5 ; else ch2 = Math.ceil(data.length/2) ; 
+            if (i > ch2  ) xCoord = 350 ; else xCoord = 0 ;  ;
             yCoord = -50+ yLegend  ;
-            if (i == 6) {
+            if (i == (ch2+1))  {
                 yLegend = 0 ;
                 yLegend += 55* strSize ;
                 yCoord = -50+ yLegend ;
@@ -447,17 +447,21 @@ function drawGraph28my(data , prop  , idgraf , angle) {
 
 
 
-    legend = svg.append("g").attr("transform" , "translate("+[prop.inieTr*2 +100 , 50]+")");
-    drawLegend(legend   );
-    drawBase(center);
-
-
-    inie = svg.append("g")
-        .attr("class", "inie")
-        .attr("transform", "translate("+[20 , 350  ]+")")
-    ;
-    if (data.length>9)
-        drawInie(inie) ;
+    if (showAll !=1 ){
+        legend = svg.append("g").attr("transform" , "translate("+[prop.inieTr*2 +100 , 50]+")");
+        drawLegend(legend   );
+        drawBase(center);
+        inie = svg.append("g")
+            .attr("class", "inie")
+            .attr("transform", "translate("+[20 , 350  ]+")")
+        ;
+        if (data.length>9)
+            drawInie(inie) ;
+    } else {
+        legend = svg.append("g").attr("transform" , "translate("+[prop.inieTr*2 +100 , 50]+")");
+        drawLegend(legend   );
+        drawBase(center);
+    }
 }
 
 

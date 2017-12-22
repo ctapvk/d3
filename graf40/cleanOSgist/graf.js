@@ -74,6 +74,19 @@ function drawGraph36(data , prop , id) {
     ;
 
 // console.log([max ,  min]);
+/*
+len =data.length ;
+size = ( gistSize*2 + +prop.spaceBetween) * len ;
+x = d3.scaleLinear()
+        .domain([0  , data.length] )
+        .range([ 0 ,  size  ])
+;
+if (  size > width ) {
+    sizeSvg = +prop.paddingLeft + +prop.paddingRight + size  ;
+    svg.attr("width" , sizeSvg  );
+    svg.attr('viewBox' , "0 0 "+ sizeSvg + " " +  svg.attr('height') ) ;
+}
+*/
     barCount =  data.length -1 ;
     x = d3.scaleLinear()
         .domain([0, barCount ])
