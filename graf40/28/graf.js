@@ -96,25 +96,29 @@ if (showAll !=1)  dat1 = procData(data) ; else dat1 = data ;
         ;
 
 if (showAll !=1)  dat1 = procData(data) ; else dat1 = data ; 
-        yLegend = 0 ;
+        yLegend = 0 ; spareY = 0 ;  
         dat1.forEach(function (d , i ) {
 
             strSize = 1 ;
             textLimt = 25 ;
             text = Object.keys(d)[0] ;
-            if ((text.length /textLimt ) > 2 ) strSize = parseInt(text.length /textLimt ) - 1  ;
-            diffY = 55-55* strSize ;
-            yLegend += 55* strSize ;
+            if ((text.length /textLimt ) > 1 ) {
+                strSize = text.length /textLimt   ;
+                countSpare  = parseInt (strSize) ; 
+                spareY = 9 * countSpare ;  
+            }  
+            diffY = spareY ;
+            yCoord = -spareY+ yLegend  ;
+            yLegend += 55 + diffY   ; 
 
-if (showAll != 1)  ch2 = 5 ; else ch2 = Math.ceil(data.length/2) ; 
-            if (i > ch2  ) xCoord = 350 ; else xCoord = 0 ;  ;
-            yCoord = -50+ yLegend  ;
-            if (i == (ch2+1))  {
-                yLegend = 0 ;
-                yLegend += 55* strSize ;
-                yCoord = -50+ yLegend ;
+
+if (showAll !=1)  ch2 = 4 ; else ch2 = Math.floor(data.length/2) ; 
+            if (i > ch2  ) xCoord = 350 ; else xCoord = 0 ; 
+            if (i == (ch2+1) )  {
+                yLegend = 0 ; 
+                yCoord = -spareY + yLegend ;
+                yLegend = 55 +diffY ;
             }
-            // console.log(i, yCoord , diffY , strSize);
             leg = te.append("g").attr("transform" , "translate("+[ xCoord, yCoord  ]+")");
 
 
@@ -168,7 +172,19 @@ if (showAll != 1)  ch2 = 5 ; else ch2 = Math.ceil(data.length/2) ;
             .attr('height',15)
             .attr('fill','#F1F2F4')
 
-        valDef = -1 ;
+        valDef = -1 ;  diffCount = data.length - 9 ;
+
+        dom = [ 45 , prop.inieTr * 2 -90 ] ; 
+        rang = [ 0  ,  prop.legendWindth * diffCount - prop.inieTr*2 ] ; 
+
+        xScroll = d3.scaleLinear()
+            .domain(dom)
+            .range(rang)
+        ;
+        // console.log(dom ) ; 
+        // console.log(  rang ) ; 
+
+
         scrollBar.append("svg:image")
             .attr('class','back')
             .attr('width', 30)
@@ -178,15 +194,9 @@ if (showAll != 1)  ch2 = 5 ; else ch2 = Math.ceil(data.length/2) ;
                 el = d3.select("#circleScroll");
                 val = el.attr('x');
                 moveVal = parseFloat(val)-20;
-                // if (valDef ==-1) valDef=val ;
-
                 if (moveVal > 20 ){
                     el.attr('x' , moveVal );
                     diffCount = data.length - 9 ;
-                    xScroll = d3.scaleLinear()
-                        .domain([valDef, prop.inieTr * 2-90])
-                        .range([-90 ,  prop.legendWindth * diffCount - prop.inieTr * 2])
-                    ;
                     d3.select(".scrollG")
                         .attr('transform','translate('+[ 10+ -xScroll(moveVal) ,0]+')')
                 }
@@ -207,10 +217,6 @@ if (showAll != 1)  ch2 = 5 ; else ch2 = Math.ceil(data.length/2) ;
                 if (moveVal< prop.inieTr * 2-90 ){
                     el.attr('x' , moveVal );
                     diffCount = data.length - 9 ;
-                    xScroll = d3.scaleLinear()
-                        .domain([valDef, prop.inieTr * 2-90])
-                        .range([-90 ,  prop.legendWindth * diffCount - prop.inieTr * 2])
-                    ;
                     d3.select(".scrollG")
                         .attr('transform','translate('+[  -xScroll(moveVal) ,0]+')')
                 }
@@ -247,10 +253,6 @@ if (showAll != 1)  ch2 = 5 ; else ch2 = Math.ceil(data.length/2) ;
             }
 
             diffCount = data.length - 9 ;
-            xScroll = d3.scaleLinear()
-                .domain([valDef, prop.inieTr * 2-90])
-                .range([ -90 ,  prop.legendWindth * diffCount - prop.inieTr * 2])
-            ;
             diff = d3.event.x - prefVal ;
             cond = val < prop.inieTr * 2-90  && val > 40
                 || (diff<0 && val >= prop.inieTr * 2-90 )
