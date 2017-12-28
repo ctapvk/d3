@@ -1,9 +1,24 @@
-
 function drawGraph28my(data , prop  , idgraf ,  showAll) {
-    div = d3.select("#hidGraph28my").append("div").attr("class", "tooltipGraph28my").style("opacity", 0);
+    pathTemplate = typeof pathTemplateGraph == 'undefined' ? '' : pathTemplateGraph;
+    var numGraph = idgraf.replace('graph', '');
+    div = d3.select("#hidGraph" + numGraph).append("div").attr("class", "tooltipGraph28my").style("opacity", 0);
 // init block
+colorsKrug = prop.colorsKrug.slice(0); ; 
+// TODO как  это рабоатет !? ^^^^^
+// console.log(colorsKrug)
+    if (showAll !=1 && data.length>9) colorsKrug[9] = '#C2BEC3' ;
+    data.forEach(function (d,i){
+        val = d3.keys(d)[0] ; 
+        cond = val.indexOf('Иные')!=-1 || val.indexOf('иные')!=-1 ; 
+        if (cond ) {
+            colorsKrug[i] = '#C2BEC3' ;
+            // console.log(i , cond , val )
+        }
+    })
 
-
+// console.log(prop.colorsKrug)
+    // console.log(prop , data)
+    
     var svg = d3.select("#"+idgraf);
     svg.selectAll("*").remove();
 
@@ -33,7 +48,7 @@ function drawGraph28my(data , prop  , idgraf ,  showAll) {
         pie = d3.pie().padAngle(.0).sort(null);
         arc = d3.arc();
 
-if (showAll !=1)  dat1 = procData(data) ; else dat1 = data ; 
+        if (showAll !=1)  dat1 = procData(data) ; else dat1 = data ;
         dat = [];
         dat1.forEach(function (t) {
             dat.push((Object.values(t))[0])
@@ -45,14 +60,14 @@ if (showAll !=1)  dat1 = procData(data) ; else dat1 = data ;
         pie( dat ).forEach( function (t, i ) {
             t.outerRadius = prop.radius ;  t.innerRadius = 55;
             t.startAngle += raz ; t.endAngle +=raz;
-            let per =(t.data / d3.sum(dat)).toFixed(3) * 100;
+            var per =(t.data / d3.sum(dat)).toFixed(3) * 100;
 
-            let html =" Наименование : " + d3.keys(dat1[i]) + ' <br>' +
+            var html =" Наименование : " + d3.keys(dat1[i]) + ' <br>' +
                 " Объем показателя : " + currencySwapWithText(d3.values(dat1[i])) + ' <br>' +
                 " Доля в общем объеме долга : " + (per).toFixed(1) + '%' ;
 
             te.append("path")
-                .attr("fill" ,  prop.colorsKrug[i] )
+                .attr("fill" ,  colorsKrug[i] )
                 .attr("d", arc(t))
                 .on("mousemove", function(d) {
                     div.transition().duration(200).style("opacity", .9);
@@ -95,8 +110,8 @@ if (showAll !=1)  dat1 = procData(data) ; else dat1 = data ;
             .attr("transform" , "translate("+[ 50 ,  0]+")")
         ;
 
-if (showAll !=1)  dat1 = procData(data) ; else dat1 = data ; 
-        yLegend = 0 ; spareY = 0 ;  
+        if (showAll !=1)  dat1 = procData(data) ; else dat1 = data ;
+        yLegend = 0 ; spareY = 0 ;
         dat1.forEach(function (d , i ) {
 
             strSize = 1 ;
@@ -104,18 +119,18 @@ if (showAll !=1)  dat1 = procData(data) ; else dat1 = data ;
             text = Object.keys(d)[0] ;
             if ((text.length /textLimt ) > 1 ) {
                 strSize = text.length /textLimt   ;
-                countSpare  = parseInt (strSize) ; 
-                spareY = 9 * countSpare ;  
-            }  
+                countSpare  = parseInt (strSize) ;
+                spareY = 9 * countSpare ;
+            }
             diffY = spareY ;
             yCoord = -spareY+ yLegend  ;
-            yLegend += 55 + diffY   ; 
+            yLegend += 55 + diffY   ;
 
 
-if (showAll !=1)  ch2 = 4 ; else ch2 = Math.floor(data.length/2) ; 
-            if (i > ch2  ) xCoord = 350 ; else xCoord = 0 ; 
+            if (showAll !=1)  ch2 = 4 ; else ch2 = Math.floor(data.length/2) ;
+            if (i > ch2  ) xCoord = 350 ; else xCoord = 0 ;
             if (i == (ch2+1) )  {
-                yLegend = 0 ; 
+                yLegend = 0 ;
                 yCoord = -spareY + yLegend ;
                 yLegend = 55 +diffY ;
             }
@@ -134,7 +149,7 @@ if (showAll !=1)  ch2 = 4 ; else ch2 = Math.floor(data.length/2) ;
                 .attr('width',25)
                 .attr('height',25)
                 .attr("transform" , "translate("+[ -35,-33 +diffY ]+")")
-                .attr("fill", prop.colorsKrug[i])
+                .attr("fill", colorsKrug[i])
             ;
 
         })
@@ -159,7 +174,7 @@ if (showAll !=1)  ch2 = 4 ; else ch2 = Math.floor(data.length/2) ;
             .attr("transform","translate("+[ 0,-80 ]+")")
             .attr('width', prop.inieTr * 2)
             .attr('height', 80)
-            .attr("xlink:href", "icons28/tr.png")
+            .attr("xlink:href", pathTemplate + "icons28/tr.png")
         ;
 
 
@@ -174,22 +189,22 @@ if (showAll !=1)  ch2 = 4 ; else ch2 = Math.floor(data.length/2) ;
 
         valDef = -1 ;  diffCount = data.length - 9 ;
 
-        dom = [ 45 , prop.inieTr * 2 -90 ] ; 
-        rang = [ 0  ,  prop.legendWindth * diffCount - prop.inieTr*2 ] ; 
+        dom = [ 45 , prop.inieTr * 2 -90 ] ;
+        rang = [ 0  ,  prop.legendWindth * diffCount - prop.inieTr*2 ] ;
 
         xScroll = d3.scaleLinear()
             .domain(dom)
             .range(rang)
         ;
-        // console.log(dom ) ; 
-        // console.log(  rang ) ; 
+        // console.log(dom ) ;
+        // console.log(  rang ) ;
 
 
         scrollBar.append("svg:image")
             .attr('class','back')
             .attr('width', 30)
             .attr('height',15)
-            .attr("xlink:href", "icons28/left.png" )
+            .attr("xlink:href", pathTemplate + "icons28/left.png" )
             .on('click',function (d) {
                 el = d3.select("#circleScroll");
                 val = el.attr('x');
@@ -206,7 +221,7 @@ if (showAll !=1)  ch2 = 4 ; else ch2 = Math.floor(data.length/2) ;
             .attr('class','forward')
             .attr('width', 30)
             .attr('height',15)
-            .attr("xlink:href", "icons28/right.png" )
+            .attr("xlink:href", pathTemplate + "icons28/right.png" )
             .attr('transform','translate('+[ prop.inieTr * 2 - 30,0]+')')
             .on('click',function (d) {
                 el = d3.select("#circleScroll");
