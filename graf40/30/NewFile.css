@@ -1,13 +1,14 @@
-path {
-    fill:none;
-}
+
 svg text {
     font-family: sans-serif;
 }
 
 
-.middleTextLegend{
-	text-anchor:middle;
+.middleTextLegend30{
+    text-anchor:middle;
+    fill:gray;
+    font-size: 12px;
+
 }
 
 .planGistLabel{
@@ -30,17 +31,15 @@ div.tooltipGraph30 {
     pointer-events: none;
 }
 
-.svg-container {
-    display: inline-block;
-    position: relative;
-    width: 100%;
-    padding-bottom: 100%;
-    vertical-align: middle;
-    overflow: hidden;
+#divGraph30over{
+    overflow: auto;
 }
-.svg-content {
-    display: inline-block;
-    position: absolute;
-    top: 0;
-    left: 0;
+
+
+.asisYcapiton {
+    font-size: 18px;
+    fill: #aDa5aE;
+    dominant-baseline: central;
+    text-anchor: end;
+    font-family: sans-serif;
 }
