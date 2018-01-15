@@ -1,9 +1,24 @@
-
-function drawGraph28my(data , prop  , idgraf , angle) {
-    div = d3.select("#hidGraph28my").append("div").attr("class", "tooltipGraph28my").style("opacity", 0);
+function drawGraph28my(data , prop  , idgraf ,  showAll) {
+    pathTemplate = typeof pathTemplateGraph == 'undefined' ? '' : pathTemplateGraph;
+    var numGraph = idgraf.replace('graph', '');
+    div = d3.select("#hidGraph" + numGraph).append("div").attr("class", "tooltipGraph28my").style("opacity", 0);
 // init block
+colorsKrug = prop.colorsKrug.slice(0); ; 
+// TODO как  это рабоатет !? ^^^^^
+// console.log(colorsKrug)
+    if (showAll !=1 && data.length>9) colorsKrug[9] = '#C2BEC3' ;
+    data.forEach(function (d,i){
+        val = d3.keys(d)[0] ; 
+        cond = val.indexOf('Иные')!=-1 || val.indexOf('иные')!=-1 ; 
+        if (cond ) {
+            colorsKrug[i] = '#C2BEC3' ;
+            // console.log(i , cond , val )
+        }
+    })
 
-
+// console.log(prop.colorsKrug)
+    // console.log(prop , data)
+    
     var svg = d3.select("#"+idgraf);
     svg.selectAll("*").remove();
 
@@ -33,7 +48,7 @@ function drawGraph28my(data , prop  , idgraf , angle) {
         pie = d3.pie().padAngle(.0).sort(null);
         arc = d3.arc();
 
-        dat1 = procData(data) ;
+        if (showAll !=1)  dat1 = procData(data) ; else dat1 = data ;
         dat = [];
         dat1.forEach(function (t) {
             dat.push((Object.values(t))[0])
@@ -45,14 +60,14 @@ function drawGraph28my(data , prop  , idgraf , angle) {
         pie( dat ).forEach( function (t, i ) {
             t.outerRadius = prop.radius ;  t.innerRadius = 55;
             t.startAngle += raz ; t.endAngle +=raz;
-            let per =(t.data / d3.sum(dat)).toFixed(3) * 100;
+            var per =(t.data / d3.sum(dat)).toFixed(3) * 100;
 
-            let html =" Наименование : " + d3.keys(dat1[i]) + ' <br>' +
+            var html =" Наименование : " + d3.keys(dat1[i]) + ' <br>' +
                 " Объем показателя : " + currencySwapWithText(d3.values(dat1[i])) + ' <br>' +
                 " Доля в общем объеме долга : " + (per).toFixed(1) + '%' ;
 
             te.append("path")
-                .attr("fill" ,  prop.colorsKrug[i] )
+                .attr("fill" ,  colorsKrug[i] )
                 .attr("d", arc(t))
                 .on("mousemove", function(d) {
                     div.transition().duration(200).style("opacity", .9);
@@ -95,26 +110,30 @@ function drawGraph28my(data , prop  , idgraf , angle) {
             .attr("transform" , "translate("+[ 50 ,  0]+")")
         ;
 
-        dat1 = procData(data) ;
-        yLegend = 0 ;
+        if (showAll !=1)  dat1 = procData(data) ; else dat1 = data ;
+        yLegend = 0 ; spareY = 0 ;
         dat1.forEach(function (d , i ) {
 
             strSize = 1 ;
             textLimt = 25 ;
             text = Object.keys(d)[0] ;
-            if ((text.length /textLimt ) > 2 ) strSize = parseInt(text.length /textLimt ) - 1  ;
-            diffY = 55-55* strSize ;
-            yLegend += 55* strSize ;
-
-
-            if (i > 5  ) xCoord = 350 ; else xCoord = 0 ;  ;
-            yCoord = -50+ yLegend  ;
-            if (i == 6) {
-                yLegend = 0 ;
-                yLegend += 55* strSize ;
-                yCoord = -50+ yLegend ;
+            if ((text.length /textLimt ) > 1 ) {
+                strSize = text.length /textLimt   ;
+                countSpare  = parseInt (strSize) ;
+                spareY = 9 * countSpare ;
             }
-            // console.log(i, yCoord , diffY , strSize);
+            diffY = spareY ;
+            yCoord = -spareY+ yLegend  ;
+            yLegend += 55 + diffY   ;
+
+
+            if (showAll !=1)  ch2 = 4 ; else ch2 = Math.floor(data.length/2) ;
+            if (i > ch2  ) xCoord = 350 ; else xCoord = 0 ;
+            if (i == (ch2+1) )  {
+                yLegend = 0 ;
+                yCoord = -spareY + yLegend ;
+                yLegend = 55 +diffY ;
+            }
             leg = te.append("g").attr("transform" , "translate("+[ xCoord, yCoord  ]+")");
 
 
@@ -130,7 +149,7 @@ function drawGraph28my(data , prop  , idgraf , angle) {
                 .attr('width',25)
                 .attr('height',25)
                 .attr("transform" , "translate("+[ -35,-33 +diffY ]+")")
-                .attr("fill", prop.colorsKrug[i])
+                .attr("fill", colorsKrug[i])
             ;
 
         })
@@ -155,7 +174,7 @@ function drawGraph28my(data , prop  , idgraf , angle) {
             .attr("transform","translate("+[ 0,-80 ]+")")
             .attr('width', prop.inieTr * 2)
             .attr('height', 80)
-            .attr("xlink:href", "icons28/tr.png")
+            .attr("xlink:href", pathTemplate + "icons28/tr.png")
         ;
 
 
@@ -168,25 +187,31 @@ function drawGraph28my(data , prop  , idgraf , angle) {
             .attr('height',15)
             .attr('fill','#F1F2F4')
 
-        valDef = -1 ;
+        valDef = -1 ;  diffCount = data.length - 9 ;
+
+        dom = [ 45 , prop.inieTr * 2 -90 ] ;
+        rang = [ 0  ,  prop.legendWindth * diffCount - prop.inieTr*2 ] ;
+
+        xScroll = d3.scaleLinear()
+            .domain(dom)
+            .range(rang)
+        ;
+        // console.log(dom ) ;
+        // console.log(  rang ) ;
+
+
         scrollBar.append("svg:image")
             .attr('class','back')
             .attr('width', 30)
             .attr('height',15)
-            .attr("xlink:href", "icons28/left.png" )
+            .attr("xlink:href", pathTemplate + "icons28/left.png" )
             .on('click',function (d) {
                 el = d3.select("#circleScroll");
                 val = el.attr('x');
                 moveVal = parseFloat(val)-20;
-                // if (valDef ==-1) valDef=val ;
-
                 if (moveVal > 20 ){
                     el.attr('x' , moveVal );
                     diffCount = data.length - 9 ;
-                    xScroll = d3.scaleLinear()
-                        .domain([valDef, prop.inieTr * 2-90])
-                        .range([-90 ,  prop.legendWindth * diffCount - prop.inieTr * 2])
-                    ;
                     d3.select(".scrollG")
                         .attr('transform','translate('+[ 10+ -xScroll(moveVal) ,0]+')')
                 }
@@ -196,7 +221,7 @@ function drawGraph28my(data , prop  , idgraf , angle) {
             .attr('class','forward')
             .attr('width', 30)
             .attr('height',15)
-            .attr("xlink:href", "icons28/right.png" )
+            .attr("xlink:href", pathTemplate + "icons28/right.png" )
             .attr('transform','translate('+[ prop.inieTr * 2 - 30,0]+')')
             .on('click',function (d) {
                 el = d3.select("#circleScroll");
@@ -207,10 +232,6 @@ function drawGraph28my(data , prop  , idgraf , angle) {
                 if (moveVal< prop.inieTr * 2-90 ){
                     el.attr('x' , moveVal );
                     diffCount = data.length - 9 ;
-                    xScroll = d3.scaleLinear()
-                        .domain([valDef, prop.inieTr * 2-90])
-                        .range([-90 ,  prop.legendWindth * diffCount - prop.inieTr * 2])
-                    ;
                     d3.select(".scrollG")
                         .attr('transform','translate('+[  -xScroll(moveVal) ,0]+')')
                 }
@@ -247,10 +268,6 @@ function drawGraph28my(data , prop  , idgraf , angle) {
             }
 
             diffCount = data.length - 9 ;
-            xScroll = d3.scaleLinear()
-                .domain([valDef, prop.inieTr * 2-90])
-                .range([ -90 ,  prop.legendWindth * diffCount - prop.inieTr * 2])
-            ;
             diff = d3.event.x - prefVal ;
             cond = val < prop.inieTr * 2-90  && val > 40
                 || (diff<0 && val >= prop.inieTr * 2-90 )
@@ -447,17 +464,21 @@ function drawGraph28my(data , prop  , idgraf , angle) {
 
 
 
-    legend = svg.append("g").attr("transform" , "translate("+[prop.inieTr*2 +100 , 50]+")");
-    drawLegend(legend   );
-    drawBase(center);
-
-
-    inie = svg.append("g")
-        .attr("class", "inie")
-        .attr("transform", "translate("+[20 , 350  ]+")")
-    ;
-    if (data.length>9)
-        drawInie(inie) ;
+    if (showAll !=1 ){
+        legend = svg.append("g").attr("transform" , "translate("+[prop.inieTr*2 +100 , 50]+")");
+        drawLegend(legend   );
+        drawBase(center);
+        inie = svg.append("g")
+            .attr("class", "inie")
+            .attr("transform", "translate("+[20 , 350  ]+")")
+        ;
+        if (data.length>9)
+            drawInie(inie) ;
+    } else {
+        legend = svg.append("g").attr("transform" , "translate("+[prop.inieTr*2 +100 , 50]+")");
+        drawLegend(legend   );
+        drawBase(center);
+    }
 }
 
 

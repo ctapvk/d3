@@ -4,6 +4,9 @@ var svg = d3.select(".graf37");
 barSize = +prop.barSize;
 widthBar = (barSize+1)*11;
 
+
+data.sort(function(x, y) { return d3.ascending(x.order, y.order) ;  }) ;
+
 monthNamesShort= ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн',
         'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек']
 
