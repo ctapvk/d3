@@ -1,0 +1,55 @@
+.border {
+	fill:none;
+}
+svg text {
+	font-family: Proxima Nova;
+}
+
+
+.asisYcapiton {
+	font-size: 18px;
+	fill: #aDa5aE;
+	dominant-baseline: central;
+	text-anchor: end;
+}
+
+
+div.tooltipGraph36 {
+	position: absolute;
+	text-align: left;
+	font: 14px sans-serif;
+	line-height: 1.4;
+	padding: 5px;
+	background: white;
+	border-style: solid;
+	border-width: 1px;
+	border-color: blue;
+	pointer-events: none;
+}
+
+.gist {
+	fill:none;
+}
+
+.asisXmounthText {
+	text-anchor :middle ;
+	fill :#CDD5DE ;
+	font-weight :bold;
+	font-size:14 ;
+	dominant-baseline : central ;
+}
+
+.asisYcapiton {
+	font-size:18px ;
+	fill :#aDa5aE ;
+	dominant-baseline : central ;
+	text-anchor :end ;
+}
+
+
+.valsLabals{
+	text-anchor:middle;
+
+}
+
+
