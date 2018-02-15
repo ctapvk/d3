@@ -15,7 +15,8 @@ function drawGraph36(data , prop , id) {
 
     svg = d3.select("#"+id);
     svg.selectAll("*").remove();
-    div = d3.select("#hideGraph36").append("div").attr("class", "tooltipGraph36").style("opacity", 0);
+    d3.select("#hideGraph36").selectAll("*").remove();
+    var div = d3.select("#hideGraph36").append("div").attr("class", "tooltipGraph36").style("opacity", 0);
 
     widthSvg = +svg.attr("width");
     heightSvg = +svg.attr("height");
