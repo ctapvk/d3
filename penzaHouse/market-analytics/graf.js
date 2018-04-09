@@ -175,8 +175,8 @@ function drawGraph36(data , prop , id) {
 
             margin = 0 ;
             line = d3.line()
-                .x(function(d , i ) { return x(i) ;  })
-                .y(function(d) { return -y(d) + margin; })
+                .x(function(d , i ) { return x(d[0]) ;  })
+                .y(function(d) { return -y(d[1]) + margin; })
             ;
             area = d3.area()
                 .x(function(d , i ) {  return x(i) ; })
@@ -190,7 +190,7 @@ function drawGraph36(data , prop , id) {
             circles = canvas.append("g").attr("class","circles");
             t.vals.forEach(function (t2 , num2) {
                 let val  = d3.values(t2)[0];
-                datGist.push(  val ) ;
+                if (val != 0) datGist.push( [ num2, val] ) ;
                 // gLables.append('text')
                 //     .attr("transform", "translate("+[x(num2), 20 * number]+")")
                 //     .attr('fill',prop.colors[number])
