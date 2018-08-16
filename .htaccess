@@ -1,0 +1,15 @@
+# запрет доступа к папкам VCS
+RedirectMatch 404 /\.(svn|git|hg|bzr|cvs)(/|$) 
+# просмотр папок
+Options All +Indexes
+
+
+<Files "^(*.php|*.phps)">
+    order deny,allow
+    deny from all
+</Files>
+
+
+# на главную 
+#RedirectMatch permanent .*\.(svn|git|hg|bzr|cvs)/.* /
+
