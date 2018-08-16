@@ -1,11 +1,10 @@
-
 <?php
-$dir    = $_SERVER['DOCUMENT_ROOT']. '';
+$dir    = $_SERVER['DOCUMENT_ROOT'];
 $filesXsd = explode("\n",  shell_exec("find $dir/* -type f -name *.png") ) ;
 $arr = [];
 
 foreach ($filesXsd as $k => $v){
-    $path =str_replace($dir,'',$v);
+    $path =str_replace($dir.'/','',$v);
 //    $path = iconv(mb_detect_encoding($path), "cp1251", $path);
     $href= preg_replace("/\d*\.png/",'',$path) ;
 
