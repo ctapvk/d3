@@ -7,22 +7,27 @@
 
 </head>
 <body>
-
-<svg  id='Graph36' width="1200" height="600"></svg>
-<div id="hideGraph36"></div>
-
+<div class="container">
+    <svg id='Graph36' width="1000" height="800"></svg>
+    <div id="hideGraph36"></div>
+</div>
 
 </body>
 <script src="../../d3.min.js"></script>
 <script src="graf.js"></script>
+<script src="prop.js"></script>
 <script>
-    propGraph36 = {
-        "deName":"Средняя стоимость" ,
-        "deText":"едениц" ,
-        "colors" : ["#66977B" ,"#8BC33C","#2D7BB0","#F5BA63","#EF7572","#529acb","#529acb"] ,
-    }
-    dataGraph36tickerUSD_RUB = dataGraph36 ;
-    drawGraph36(dataGraph36tickerUSD_RUB , propGraph36 , "Graph36") ;
+  var propGraph36 = {
+    "paddingTop": 50,
+    "paddingBottom": 400,
+    "deName": "Посещений",
+    "deText":"раз" ,
+    "colors": [
+      "#F5BA63", "#529acb", "#acc",
+      "#18ff4d","#6fa906","#50a3f7","#60cd01","#04e659","#f21698","#ecd05f","#1a7020","#dddf74","#5d3284","#df4225","#2e2404","#81d647","#848f01","#79a358","#a08c13","#31f949","#ae5539","#91c62f","#41b777","#a995b7","#2983ef","#96ee07","#94ec39","#181727","#fc5324","#a8e101","#2c697e","#6d58f4","#cce644","#e6ddcc","#adc55d","#3d0387","#ca8116","#17ba36","#fb001e","#ea8bd4","#439a34","#76a437","#2a6773","#9aa064","#64d1cd","#cf6020","#9dc403","#bb3ba0","#0ccd5e","#6f1929","#14eefb","#2eab34","#8acb9e",
+    ],
+  }
+    drawGraph36(dataGraph36 , propGraph36 , "Graph36") ;
 </script>
 
 <br>
