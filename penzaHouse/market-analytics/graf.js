@@ -101,18 +101,27 @@ function drawGraph36(data, prop, id) {
 
   var AsisXLegendLables = {};
   data.forEach(function(t, number) {
-    count = t.vals.length;
     t.vals.forEach(function(t2, number2) {
       let a = d3.keys(t2)[0];
-      AsisXLegendLables[a] = 'tst';
+      AsisXLegendLables[a] = 'tst'; // объект всех возможных ключей  в  vals
     });
+  });
+  // todo Объекты в js хранятся по особому . поэтому нужен массив
+  var keysSorted = Object.keys(AsisXLegendLables).sort(function(a, b) {
+    var d = a.split('-');
+    var a1 = new Date(parseInt(d[0]), parseInt(d[1]) - 1, parseInt(d[2]));
+    var d = b.split('-');
+    var a2 = new Date(parseInt(d[0]), parseInt(d[1]) - 1, parseInt(d[2]));
+    return a1 > a2;
   });
 
   var maxValsCount = 0;
   for (let k in AsisXLegendLables) {
+    AsisXLegendLables[k] = maxValsCount;
     maxValsCount++;
   }
-  console.log(maxValsCount, AsisXLegendLables);
+
+  console.log(maxValsCount, keysSorted);
 
   var size = ( prop.barSize) * maxValsCount;
   if (size > width) {
@@ -134,12 +143,11 @@ function drawGraph36(data, prop, id) {
     attr('class', 'valsLabals').
     attr('transform', 'translate(' + [0, 20] + ')');
 
-    let count = 0;
-    for (let k in AsisXLegendLables) {
+    keysSorted.forEach(function(d, i) {
       te.append('text').
-      attr('transform', 'translate(' + [x(count++), 0] + ')').
-      html(breakLongText(k, 5));
-    }
+      attr('transform', 'translate(' + [x(i), 0] + ')').
+      html(breakLongText(d, 5));
+    });
 
     legend = canvas.append('g').
     attr('class', 'legend').
@@ -185,14 +193,12 @@ function drawGraph36(data, prop, id) {
     });
     lines = g.append('g').attr('class', 'lines');
 
-    let count = 0;
-    for (let k in AsisXLegendLables) {
+    keysSorted.forEach(function(d, i) {
       lines.append('path').
-      attr('d', line([[x(count), 0], [x(count), -getElemHeight(canvas)]])).
+      attr('d', line([[x(i), 0], [x(i), -getElemHeight(canvas)]])).
       attr('class', 'dashLine').
       attr('stroke-dasharray', '10, 5');
-      count++;
-    }
+    });
 
     data.forEach(function(t, number) {
       margin = 0;
@@ -215,11 +221,11 @@ function drawGraph36(data, prop, id) {
         let val = d3.values(t2)[0];
         let val_key = d3.keys(t2)[0];
         let val_holder = t.name;
-        let PositionInAsisXLegendLables = -1;
-        for (let k in AsisXLegendLables) { //  чтобы пропускать пустые дни
-          PositionInAsisXLegendLables++;
-          if (val_key == k) break;
-        }
+        let PositionInAsisXLegendLables = 0;
+        keysSorted.forEach(function(d, i) {
+          if (val_key == d) PositionInAsisXLegendLables = i;
+        });
+
         if (val != 0) datGist.push([PositionInAsisXLegendLables, val]);
         // gLables.append('text')
         //     .attr("transform", "translate("+[x(index2), 20 * number]+")")
@@ -251,7 +257,9 @@ function drawGraph36(data, prop, id) {
       datGist.sort(function(a, b) {
         return a[0] - b[0];
       });
-//      if (t.name == 'Серега') debugger;
+      let a = AsisXLegendLables;
+//        if (t.name == '176.9.16.209') debugger; //todo
+
       g.append('path').
       attr('d', line(datGist)).
       style('stroke', prop.colors[number]).
