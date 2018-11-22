@@ -164,12 +164,31 @@ function drawGraph36(data, prop, id) {
       }
       text = legend.append('g').
       attr('transform', 'translate(' + [xPad * countLine, yPad] + ')');
-      text.append('text').text(t.name).attr('transform', 'translate(35,17)')
-      ;
+      text.append('text').text(t.name).attr('transform', 'translate(35,17)');
+
       text.append('rect').
       attr('width', 25).
       attr('height', 25).
-      attr('fill', prop.colors[number]);
+      attr('fill', prop.colors[number]).
+      attr('data_number', countLine).
+      on('mousemove', function() {
+        gist.selectAll('path').classed('transp', true);
+        gist.selectAll('circle').classed('transp', true);
+        gist.selectAll('.curves_' + number).classed('transp_visible', true);
+        div.transition().duration(200).style('opacity', .9);
+        let a = data[number], total = 0;
+        for (let k in a.vals) total += +d3.values(a.vals[k]);
+        div.html('Пользователь ' + a.name + ' был всего ' + total + " раз(а)").
+        style('left', (d3.event.pageX) + 'px').
+        style('top', (d3.event.pageY - 30 ) + 'px');
+      }).
+      on('mouseout', function() {
+        gist.selectAll('path').classed('transp', false);
+        gist.selectAll('circle').classed('transp', false);
+        gist.selectAll('.curves_' + number).classed('transp_visible', false);
+        div.transition().duration(500).style('opacity', 0);
+
+      });
       countLine++;
     });
   }
@@ -236,6 +255,7 @@ function drawGraph36(data, prop, id) {
           circles.append('circle').
           attr('r', 6).
           attr('fill', prop.colors[number]).
+          attr('class', 'curves_' + number).
           attr('transform', 'translate(' +
                [
                  x(PositionInAsisXLegendLables),
@@ -245,8 +265,7 @@ function drawGraph36(data, prop, id) {
             div.html(val_holder + ' был ' + currencySwapNoCut(val) + '(а) ' +
                  val_key).
             style('left', (d3.event.pageX) + 'px').
-            style('top', (d3.event.pageY - 30 ) + 'px')
-            ;
+            style('top', (d3.event.pageY - 30 ) + 'px');
           }).
           on('mouseout', function() {
             div.transition().duration(500).style('opacity', 0);
@@ -262,6 +281,7 @@ function drawGraph36(data, prop, id) {
 
       g.append('path').
       attr('d', line(datGist)).
+      attr('class', 'curves_' + number).
       style('stroke', prop.colors[number]).
       style('stroke-width', 2)
       ;
@@ -285,8 +305,7 @@ function drawGraph36(data, prop, id) {
 
   function drawAsisY(canvas) {
 
-    y = d3.scaleLinear().domain([min, max]).range([height, 0])
-    ;
+    y = d3.scaleLinear().domain([min, max]).range([height, 0]);
 
     // back
     rects = canvas.append('g').attr('class', 'backRects');

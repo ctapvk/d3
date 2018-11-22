@@ -60,5 +60,13 @@ div.tooltipGraph36 {
 .dashLine{
 	stroke-width:2px;
 	stroke: #acc;
+}
 
+.transp{
+	opacity: 0.1;
+	transition: opacity .3s ease-out;
+}
+.transp_visible{
+	opacity: 1 !important;
+	stroke-width: 4px !important;
 }
