@@ -106,13 +106,16 @@ function drawGraph36(data, prop, id) {
       AsisXLegendLables[a] = 'tst'; // объект всех возможных ключей  в  vals
     });
   });
-  // todo Объекты в js хранятся по особому . поэтому нужен массив
-  var keysSorted = Object.keys(AsisXLegendLables).sort(function(a, b) {
+  /** todo Объекты в js хранятся по особому . поэтому нужен массив
+   *
+   */
+  var keysSorted = d3.keys(AsisXLegendLables).sort(function(a, b) {
     var d = a.split('-');
     var a1 = new Date(parseInt(d[0]), parseInt(d[1]) - 1, parseInt(d[2]));
     var d = b.split('-');
     var a2 = new Date(parseInt(d[0]), parseInt(d[1]) - 1, parseInt(d[2]));
-    return a1 > a2;
+//    return a1 > a2; //  хз почему так плохо сортиррует
+    return a1.getTime() > a2.getTime() ? 1 : -1;
   });
 
   var maxValsCount = 0;
